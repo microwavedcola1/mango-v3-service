@@ -1,5 +1,5 @@
 # Pre-requisites
-* expects your private key to be present in ~/.config/solana/id.json
+* expects your private key to be present in `~/.config/solana/id.json`
 
 # How to run while developing
 * `yarn install`

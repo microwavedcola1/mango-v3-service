@@ -21,7 +21,7 @@ MAX_LONG_POSITION = 0.002
 MAX_SHORT_POSITION = -0.002
 MAX_ORDERS = 4
 
-watched_files_mtimes = [(f, getmtime(f)) for f in ["market_maker.py"]]
+watched_files_mtimes = [(f, getmtime(f)) for f in ["example3_market_maker.py"]]
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)-2s %(message)s",
