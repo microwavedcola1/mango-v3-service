@@ -7,16 +7,17 @@ import {
   nativeToUi,
   QUOTE_INDEX,
 } from "@blockworks-foundation/mango-client";
+import { Market, OpenOrders } from "@project-serum/serum";
 import Controller from "controller.interface";
 import { NextFunction, Request, Response, Router } from "express";
 import { sumBy } from "lodash";
 import MangoSimpleClient from "mango.simple.client";
 
 class WalletController implements Controller {
-  public path = "/wallet";
+  public path = "/api/wallet";
   public router = Router();
 
-  constructor(public mangoMarkets: MangoSimpleClient) {
+  constructor(public mangoSimpleClient: MangoSimpleClient) {
     this.initializeRoutes();
   }
 
@@ -30,18 +31,23 @@ class WalletController implements Controller {
     next: NextFunction
   ) => {
     // local copies of mango objects
-    const mangoGroupConfig = this.mangoMarkets.mangoGroupConfig;
-    const mangoGroup = this.mangoMarkets.mangoGroup;
+    const mangoGroupConfig = this.mangoSimpleClient.mangoGroupConfig;
+    const mangoGroup = this.mangoSimpleClient.mangoGroup;
 
     // (re)load things which we want fresh
-    const mangoAccount = await this.mangoMarkets.mangoAccount.reload(
-      this.mangoMarkets.connection,
-      this.mangoMarkets.mangoGroup.dexProgramId
-    );
-    const mangoCache = await mangoGroup.loadCache(this.mangoMarkets.connection);
-    await mangoGroup.loadRootBanks(this.mangoMarkets.connection);
+    const [mangoAccount, mangoCache, rootBanks] = await Promise.all([
+      this.mangoSimpleClient.mangoAccount.reload(
+        this.mangoSimpleClient.connection,
+        this.mangoSimpleClient.mangoGroup.dexProgramId
+      ),
+      this.mangoSimpleClient.mangoGroup.loadCache(
+        this.mangoSimpleClient.connection
+      ),
+      mangoGroup.loadRootBanks(this.mangoSimpleClient.connection),
+    ]);
 
     ////// copy pasta block from mango-ui-v3
+    /* tslint:disable */
     const balances: Balances[][] = new Array();
 
     for (const {
@@ -53,7 +59,8 @@ class WalletController implements Controller {
         response.send([]);
       }
 
-      const openOrders: any = mangoAccount.spotOpenOrdersAccounts[marketIndex];
+      const openOrders: OpenOrders =
+        mangoAccount.spotOpenOrdersAccounts[marketIndex];
       const quoteCurrencyIndex = QUOTE_INDEX;
 
       let nativeBaseFree = 0;
@@ -63,7 +70,7 @@ class WalletController implements Controller {
       if (openOrders) {
         nativeBaseFree = openOrders.baseTokenFree.toNumber();
         nativeQuoteFree = openOrders.quoteTokenFree
-          .add(openOrders["referrerRebatesAccrued"])
+          .add((openOrders as any)["referrerRebatesAccrued"])
           .toNumber();
         nativeBaseLocked = openOrders.baseTokenTotal
           .sub(openOrders.baseTokenFree)
@@ -178,7 +185,7 @@ class WalletController implements Controller {
     const token = getTokenBySymbol(mangoGroupConfig, quoteMeta.symbol);
     const tokenIndex = mangoGroup.getTokenIndex(token.mintKey);
     const value = net.mul(mangoGroup.getPrice(tokenIndex, mangoCache));
-
+    /* tslint:enable */
     ////// end of copy pasta block from mango-ui-v3
 
     // append balances for base symbols
@@ -197,7 +204,7 @@ class WalletController implements Controller {
 
     // append balance for quote symbol
     balanceDtos.push({
-      coin: this.mangoMarkets.mangoGroupConfig.quoteSymbol,
+      coin: this.mangoSimpleClient.mangoGroupConfig.quoteSymbol,
       free: quoteMeta.deposits.toNumber(),
       spotBorrow: quoteMeta.borrows.toNumber(),
       total: net.toNumber(),

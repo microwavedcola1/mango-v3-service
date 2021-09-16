@@ -1,1 +1,5 @@
-node_modules
+mango-service-v3/node_modules
+mango-service-v3/run-docker.sh
+mango-service-v3/run-local.sh
+py/.venv
+py/.idea

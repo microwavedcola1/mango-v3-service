@@ -1,7 +1,7 @@
 import {
   getMarketByPublicKey,
   PerpMarket,
-  ZERO_BN,
+  ZERO_BN
 } from "@blockworks-foundation/mango-client";
 import BN from "bn.js";
 import Controller from "controller.interface";
@@ -9,35 +9,43 @@ import { NextFunction, Request, Response, Router } from "express";
 import MangoSimpleClient from "mango.simple.client";
 
 class AccountController implements Controller {
-  public path = "/positions";
+  public path = "/api/positions";
   public router = Router();
 
-  constructor(public mangoMarkets: MangoSimpleClient) {
+  constructor(public mangoSimpleClient: MangoSimpleClient) {
     this.initializeRoutes();
   }
 
   private initializeRoutes() {
-    this.router.get(this.path, this.getPositions);
+    // GET /positions
+    this.router.get(this.path, this.fetchPerpPositions);
   }
 
-  private getPositions = async (
+  private fetchPerpPositions = async (
     request: Request,
     response: Response,
     next: NextFunction
   ) => {
-    const groupConfig = this.mangoMarkets.mangoGroupConfig;
-    const mangoGroup = this.mangoMarkets.mangoGroup;
-    const mangoAccount = await this.mangoMarkets.mangoAccount.reload(
-      this.mangoMarkets.connection,
-      this.mangoMarkets.mangoGroup.dexProgramId
-    );
-    const mangoCache = await this.mangoMarkets.mangoGroup.loadCache(
-      this.mangoMarkets.connection
-    );
+    const groupConfig = this.mangoSimpleClient.mangoGroupConfig;
+    const mangoGroup = this.mangoSimpleClient.mangoGroup;
 
-    const allMarkets = await this.mangoMarkets.getAllMarkets();
-    const mangoAccountFills = await this.mangoMarkets.getAllFills(true);
+    // (re)load+fetch things
+    const [mangoAccount, mangoCache, allMarkets, mangoAccountPerpFills] =
+      await Promise.all([
+        // a new perp account might have been created since the last fetch
+        this.mangoSimpleClient.mangoAccount.reload(
+          this.mangoSimpleClient.connection,
+          this.mangoSimpleClient.mangoGroup.dexProgramId
+        ),
+        // in-order to use the fresh'est price
+        this.mangoSimpleClient.mangoGroup.loadCache(
+          this.mangoSimpleClient.connection
+        ),
+        this.mangoSimpleClient.fetchAllMarkets(),
+        this.mangoSimpleClient.fetchAllPerpFills(),
+      ]);
 
+    // find perp accounts with non zero positions
     const perpAccounts = mangoAccount
       ? groupConfig.perpMarkets.map((m) => {
           return {
@@ -50,10 +58,11 @@ class AccountController implements Controller {
       ({ perpAccount }) => !perpAccount.basePosition.eq(new BN(0))
     );
 
+    // compute perp position details
     const postionDtos = filteredPerpAccounts.map(
       ({ perpAccount, marketIndex }, index) => {
         const perpMarketInfo =
-          this.mangoMarkets.mangoGroup.perpMarkets[marketIndex];
+          this.mangoSimpleClient.mangoGroup.perpMarkets[marketIndex];
         const marketConfig = getMarketByPublicKey(
           groupConfig,
           perpMarketInfo.perpMarket
@@ -61,8 +70,8 @@ class AccountController implements Controller {
         const perpMarket = allMarkets[
           perpMarketInfo.perpMarket.toBase58()
         ] as PerpMarket;
-        const perpTradeHistory = mangoAccountFills.filter(
-          (t) => t.marketName === marketConfig.name
+        const perpTradeHistory = mangoAccountPerpFills.filter(
+          (t) => t.address === marketConfig.publicKey.toBase58()
         );
 
         let breakEvenPrice;
@@ -79,10 +88,10 @@ class AccountController implements Controller {
         const pnl =
           breakEvenPrice !== null
             ? perpMarket.baseLotsToNumber(perpAccount.basePosition) *
-              (this.mangoMarkets.mangoGroup
+              (this.mangoSimpleClient.mangoGroup
                 .getPrice(marketIndex, mangoCache)
                 .toNumber() -
-                parseFloat(breakEvenPrice))
+                parseFloat(breakEvenPrice.toString()))
             : null;
 
         let entryPrice;
@@ -103,18 +112,18 @@ class AccountController implements Controller {
           ),
           cumulativeBuySize: undefined,
           cumulativeSellSize: undefined,
-          entryPrice: entryPrice,
+          entryPrice,
           estimatedLiquidationPrice: undefined,
-          future: marketConfig.baseSymbol,
+          future: marketConfig.name,
           initialMarginRequirement: undefined,
           longOrderSize: undefined,
           maintenanceMarginRequirement: undefined,
-          netSize: undefined,
+          netSize: perpMarket.baseLotsToNumber(perpAccount.basePosition),
           openSize: undefined,
           realizedPnl: undefined,
           recentAverageOpenPrice: undefined,
-          recentBreakEvenPrice: breakEvenPrice,
-          recentPnl: pnl,
+          recentBreakEvenPrice: breakEvenPrice!=null?breakEvenPrice.toNumber():null,
+          recentPnl: undefined,
           shortOrderSize: undefined,
           side: perpAccount.basePosition.gt(ZERO_BN) ? "long" : "short",
           size: Math.abs(perpMarket.baseLotsToNumber(perpAccount.basePosition)),

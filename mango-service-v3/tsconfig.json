@@ -8,9 +8,12 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "noImplicitAny": true,
+    "skipLibCheck": true,
     "outDir": "./dist",
     "sourceMap": true,
-    "target": "ES2020"
+    "target": "ES2020",
+    "module": "commonjs",
+    "resolveJsonModule": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]

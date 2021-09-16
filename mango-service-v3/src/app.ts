@@ -1,30 +1,32 @@
+import bodyParser from "body-parser";
+import Controller from "controller.interface";
+import express from "express";
 import AccountController from "./account.controller";
+import CoinController from "./coin.controller";
 import MangoSimpleClient from "./mango.simple.client";
 import MarketsController from "./markets.controller";
 import OrdersController from "./orders.controller";
 import WalletController from "./wallet.controller";
-import Controller from "controller.interface";
-import express from "express";
-import log from "loglevel";
-
-const bodyParser = require("body-parser");
 
 class App {
   public app: express.Application;
-  public mangoMarkets: MangoSimpleClient;
+  public mangoSimpleClient: MangoSimpleClient;
 
   constructor() {
     this.app = express();
     MangoSimpleClient.create().then((mangoSimpleClient) => {
-      this.mangoMarkets = mangoSimpleClient;
+
+
+      this.mangoSimpleClient = mangoSimpleClient;
 
       this.app.use(bodyParser.json({ limit: "50mb" }));
 
       this.initializeControllers([
-        new WalletController(this.mangoMarkets),
-        new OrdersController(this.mangoMarkets),
-        new MarketsController(this.mangoMarkets),
-        new AccountController(this.mangoMarkets),
+        new CoinController(this.mangoSimpleClient),
+        new WalletController(this.mangoSimpleClient),
+        new OrdersController(this.mangoSimpleClient),
+        new MarketsController(this.mangoSimpleClient),
+        new AccountController(this.mangoSimpleClient),
       ]);
     });
   }
@@ -36,9 +38,7 @@ class App {
   }
 
   public listen() {
-    this.app.listen(process.env.PORT, () => {
-      log.info(`App listening on the port ${process.env.PORT}`);
-    });
+    this.app.listen(process.env.PORT || 3000);
   }
 
   public getServer() {
