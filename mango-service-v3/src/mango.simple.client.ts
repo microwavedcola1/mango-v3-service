@@ -39,6 +39,27 @@ class MangoSimpleClient {
     public owner: Account,
     public mangoAccount: MangoAccount
   ) {
+    setInterval(this.roundRobinClusterUrl, 20_000);
+  }
+
+  private roundRobinClusterUrl() {
+    let clusterUrl =
+      process.env.CLUSTER_URL || "https://api.mainnet-beta.solana.com";
+
+    if (clusterUrl.includes("devnet")) {
+      return;
+    }
+
+    let possibleClustersUrls = [
+      "https://api.mainnet-beta.solana.com",
+      "https://lokidfxnwlabdq.main.genesysgo.net:8899/",
+      "https://solana-api.projectserum.com/"
+    ];
+    clusterUrl =
+      possibleClustersUrls[Math.floor(Math.random() * possibleClustersUrls.length)];
+
+    logger.info(`switching to rpc node - ${clusterUrl}...`);
+    this.connection = new Connection(clusterUrl, "processed" as Commitment);
   }
 
   static async create() {
