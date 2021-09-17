@@ -1,0 +1,405 @@
+{
+	"info": {
+		"_postman_id": "43c10ec3-c29d-47b0-99ad-6522ba33dc50",
+		"name": "service-v3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "positions - get open positions",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/positions",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "coins - get all",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/coins",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"coins"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "wallet - balances",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wallet/balances",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wallet",
+						"balances"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "markets - get all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/markets",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"markets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "markets - get by name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/markets/BTC-PERP",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"markets",
+						"BTC-PERP"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "markets - get orderbook by name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/markets/BTC-PERP/orderbook?depth=30",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"markets",
+						"BTC-PERP",
+						"orderbook"
+					],
+					"query": [
+						{
+							"key": "depth",
+							"value": "30"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "markets - get trades by name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/markets/BTC-PERP/trades",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"markets",
+						"BTC-PERP",
+						"trades"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "markets - get candles/ohlcv by name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/markets/BTC-PERP/candles?resolution=60&start_time=1625922900&end_time=1631214960",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"markets",
+						"BTC-PERP",
+						"candles"
+					],
+					"query": [
+						{
+							"key": "resolution",
+							"value": "60"
+						},
+						{
+							"key": "start_time",
+							"value": "1625922900"
+						},
+						{
+							"key": "end_time",
+							"value": "1631214960"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order - get all",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order - get by market",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders?market=BTC-PERP",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					],
+					"query": [
+						{
+							"key": "market",
+							"value": "BTC-PERP"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order - place order perp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"market\": \"BTC-PERP\",\n  \"side\": \"buy\",\n  \"price\": 20000,\n  \"type\": \"limit\",\n  \"size\": 0.0001,\n  \"reduceOnly\": false,\n  \"ioc\": false,\n  \"postOnly\": false,\n  \"clientId\": 123\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order - place order spot",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"market\": \"BTC/USDC\",\n  \"side\": \"buy\",\n  \"price\": 20000,\n  \"type\": \"limit\",\n  \"size\": 0.0001,\n  \"reduceOnly\": false,\n  \"ioc\": false,\n  \"postOnly\": false,\n  \"clientId\": null\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order - delete by client_id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/orders/by_client_id/123",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"by_client_id",
+						"123"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order - delete by order_id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/orders/3689367261485984032012990",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"3689367261485984032012990"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order - delete all",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api"
+		}
+	]
+}

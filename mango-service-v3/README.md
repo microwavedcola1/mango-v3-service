@@ -9,6 +9,10 @@
 * `docker build . -t microwavedcola/mango-service-v3`
 * `docker run -p 8080:3000 -e GROUP=mainnet.1 -e CLUSTER_URL=https://api.mainnet-beta.solana.com -v  ~/.config:/root/.config microwavedcola/mango-service-v3`
 
+# How to test
+* via postman, see `service-v3.postman_collection.json`
+* python client, see https://github.com/microwavedcola1/mango-v3-service/blob/master/py/README.md
+
 # Todos
 - missing endpoints
   - funding rates?
