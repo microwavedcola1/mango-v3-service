@@ -53,10 +53,12 @@ class MangoSimpleClient {
     let possibleClustersUrls = [
       "https://api.mainnet-beta.solana.com",
       "https://lokidfxnwlabdq.main.genesysgo.net:8899/",
-      "https://solana-api.projectserum.com/"
+      "https://solana-api.projectserum.com/",
     ];
     clusterUrl =
-      possibleClustersUrls[Math.floor(Math.random() * possibleClustersUrls.length)];
+      possibleClustersUrls[
+        Math.floor(Math.random() * possibleClustersUrls.length)
+      ];
 
     logger.info(`switching to rpc node - ${clusterUrl}...`);
     this.connection = new Connection(clusterUrl, "processed" as Commitment);
@@ -123,7 +125,23 @@ class MangoSimpleClient {
         a.publicKey.toBase58() > b.publicKey.toBase58() ? 1 : -1
       );
 
-    const chosenMangoAccount = sortedMangoAccounts[0];
+    let chosenMangoAccount;
+    if (process.env.MANGO_ACCOUNT) {
+      const filteredMangoAccounts = sortedMangoAccounts.filter(
+        (mangoAccount) =>
+          mangoAccount.publicKey.toBase58() === process.env.MANGO_ACCOUNT
+      );
+      if (!filteredMangoAccounts.length) {
+        logger.error(
+          `- no mango account found for key ${process.env.MANGO_ACCOUNT}`
+        );
+        process.exit(1);
+      }
+      chosenMangoAccount = filteredMangoAccounts[0];
+    } else {
+      chosenMangoAccount = sortedMangoAccounts[0];
+    }
+
     const debugAccounts = sortedMangoAccounts
       .map((mangoAccount) => mangoAccount.publicKey.toBase58())
       .join(", ");

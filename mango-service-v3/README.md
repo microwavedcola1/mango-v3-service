@@ -28,3 +28,4 @@
 - integration with tradingview or https://github.com/thibaultyou/tradingview-alerts-processor/blob/master/docs/2_Alerts.md & https://www.tradingview.com/support/solutions/43000529348-about-webhooks/
 - cleanup tsconfig.json
 - add pre commit tools e.g. husky/pre-commit for code formatting and linting
+- requests https://twitter.com/microwavedcola1/status/1438439176194727937
