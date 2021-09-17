@@ -1,10 +1,10 @@
-export interface BadParamError {
+export interface BadRequestError {
     value:    string;
     msg:      string;
     param:    string;
     location: string;
 }
 
-export interface BadRequestError {
+export interface BadRequestErrorCustom {
     msg:      string;
 }

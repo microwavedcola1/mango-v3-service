@@ -1,17 +1,15 @@
-import { Balances } from "./types";
-import { i80f48ToPercent } from "./utils";
 import {
-  I80F48,
-  getTokenBySymbol,
-  nativeI80F48ToUi,
+  getTokenBySymbol, I80F48, nativeI80F48ToUi,
   nativeToUi,
-  QUOTE_INDEX,
+  QUOTE_INDEX
 } from "@blockworks-foundation/mango-client";
-import { Market, OpenOrders } from "@project-serum/serum";
+import { OpenOrders } from "@project-serum/serum";
 import Controller from "controller.interface";
 import { NextFunction, Request, Response, Router } from "express";
 import { sumBy } from "lodash";
 import MangoSimpleClient from "mango.simple.client";
+import { Balances } from "./types";
+import { i80f48ToPercent } from "./utils";
 
 class WalletController implements Controller {
   public path = "/api/wallet";
@@ -22,10 +20,10 @@ class WalletController implements Controller {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}/balances`, this.getBalances);
+    this.router.get(`${this.path}/balances`, this.fetchBalances);
   }
 
-  private getBalances = async (
+  private fetchBalances = async (
     request: Request,
     response: Response,
     next: NextFunction

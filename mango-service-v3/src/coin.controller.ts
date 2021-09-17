@@ -23,7 +23,7 @@ class CoinController implements Controller {
     const coinDtos = this.mangoSimpleClient.mangoGroupConfig.tokens.map(
       (tokenConfig) => {
         return {
-          name: tokenConfig.symbol, // todo add full name to tokencofig
+          name: tokenConfig.symbol,
           id: tokenConfig.symbol,
         } as CoinDto;
       }

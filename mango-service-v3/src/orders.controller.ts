@@ -1,12 +1,12 @@
+import { PerpOrder } from "@blockworks-foundation/mango-client";
+import { Order } from "@project-serum/serum/lib/market";
+import { BadRequestError, BadRequestErrorCustom } from "dtos";
+import { NextFunction, Request, Response, Router } from "express";
+import { body, query, validationResult } from "express-validator";
 import Controller from "./controller.interface";
 import MangoSimpleClient from "./mango.simple.client";
 import { OrderInfo } from "./types";
 import { isValidMarket, logger } from "./utils";
-import { PerpOrder } from "@blockworks-foundation/mango-client";
-import { Order } from "@project-serum/serum/lib/market";
-import { NextFunction, Request, Response, Router } from "express";
-import { param, query, validationResult } from "express-validator";
-import { BadParamError, BadRequestError } from "dtos";
 
 class OrdersController implements Controller {
   public path = "/api/orders";
@@ -25,7 +25,19 @@ class OrdersController implements Controller {
     );
 
     // POST /orders
-    this.router.post(this.path, this.placeOrder);
+    this.router.post(
+      this.path,
+      body("market").not().isEmpty().custom(isValidMarket),
+      body("side").not().isEmpty().isIn(["sell", "buy"]),
+      body("type").not().isEmpty().isIn(["limit", "market"]),
+      body("price").isNumeric(),
+      body("size").not().isEmpty().isNumeric(),
+      body("reduceOnly").isBoolean(),
+      body("ioc").isBoolean(),
+      body("postOnly").isBoolean(),
+      body("clientId").isNumeric(),
+      this.placeOrder
+    );
 
     // // POST /orders/{order_id}/modify todo
     // this.router.post(this.path, this.modifyOrder);
@@ -50,7 +62,9 @@ class OrdersController implements Controller {
   ) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
-      return response.status(400).json({ errors: errors.array() as BadParamError[] });
+      return response
+        .status(400)
+        .json({ errors: errors.array() as BadRequestError[] });
     }
 
     const openOrders = await this.mangoSimpleClient.fetchAllBidsAndAsks(
@@ -73,7 +87,7 @@ class OrdersController implements Controller {
           side: perpOrder.side,
           size: perpOrder.size,
           status: "open",
-          type: undefined, // todo should this always be limit?
+          type: "limit",
           reduceOnly: undefined,
           ioc: undefined,
           postOnly: undefined,
@@ -115,10 +129,16 @@ class OrdersController implements Controller {
     response: Response,
     next: NextFunction
   ) => {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      return response
+        .status(400)
+        .json({ errors: errors.array() as BadRequestError[] });
+    }
+
     const placeOrderDto = request.body as PlaceOrderDto;
-    logger.info("placing order...")
-    // todo validation on placeOrderDto    
-    // todo validation of marketname
+    logger.info(`placing order`);
+
     try {
       await this.mangoSimpleClient.placeOrder(
         placeOrderDto.market,
@@ -135,7 +155,7 @@ class OrdersController implements Controller {
       );
     } catch (error) {
       return response.status(400).send({
-        errors: [{ msg: error.message } as BadRequestError],
+        errors: [{ msg: error.message } as BadRequestErrorCustom],
       });
     }
 
@@ -168,7 +188,7 @@ class OrdersController implements Controller {
     response: Response,
     next: NextFunction
   ) => {
-    // todo log info
+    logger.info(`cancelling all orders...`);
     // todo: leads to 429 if too many orders exist, needs optimization
     await this.mangoSimpleClient.cancelAllOrders();
     response.send();
@@ -179,8 +199,8 @@ class OrdersController implements Controller {
     response: Response,
     next: NextFunction
   ) => {
-    // todo log info
     const orderId = request.params.order_id;
+    logger.info(`cancelling order with orderId ${orderId}...`);
     this.mangoSimpleClient
       .getOrderByOrderId(orderId)
       .then((orderInfos) => {
@@ -210,8 +230,8 @@ class OrdersController implements Controller {
     response: Response,
     next: NextFunction
   ) => {
-    // todo log info
     const clientId = request.params.client_id;
+    logger.info(`cancelling order with clientId ${clientId}...`);
     this.mangoSimpleClient
       .getOrderByClientId(clientId)
       .then((orderInfos) => {
@@ -312,7 +332,7 @@ interface PlaceOrderDto {
   reduceOnly: boolean;
   ioc: boolean;
   postOnly: boolean;
-  clientId: number; // todo: ftx uses string
+  clientId: number;
 }
 
 interface PlaceOrderResponseDto {

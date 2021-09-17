@@ -6,7 +6,7 @@ import {
 } from "@blockworks-foundation/mango-client";
 import { Market } from "@project-serum/serum";
 import Big from "big.js";
-import { BadParamError } from "dtos";
+import { BadRequestError } from "dtos";
 import { NextFunction, Request, Response, Router } from "express";
 import { param, query, validationResult } from "express-validator";
 import fetch from "node-fetch";
@@ -25,11 +25,9 @@ class MarketsController implements Controller {
 
   private initializeRoutes() {
     // GET /markets
-    // todo fetch vs get naming
     this.router.get(this.path, this.fetchMarkets);
 
     // GET /markets/{market_name}
-    // todo fetch or get as prefix for methods?
     this.router.get(
       `${this.path}/:market_name`,
       param("market_name").custom(isValidMarket),
@@ -79,7 +77,7 @@ class MarketsController implements Controller {
   ) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
-      return response.status(400).json({ errors: errors.array() as BadParamError[] });
+      return response.status(400).json({ errors: errors.array() as BadRequestError[] });
     }
 
     const marketName = request.params.market_name;
@@ -134,7 +132,6 @@ class MarketsController implements Controller {
         marketConfig.name
       )) as OrderInfo[][],
       fetch(
-        // todo: replace toBase58 with toString() everywhere
         `https://serum-history.herokuapp.com/trades/address/${marketConfig.publicKey.toBase58()}`
       ),
     ]);
@@ -225,7 +222,7 @@ class MarketsController implements Controller {
   ) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
-      return response.status(400).json({ errors: errors.array() as BadParamError[] });
+      return response.status(400).json({ errors: errors.array() as BadRequestError[] });
     }
 
     const marketName = request.params.market_name;
@@ -264,7 +261,7 @@ class MarketsController implements Controller {
   ) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
-      return response.status(400).json({ errors: errors.array() as BadParamError[] });
+      return response.status(400).json({ errors: errors.array() as BadRequestError[] });
     }
 
     const allMarketConfigs = getAllMarkets(
@@ -304,7 +301,7 @@ class MarketsController implements Controller {
   ) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
-      return response.status(400).json({ errors: errors.array() as BadParamError[] });    }
+      return response.status(400).json({ errors: errors.array() as BadRequestError[] });    }
 
     const marketName = request.params.market_name;
     const resolution = String(request.query.resolution);
@@ -397,7 +394,7 @@ export async function getVolumeForMarket(
   marketConfig: MarketConfig
 ): Promise<Number> {
   const perpVolume = await fetch(
-    `https://event-history-api.herokuapp.com/stats/perps/${marketConfig.publicKey.toString()}`
+    `https://event-history-api.herokuapp.com/stats/perps/${marketConfig.publicKey.toBase58()}`
   );
   const parsedPerpVolume = await perpVolume.json();
   return Number(parsedPerpVolume?.data?.volume);
