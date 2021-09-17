@@ -322,7 +322,7 @@
 			"response": []
 		},
 		{
-			"name": "order - delete by client_id",
+			"name": "order - cancel by client_id",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -341,7 +341,7 @@
 			"response": []
 		},
 		{
-			"name": "order - delete by order_id",
+			"name": "order - cancel by order_id",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -359,7 +359,7 @@
 			"response": []
 		},
 		{
-			"name": "order - delete all",
+			"name": "order - cancel all",
 			"request": {
 				"method": "DELETE",
 				"header": [],

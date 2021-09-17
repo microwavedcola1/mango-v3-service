@@ -90,14 +90,14 @@ class Exchange:
         #         List[BadRequestError], json.loads(response.text)["errors"]
         #     )
 
-    def delete_order_by_client_id(self, client_id):
+    def cancel_order_by_client_id(self, client_id):
         response = httpx.delete(f"{self.BASE_URL}/orders/by_client_id/{client_id}")
         timeout_error_msg_customizer(response)
 
-    def delete_order_by_order_id(self, order_id):
+    def cancel_order_by_order_id(self, order_id):
         response = httpx.delete(f"{self.BASE_URL}/orders/{order_id}")
         timeout_error_msg_customizer(response)
 
-    def delete_all_orders(self):
+    def cancel_all_orders(self):
         response = httpx.delete(f"{self.BASE_URL}/orders")
         timeout_error_msg_customizer(response)

@@ -50,11 +50,11 @@ if __name__ == "__main__":
     )
     print(exchange.get_orders())
 
-    exchange.delete_order_by_order_id("3689367261485984031001846")
+    exchange.cancel_order_by_order_id("3689367261485984031001846")
     print(exchange.get_orders())
 
-    exchange.delete_order_by_client_id("3689367261485984031001846")
+    exchange.cancel_order_by_client_id("3689367261485984031001846")
     print(exchange.get_orders())
 
-    exchange.delete_all_orders()
+    exchange.cancel_all_orders()
     print(exchange.get_orders())

@@ -13,7 +13,7 @@ def fibonacci_of(n):
 if __name__ == "__main__":
     exchange = Exchange()
 
-    exchange.delete_all_orders()
+    exchange.cancel_all_orders()
 
     balances = exchange.get_balances()
     total_usd_balance = sum([balance.usd_value for balance in balances])

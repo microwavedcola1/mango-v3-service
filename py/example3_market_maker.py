@@ -145,7 +145,7 @@ class MM:
                 )
             for order in to_cancel:
                 try:
-                    self.exchange.delete_order_by_order_id(order.id)
+                    self.exchange.cancel_order_by_order_id(order.id)
                 except:
                     pass
             logger.info("")
@@ -248,7 +248,7 @@ if __name__ == "__main__":
     logger.info("deleting all orders...")
 
     try:
-        mm.exchange.delete_all_orders()
+        mm.exchange.cancel_all_orders()
     except Exception as e:
         logger.error(f"Exception: {e}")
 
