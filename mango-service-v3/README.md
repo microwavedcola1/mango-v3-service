@@ -18,7 +18,6 @@
   - funding rates?
   - maker taker fees
 - populate still undefined fields in various endpoints
-- validation of smart contract based contraints in order placing endpoint
 - todos sprinkled over code
 - identify which endpoints are still slow
 - when null vs when undefined as return field value,- doublecheck for every endpoint/dto
