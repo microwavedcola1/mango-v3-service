@@ -1,6 +1,7 @@
 import inspect
 import json
-from typing import List, Union
+import os
+from typing import List
 
 import httpx
 from httpx import TimeoutException
@@ -15,7 +16,6 @@ from mango_service_v3_py.dtos import (
     Candle,
     Order,
     PlaceOrder,
-    BadRequestError,
 )
 
 
@@ -29,7 +29,10 @@ def timeout_error_msg_customizer(response):
 
 class Exchange:
     def __init__(self):
-        self.BASE_URL = "http://localhost:3000/api"
+        if "BASE_URL" in os.environ:
+            self.BASE_URL = f"{os.environ['BASE_URL']}/api"
+        else:
+            self.BASE_URL = "http://localhost:3000/api"
 
     def get_open_positions(self) -> List[Position]:
         response = httpx.get(f"{self.BASE_URL}/positions")
