@@ -451,6 +451,52 @@ class MangoSimpleClient {
     );
   }
 
+  public async cancelOrder(orderInfo: OrderInfo, market?: Market | PerpMarket) {
+    if (orderInfo.market.config.kind === "perp") {
+      const perpMarketConfig = getMarketByBaseSymbolAndKind(
+        this.mangoGroupConfig,
+        orderInfo.market.config.baseSymbol,
+        "perp"
+      );
+      if (market === undefined) {
+        market = await this.mangoGroup.loadPerpMarket(
+          this.connection,
+          perpMarketConfig.marketIndex,
+          perpMarketConfig.baseDecimals,
+          perpMarketConfig.quoteDecimals
+        );
+      }
+      await this.client.cancelPerpOrder(
+        this.mangoGroup,
+        this.mangoAccount,
+        this.owner,
+        market as PerpMarket,
+        orderInfo.order as PerpOrder
+      );
+    } else {
+      const spotMarketConfig = getMarketByBaseSymbolAndKind(
+        this.mangoGroupConfig,
+        orderInfo.market.config.baseSymbol,
+        "spot"
+      );
+      if (market === undefined) {
+        market = await Market.load(
+          this.connection,
+          spotMarketConfig.publicKey,
+          undefined,
+          this.mangoGroupConfig.serumProgramId
+        );
+      }
+      await this.client.cancelSpotOrder(
+        this.mangoGroup,
+        this.mangoAccount,
+        this.owner,
+        market as Market,
+        orderInfo.order as Order
+      );
+    }
+  }
+
   public async getOrderByOrderId(orderId: string): Promise<OrderInfo[]> {
     const orders = (await this.fetchAllBidsAndAsks(true)).flat();
     const orderInfos = orders.filter(
@@ -528,52 +574,6 @@ class MangoSimpleClient {
       order,
       market: { account: market, config },
     }));
-  }
-
-  public async cancelOrder(orderInfo: OrderInfo, market?: Market | PerpMarket) {
-    if (orderInfo.market.config.kind === "perp") {
-      const perpMarketConfig = getMarketByBaseSymbolAndKind(
-        this.mangoGroupConfig,
-        orderInfo.market.config.baseSymbol,
-        "perp"
-      );
-      if (market === undefined) {
-        market = await this.mangoGroup.loadPerpMarket(
-          this.connection,
-          perpMarketConfig.marketIndex,
-          perpMarketConfig.baseDecimals,
-          perpMarketConfig.quoteDecimals
-        );
-      }
-      await this.client.cancelPerpOrder(
-        this.mangoGroup,
-        this.mangoAccount,
-        this.owner,
-        market as PerpMarket,
-        orderInfo.order as PerpOrder
-      );
-    } else {
-      const spotMarketConfig = getMarketByBaseSymbolAndKind(
-        this.mangoGroupConfig,
-        orderInfo.market.config.baseSymbol,
-        "spot"
-      );
-      if (market === undefined) {
-        market = await Market.load(
-          this.connection,
-          spotMarketConfig.publicKey,
-          undefined,
-          this.mangoGroupConfig.serumProgramId
-        );
-      }
-      await this.client.cancelSpotOrder(
-        this.mangoGroup,
-        this.mangoAccount,
-        this.owner,
-        market as Market,
-        orderInfo.order as Order
-      );
-    }
   }
 }
 
