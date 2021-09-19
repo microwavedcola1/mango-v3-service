@@ -3,3 +3,4 @@ mango-service-v3/run-docker.sh
 mango-service-v3/run-local.sh
 py/.venv
 py/.idea
+py/mango_service_v3_py/__pycache__/

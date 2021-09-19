@@ -1,4 +1,3 @@
-import { logger, zipDict } from "./utils";
 import {
   BookSide,
   BookSideLayout,
@@ -7,14 +6,13 @@ import {
   getMarketByBaseSymbolAndKind,
   getMarketByPublicKey,
   getMultipleAccounts,
-  GroupConfig,
-  MangoAccount,
+  GroupConfig, MangoAccount,
   MangoClient,
   MangoGroup,
   MarketConfig,
   PerpMarket,
   PerpMarketLayout,
-  PerpOrder,
+  PerpOrder
 } from "@blockworks-foundation/mango-client";
 import { Market, Orderbook } from "@project-serum/serum";
 import { Order } from "@project-serum/serum/lib/market";
@@ -23,12 +21,13 @@ import {
   AccountInfo,
   Commitment,
   Connection,
-  PublicKey,
+  PublicKey
 } from "@solana/web3.js";
 import fs from "fs";
 import fetch from "node-fetch";
 import os from "os";
 import { OrderInfo } from "types";
+import { logger, zipDict } from "./utils";
 
 class MangoSimpleClient {
   constructor(
