@@ -1,5 +1,5 @@
 # mango-v3-service
-A REST API server, aimed to follow spec as close as possible to popular exchanges like ftx, etc. Requires user to run a local copy with his/her own private key. See postman export to see what is already implemented.
+A REST API server, aimed to follow spec as close as possible to popular exchanges like ftx, etc. Motivation is that experienced traders can bring their existing tools to mango markets. Requires user to run a local copy with his/her own private key. See postman export to see what is already implemented.
 
 # Contributing
 Wip
