@@ -1,1 +1,6 @@
-see https://github.com/microwavedcola1/mango-v3-service/blob/master/mango-service-v3/README.md
+Directory structure
+
+.
+├── README.md
+├── mango-service-v3 -  REST API Service for mango markets version 3
+└── py               - python3 client for above REST API Service
