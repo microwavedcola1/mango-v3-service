@@ -1,3 +1,9 @@
+# mango-v3-service
+A REST API server, aimed to follow spec as close as possible to popular exchanges like ftx, etc. Requires user to run a local copy with his/her own private key. See postman export to see what is already implemented.
+
+# Contributing
+Wip
+
 # Pre-requisites
 * expects your private key to be present in `~/.config/solana/id.json`
 
