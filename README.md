@@ -1,3 +1,7 @@
+# mango-v3-service 
+
+REST API Service for mango  markets version 3, and some simple clients and examples
+
 Directory structure
 ```
 .
