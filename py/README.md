@@ -1,3 +1,6 @@
+# py
+A python3 client with some examples for the mango markets v3 REST Service
+
 # Pre-requisites
 * you have [poetry](https://python-poetry.org/docs/#installation) installed
 * you have the REST API service from `../mango-service-v3 running` locally
