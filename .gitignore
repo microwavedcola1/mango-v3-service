@@ -1,7 +1,7 @@
 mango-service-v3/node_modules
-mango-service-v3/run-local.sh
-mango-service-v3/run-generate-docker-image.sh
-mango-service-v3/run-generate-api-docs.sh
+mango-service-v3/run-dev-server.sh
+mango-service-v3/run-build-and-publish-docker-image.sh
+mango-service-v3/run-update-api-docs.sh
 py/.venv
 py/.idea
 py/mango_service_v3_py/__pycache__/

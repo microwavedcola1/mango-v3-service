@@ -77,15 +77,15 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '215'
+                example: '269'
             ETag:
               schema:
                 type: string
-                example: W/"d7-2Pm0QSYH0OI5GKtjQG8PAErXDeo"
+                example: W/"10d-Anlhnoh/EcbivfhlZpCuuV8mqsU"
             Date:
               schema:
                 type: string
-                example: Thu, 23 Sep 2021 07:36:20 GMT
+                example: Thu, 23 Sep 2021 20:29:38 GMT
             Connection:
               schema:
                 type: string
@@ -115,6 +115,10 @@ paths:
                     id: USDT
                   - name: SRM
                     id: SRM
+                  - name: RAY
+                    id: RAY
+                  - name: COPE
+                    id: COPE
   /wallet/balances:
     get:
       tags:
@@ -221,15 +225,15 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '2452'
+                example: '3586'
             ETag:
               schema:
                 type: string
-                example: W/"994-rmFTWQRNSXrkfDthEtDuPyUdhGQ"
+                example: W/"e02-YRmxFLVXSYLthxhkA8fbq9xtHVM"
             Date:
               schema:
                 type: string
-                example: Thu, 23 Sep 2021 07:36:40 GMT
+                example: Thu, 23 Sep 2021 20:22:58 GMT
             Connection:
               schema:
                 type: string
@@ -249,15 +253,15 @@ paths:
                     baseCurrency: MNGO
                     quoteCurrency: USDC
                     quoteVolume24h: 0
-                    change1h: -0.00104245991960622
+                    change1h: 0.011748958194213307
                     change24h: 0.10497017397919645
-                    changeBod: -0.035456045316767416
+                    changeBod: -0.06941209645738362
                     type: spot
                     underlying: MNGO
-                    ask: 0.2905
-                    bid: 0.2888
-                    last: 0.2904999852180481
-                    price: 0.2904999852180481
+                    ask: 0.3014
+                    bid: 0.3009
+                    last: 0.3010999858379364
+                    price: 0.3010999858379364
                     priceIncrement: 0.0001
                     sizeIncrement: 1
                     volumeUsd24h: 0
@@ -265,15 +269,15 @@ paths:
                     baseCurrency: BTC
                     quoteCurrency: USDC
                     quoteVolume24h: 0
-                    change1h: 0.009330555666128336
+                    change1h: -0.0006023196102002198
                     change24h: 0.07534008825160178
-                    changeBod: -0.009678892344776814
+                    changeBod: -0.023842158866775508
                     type: spot
                     underlying: BTC
-                    ask: 44104.3
-                    bid: 44100.7
-                    last: 44013.30078125
-                    price: 44013.30078125
+                    ask: 44548.9
+                    bid: 44542.5
+                    last: 44651.8984375
+                    price: 44651.8984375
                     priceIncrement: 0.1
                     sizeIncrement: 0.0001
                     volumeUsd24h: 0
@@ -281,15 +285,15 @@ paths:
                     baseCurrency: ETH
                     quoteCurrency: USDC
                     quoteVolume24h: 0
-                    change1h: 0.005214312404759716
+                    change1h: -0.0011764022806535397
                     change24h: 0.11286709397685381
-                    changeBod: -0.012224691295179956
+                    changeBod: -0.015943185029389125
                     type: spot
                     underlying: ETH
-                    ask: 3131.98
-                    bid: 3129.89
-                    last: 3117.449951171875
-                    price: 3117.449951171875
+                    ask: 3128.36
+                    bid: 3128.35
+                    last: 3129.22998046875
+                    price: 3129.22998046875
                     priceIncrement: 0.01
                     sizeIncrement: 0.001
                     volumeUsd24h: 0
@@ -297,15 +301,15 @@ paths:
                     baseCurrency: SOL
                     quoteCurrency: USDC
                     quoteVolume24h: 0
-                    change1h: 0.017761307651784006
+                    change1h: 0.005815162979254202
                     change24h: 0.19738252608394014
-                    changeBod: -0.003134196236629614
+                    changeBod: 0.0008962996612425303
                     type: spot
                     underlying: SOL
-                    ask: 148.735
-                    bid: 148.734
-                    last: 149
-                    price: 149
+                    ask: 147.977
+                    bid: 147.976
+                    last: 148.39999389648438
+                    price: 148.39999389648438
                     priceIncrement: 0.001
                     sizeIncrement: 0.1
                     volumeUsd24h: 0
@@ -313,15 +317,15 @@ paths:
                     baseCurrency: USDT
                     quoteCurrency: USDC
                     quoteVolume24h: 0
-                    change1h: 0
+                    change1h: -0.0002998106640841958
                     change24h: 0.0004001268051988224
-                    changeBod: -0.0002998106640841958
+                    changeBod: 0
                     type: spot
                     underlying: USDT
-                    ask: 1.0005
-                    bid: 1.0003
-                    last: 1.0003999471664429
-                    price: 1.0003999471664429
+                    ask: 1.0002
+                    bid: 1.0001
+                    last: 1.000100016593933
+                    price: 1.000100016593933
                     priceIncrement: 0.0001
                     sizeIncrement: 1
                     volumeUsd24h: 0
@@ -329,34 +333,82 @@ paths:
                     baseCurrency: SRM
                     quoteCurrency: USDC
                     quoteVolume24h: 0
-                    change1h: 0.009140134390667456
+                    change1h: 0.0055427640345401905
                     change24h: 0.17148090555117187
-                    changeBod: -0.010022627150418491
+                    changeBod: -0.03061106244377288
                     type: spot
                     underlying: SRM
-                    ask: 8.379
-                    bid: 8.363
-                    last: 8.355999946594238
-                    price: 8.355999946594238
+                    ask: 8.584
+                    bid: 8.581
+                    last: 8.586999893188477
+                    price: 8.586999893188477
                     priceIncrement: 0.001
                     sizeIncrement: 0.1
+                    volumeUsd24h: 0
+                  - name: RAY/USDC
+                    baseCurrency: RAY
+                    quoteCurrency: USDC
+                    quoteVolume24h: 0
+                    change1h: 0.005089718359209593
+                    change24h: 0.13928952392352087
+                    changeBod: -0.07953655366580142
+                    type: spot
+                    underlying: RAY
+                    ask: 11.576
+                    bid: 11.513
+                    last: 11.460000038146973
+                    price: 11.460000038146973
+                    priceIncrement: 0.001
+                    sizeIncrement: 0.1
+                    volumeUsd24h: 0
+                  - name: COPE/USDC
+                    baseCurrency: COPE
+                    quoteCurrency: USDC
+                    quoteVolume24h: 0
+                    change1h: 0.010653081408407839
+                    change24h: 0.16617556935957428
+                    changeBod: -0.07962964986577366
+                    type: spot
+                    underlying: COPE
+                    ask: 2.17
+                    bid: 2.154
+                    last: 2.1600000858306885
+                    price: 2.1600000858306885
+                    priceIncrement: 0.001
+                    sizeIncrement: 0.001
                     volumeUsd24h: 0
                   - name: BTC-PERP
                     baseCurrency: BTC
                     quoteCurrency: USDC
-                    quoteVolume24h: 2655725.30683
-                    change1h: 0.013732274607999357
+                    quoteVolume24h: 1281273.38619
+                    change1h: 0.00005133289030753979
                     change24h: 0.07514224962752904
-                    changeBod: -0.009334104720180893
+                    changeBod: -0.022951987551960477
                     type: futures
                     underlying: BTC
-                    ask: 44203
-                    bid: 44158.8
-                    last: 44225
-                    price: 44225
+                    ask: 44701.7
+                    bid: 44701.6
+                    last: 44841.3984375
+                    price: 44841.3984375
                     priceIncrement: 0.1
                     sizeIncrement: 0.0001
-                    volumeUsd24h: 2655725.30683
+                    volumeUsd24h: 1281273.38619
+                  - name: SOL-PERP
+                    baseCurrency: SOL
+                    quoteCurrency: USDC
+                    quoteVolume24h: 2712627.9067
+                    change1h: 0.0004682451126406075
+                    change24h: 0.17839077057911942
+                    changeBod: -0.00013510009773373964
+                    type: futures
+                    underlying: SOL
+                    ask: 148.91
+                    bid: 148.35
+                    last: 148.07000732421875
+                    price: 148.07000732421875
+                    priceIncrement: 0.01
+                    sizeIncrement: 0.01
+                    volumeUsd24h: 2712627.9067
   /markets/BTC-PERP:
     get:
       tags:
