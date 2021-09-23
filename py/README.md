@@ -1,4 +1,4 @@
-# py
+
 A python3 client with some examples for the mango markets v3 REST Service
 
 # Pre-requisites
@@ -10,7 +10,6 @@ A python3 client with some examples for the mango markets v3 REST Service
 * `poetry install`
 * `poetry shell`
 * `python basic.py`
-* ...
 
 # Todos
 * add pre-commit e.g. black, pylint, mypy, reorder-python-imports 
