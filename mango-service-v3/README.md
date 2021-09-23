@@ -7,7 +7,7 @@ A REST API server on top of mango markets v3, written in typescript + expressjs 
 * `PORT=3000 GROUP=mainnet.1 CLUSTER_URL=https://api.mainnet-beta.solana.com yarn nodemon ./src/server.ts`
 
 # How to run using docker
-* `docker build . -t microwavedcola/mango-service-v3`
+* `docker pull microwavedcola/mango-service-v3`
 * `docker run -p 3000:3000 -e GROUP=mainnet.1 -e CLUSTER_URL=https://api.mainnet-beta.solana.com -v  ~/.config:/root/.config microwavedcola/mango-service-v3`
 
 # Notes
