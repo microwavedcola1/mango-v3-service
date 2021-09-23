@@ -9,6 +9,9 @@ Directory structure
 └── py               - python3 client for above REST API Service
 ```
 
+# Documentation
+See https://microwavedcola1.github.io/mango-service-v3/#tag/default
+
 # Contributing
 See Todos
 
