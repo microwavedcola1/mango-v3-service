@@ -43,10 +43,7 @@ class MangoSimpleClient {
   }
 
   private roundRobinClusterUrl() {
-    let clusterUrl =
-      process.env.CLUSTER_URL || "https://api.mainnet-beta.solana.com";
-
-    if (clusterUrl.includes("devnet")) {
+    if (process.env.CLUSTER_URL) {
       return;
     }
 
@@ -55,7 +52,7 @@ class MangoSimpleClient {
       "https://lokidfxnwlabdq.main.genesysgo.net:8899/",
       "https://solana-api.projectserum.com/",
     ];
-    clusterUrl =
+    const clusterUrl =
       possibleClustersUrls[
         Math.floor(Math.random() * possibleClustersUrls.length)
       ];
@@ -65,7 +62,7 @@ class MangoSimpleClient {
   }
 
   static async create() {
-    const groupName = process.env.GROUP || "mainnet.1";
+    const groupName = "mainnet.1";
     const clusterUrl =
       process.env.CLUSTER_URL || "https://api.mainnet-beta.solana.com";
 

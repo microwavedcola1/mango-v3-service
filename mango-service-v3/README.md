@@ -1,17 +1,20 @@
 
 A REST API server on top of mango markets v3, written in typescript + expressjs + using mango client and some other off chain REST services.
 
+# Environment variables
+All environment variables are optional.
+* PRIVATE_KEY_PATH - path to private key, default is ~/.config/solana/id.json
+* PORT - port on which expressjs webserver runs, default is 3000
+* CLUSTER_URL - RPC node url e.g., default is scheduled rotation between  https://api.mainnet-beta.solana.com, https://lokidfxnwlabdq.main.genesysgo.net:8899/,
+      https://solana-api.projectserum.com/
+
 # How to run while developing
-* expects your private key to be present in `~/.config/solana/id.json`
 * `yarn install`
-* `PORT=3000 GROUP=mainnet.1 CLUSTER_URL=https://api.mainnet-beta.solana.com yarn nodemon ./src/server.ts`
+* `yarn nodemon ./src/server.ts`
 
 # How to run using docker
 * `docker pull microwavedcola/mango-service-v3`
-* `docker run -p 3000:3000 -e GROUP=mainnet.1 -e CLUSTER_URL=https://api.mainnet-beta.solana.com -v  ~/.config:/root/.config microwavedcola/mango-service-v3`
-
-# Notes
-You probably want to choose a private RPC node instead of the `https://api.mainnet-beta.solana.com` where one quickly ends up with HTTP 429s. At the moment the service internally uses a simple round robin rotation within well known nodes as a target rpc node, so the CLUSTER_URL is not just the only one used. This should be made explicit opt-in only, so that users with private nodes can just use that node since it would be more reliable than shared rpc nodes.
+* `docker run -p 3000:3000 -v  ~/.config:/root/.config microwavedcola/mango-service-v3`, assumes private key to be present at ~/.config/solana/id.json  
 
 # How to test
 * via postman, see `service-v3.postman_collection.json`
