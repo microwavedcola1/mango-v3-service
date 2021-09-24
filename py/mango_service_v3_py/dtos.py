@@ -127,9 +127,6 @@ class PlaceOrder(CamelCaseModel):
     reduce_only: bool
     ioc: bool
     post_only: bool
-
-
-class PlacePerpOrder(PlaceOrder):
     client_id: int
 
 

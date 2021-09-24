@@ -138,6 +138,8 @@ class OrdersController implements Controller {
 
     const placeOrderDto = request.body as PlaceOrderDto;
     logger.info(`placing order`);
+    logger.info(`${placeOrderDto.price}`);
+    logger.info(`${placeOrderDto.size}`);
 
     try {
       await this.mangoSimpleClient.placeOrder(

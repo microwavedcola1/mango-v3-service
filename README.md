@@ -33,7 +33,6 @@ losely sorted in order of importance/priority
   - stop loss, 
   - market orders
   - modify order
-  - withdraw
   - funding payments
 - advanced order types e.g. split 
 - populate still undefined fields in various endpoints

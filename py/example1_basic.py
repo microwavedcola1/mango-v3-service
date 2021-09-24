@@ -1,29 +1,63 @@
-from mango_service_v3_py.api import Exchange
-from mango_service_v3_py.dtos import PlacePerpOrder, PlaceOrder
+from mango_service_v3_py.api import MangoServiceV3Client
+from mango_service_v3_py.dtos import PlaceOrder
 
 if __name__ == "__main__":
 
-    exchange = Exchange()
+    mango_service_v3_client = MangoServiceV3Client()
 
-    print(exchange.get_open_positions())
+    for position in mango_service_v3_client.get_open_positions():
+        print(position.json(indent=4, sort_keys=True))
 
-    print(exchange.get_balances())
+    for balance in mango_service_v3_client.get_balances():
+        print(balance.json(indent=4, sort_keys=True))
 
-    print(exchange.get_markets())
-    print(exchange.get_market_by_market_name("BTC-PERP"))
+    for market in mango_service_v3_client.get_markets():
+        print(market.json(indent=4, sort_keys=True))
+    print(
+        mango_service_v3_client.get_market_by_market_name("BTC-PERP").json(
+            indent=4, sort_keys=True
+        )
+    )
 
-    print(exchange.get_orderboook("BTC-PERP"))
+    for order in mango_service_v3_client.get_orderboook("BTC-PERP"):
+        print(order.json(indent=4, sort_keys=True))
 
-    print(exchange.get_trades("BTC-PERP"))
+    for trade in mango_service_v3_client.get_trades("BTC-PERP"):
+        print(trade.json(indent=4, sort_keys=True))
 
-    print(exchange.get_candles("BTC-PERP", 60, 1625922900, 1631214960))
+    for candle in mango_service_v3_client.get_candles(
+        "BTC-PERP", 60, 1625922900, 1631214960
+    ):
+        print(candle.json(indent=4, sort_keys=True))
 
-    print(exchange.get_orders())
-    print(exchange.get_orders_by_market_name("BTC-PERP"))
+    for order in mango_service_v3_client.get_orders():
+        print(order.json(indent=4, sort_keys=True))
+    for order in mango_service_v3_client.get_orders_by_market_name("BTC-PERP"):
+        print(order.json(indent=4, sort_keys=True))
 
-    exchange.place_order(
-        PlacePerpOrder(
+    mango_service_v3_client.place_order(
+        PlaceOrder(
             market="BTC-PERP",
+            side="buy",
+            price=20000,
+            type="limit",
+            size=0.0001,
+            reduce_only=False,
+            ioc=False,
+            post_only=False,
+            client_id=123,
+        )
+    )
+    for order in mango_service_v3_client.get_orders():
+        print(order.json(indent=4, sort_keys=True))
+
+    mango_service_v3_client.cancel_order_by_client_id("123")
+    for order in mango_service_v3_client.get_orders():
+        print(order.json(indent=4, sort_keys=True))
+
+    mango_service_v3_client.place_order(
+        PlaceOrder(
+            market="BTC/USDC",
             side="buy",
             price=2000,
             type="limit",
@@ -34,27 +68,13 @@ if __name__ == "__main__":
             client_id=123,
         )
     )
-    print(exchange.get_orders())
+    for order in mango_service_v3_client.get_orders():
+        print(order.json(indent=4, sort_keys=True))
 
-    exchange.place_order(
-        PlaceOrder(
-            market="BTC/USDC",
-            side="buy",
-            price=2000,
-            type="limit",
-            size=0.0001,
-            reduce_only=False,
-            ioc=False,
-            post_only=False,
-        )
-    )
-    print(exchange.get_orders())
+    mango_service_v3_client.cancel_order_by_client_id("123")
+    for order in mango_service_v3_client.get_orders():
+        print(order.json(indent=4, sort_keys=True))
 
-    exchange.cancel_order_by_order_id("3689367261485984031001846")
-    print(exchange.get_orders())
-
-    exchange.cancel_order_by_client_id("3689367261485984031001846")
-    print(exchange.get_orders())
-
-    exchange.cancel_all_orders()
-    print(exchange.get_orders())
+    mango_service_v3_client.cancel_all_orders()
+    for order in mango_service_v3_client.get_orders():
+        print(order.json(indent=4, sort_keys=True))

@@ -42,7 +42,7 @@ class MangoSimpleClient {
     public owner: Account,
     public mangoAccount: MangoAccount
   ) {
-    setInterval(this.roundRobinClusterUrl, 20_000);
+    setInterval(this.roundRobinClusterUrl, 1_000);
   }
 
   static async create() {
@@ -595,7 +595,6 @@ class MangoSimpleClient {
         Math.floor(Math.random() * possibleClustersUrls.length)
       ];
 
-    logger.info(`switching to rpc node - ${clusterUrl}...`);
     this.connection = new Connection(clusterUrl, "processed" as Commitment);
   }
 }
