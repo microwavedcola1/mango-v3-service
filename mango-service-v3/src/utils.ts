@@ -22,6 +22,10 @@ const allMarketNames = mangoGroupConfig.spotMarkets
     )
   );
 
+const allCoins = mangoGroupConfig.tokens.map(
+  (tokenConfig) => tokenConfig.symbol
+);
+
 /// general
 
 export function zipDict<K extends string | number | symbol, V>(
@@ -44,6 +48,13 @@ export const logger = pino({
 export const isValidMarket: CustomValidator = (marketName) => {
   if (allMarketNames.indexOf(marketName) === -1) {
     return Promise.reject(`Market ${marketName} not supported!`);
+  }
+  return Promise.resolve();
+};
+
+export const isValidCoin: CustomValidator = (coin) => {
+  if (allCoins.indexOf(coin) === -1) {
+    return Promise.reject(`Coin ${coin} not supported!`);
   }
   return Promise.resolve();
 };

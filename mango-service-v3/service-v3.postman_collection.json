@@ -278,6 +278,95 @@
 			]
 		},
 		{
+			"name": "wallet - withdraw",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"coin\": \"USDC\",\n  \"size\": 1000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wallet/withdrawals",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wallet",
+						"withdrawals"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "wallet - withdraw",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"coin\": \"USDC\",\n  \"size\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/wallet/withdrawals",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wallet",
+								"withdrawals"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "98"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"62-a5tgkKEcwWc3BLd/jTRTDN5QwDI\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 24 Sep 2021 14:00:15 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errors\": [\n        {\n            \"msg\": \"Transaction failed: MangoErrorCode::InsufficientFunds; src/processor.rs:831\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
 			"name": "markets - get all",
 			"request": {
 				"method": "GET",
@@ -875,7 +964,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"market\": \"BTC-PERP\",\n  \"side\": \"buy\",\n  \"price\": 20000,\n  \"type\": \"limit\",\n  \"size\": 0.0001,\n  \"reduceOnly\": false,\n  \"ioc\": false,\n  \"postOnly\": false,\n  \"clientId\": 123\n}\n",
+					"raw": "{\n  \"market\": \"BTC-PERP\",\n  \"side\": \"buy\",\n  \"price\": 20000,\n  \"type\": \"limit\",\n  \"size\": 0.0001,\n  \"reduceOnly\": false,\n  \"ioc\": false,\n  \"postOnly\": false,\n  \"clientId\": \"{{$randomInt}}\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"

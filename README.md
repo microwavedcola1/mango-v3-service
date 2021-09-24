@@ -33,7 +33,6 @@ losely sorted in order of importance/priority
   - stop loss, 
   - market orders
   - modify order
-  - funding rates
   - withdraw
   - funding payments
 - advanced order types e.g. split 

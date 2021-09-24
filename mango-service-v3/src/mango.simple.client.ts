@@ -6,6 +6,7 @@ import {
   getMarketByBaseSymbolAndKind,
   getMarketByPublicKey,
   getMultipleAccounts,
+  getTokenBySymbol,
   GroupConfig,
   MangoAccount,
   MangoClient,
@@ -23,12 +24,14 @@ import {
   Commitment,
   Connection,
   PublicKey,
+  TransactionSignature,
 } from "@solana/web3.js";
 import fs from "fs";
 import fetch from "node-fetch";
 import os from "os";
 import { OrderInfo } from "types";
 import { logger, zipDict } from "./utils";
+import BN from "bn.js";
 
 class MangoSimpleClient {
   constructor(
@@ -40,25 +43,6 @@ class MangoSimpleClient {
     public mangoAccount: MangoAccount
   ) {
     setInterval(this.roundRobinClusterUrl, 20_000);
-  }
-
-  private roundRobinClusterUrl() {
-    if (process.env.CLUSTER_URL) {
-      return;
-    }
-
-    let possibleClustersUrls = [
-      "https://api.mainnet-beta.solana.com",
-      "https://lokidfxnwlabdq.main.genesysgo.net:8899/",
-      "https://solana-api.projectserum.com/",
-    ];
-    const clusterUrl =
-      possibleClustersUrls[
-        Math.floor(Math.random() * possibleClustersUrls.length)
-      ];
-
-    logger.info(`switching to rpc node - ${clusterUrl}...`);
-    this.connection = new Connection(clusterUrl, "processed" as Commitment);
   }
 
   static async create() {
@@ -429,7 +413,8 @@ class MangoSimpleClient {
         side,
         price,
         quantity,
-        orderType
+        orderType,
+        new BN(clientOrderId)
       );
     }
   }
@@ -510,6 +495,28 @@ class MangoSimpleClient {
     return orderInfos;
   }
 
+  public async withdraw(
+    tokenSymbol: string,
+    amount: number
+  ): Promise<TransactionSignature> {
+    const tokenToWithdraw = getTokenBySymbol(
+      this.mangoGroupConfig,
+      tokenSymbol
+    );
+    const tokenIndex = this.mangoGroup.getTokenIndex(tokenToWithdraw.mintKey);
+    return this.client.withdraw(
+      this.mangoGroup,
+      this.mangoAccount,
+      this.owner,
+      this.mangoGroup.tokens[tokenIndex].rootBank,
+      this.mangoGroup.rootBankAccounts[tokenIndex].nodeBankAccounts[0]
+        .publicKey,
+      this.mangoGroup.rootBankAccounts[tokenIndex].nodeBankAccounts[0].vault,
+      Number(amount),
+      false
+    );
+  }
+
   /// private
 
   private parseSpotOrders(
@@ -571,6 +578,25 @@ class MangoSimpleClient {
       order,
       market: { account: market, config },
     }));
+  }
+
+  private roundRobinClusterUrl() {
+    if (process.env.CLUSTER_URL) {
+      return;
+    }
+
+    let possibleClustersUrls = [
+      "https://api.mainnet-beta.solana.com",
+      "https://lokidfxnwlabdq.main.genesysgo.net:8899/",
+      "https://solana-api.projectserum.com/",
+    ];
+    const clusterUrl =
+      possibleClustersUrls[
+        Math.floor(Math.random() * possibleClustersUrls.length)
+      ];
+
+    logger.info(`switching to rpc node - ${clusterUrl}...`);
+    this.connection = new Connection(clusterUrl, "processed" as Commitment);
   }
 }
 

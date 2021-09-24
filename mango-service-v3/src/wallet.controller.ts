@@ -7,11 +7,13 @@ import {
 } from "@blockworks-foundation/mango-client";
 import { OpenOrders } from "@project-serum/serum";
 import Controller from "controller.interface";
-import { NextFunction, Request, Response, Router } from "express";
+import { BadRequestErrorCustom } from "dtos";
+import e, { NextFunction, Request, Response, Router } from "express";
+import { body } from "express-validator";
 import { sumBy } from "lodash";
 import MangoSimpleClient from "mango.simple.client";
 import { Balances } from "./types";
-import { i80f48ToPercent } from "./utils";
+import { i80f48ToPercent, isValidCoin } from "./utils";
 
 class WalletController implements Controller {
   public path = "/api/wallet";
@@ -22,7 +24,16 @@ class WalletController implements Controller {
   }
 
   private initializeRoutes() {
+    // POST /wallet/balances
     this.router.get(`${this.path}/balances`, this.fetchBalances);
+
+    // POST /wallet/withdrawals
+    this.router.post(
+      `${this.path}/withdrawals`,
+      body("coin").not().isEmpty().custom(isValidCoin),
+      body("size").isNumeric(),
+      this.withdraw
+    );
   }
 
   private fetchBalances = async (
@@ -214,6 +225,24 @@ class WalletController implements Controller {
 
     response.send({ success: true, result: balanceDtos } as BalancesDto);
   };
+
+  private withdraw = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) => {
+    const withdrawDto = request.body as WithdrawDto;
+    this.mangoSimpleClient
+      .withdraw(withdrawDto.coin, withdrawDto.size)
+      .then(() => {
+        response.status(200);
+      })
+      .catch((error) => {
+        return response.status(400).send({
+          errors: [{ msg: error.message } as BadRequestErrorCustom],
+        });
+      });
+  };
 }
 
 export default WalletController;
@@ -247,4 +276,24 @@ interface BalanceDto {
   total: number;
   usdValue: number;
   availableWithoutBorrow: number;
+}
+
+// e.g.
+// {
+//   "coin": "USDTBEAR",
+//   "size": 20.2,
+//   "address": "0x83a127952d266A6eA306c40Ac62A4a70668FE3BE",
+//   "tag": null,
+//   "password": "my_withdrawal_password",
+//   "code": 152823
+// }
+
+interface WithdrawDto {
+  coin: string;
+  size: number;
+  // unused
+  address: undefined;
+  tag: undefined;
+  password: undefined;
+  code: undefined;
 }
