@@ -2,7 +2,7 @@ import {
   getAllMarkets,
   getTokenBySymbol,
   MarketConfig,
-  PerpMarket
+  PerpMarket,
 } from "@blockworks-foundation/mango-client";
 import { Market } from "@project-serum/serum";
 import Big from "big.js";
@@ -77,7 +77,9 @@ class MarketsController implements Controller {
   ) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
-      return response.status(400).json({ errors: errors.array() as BadRequestError[] });
+      return response
+        .status(400)
+        .json({ errors: errors.array() as BadRequestError[] });
     }
 
     const marketName = request.params.market_name;
@@ -222,7 +224,9 @@ class MarketsController implements Controller {
   ) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
-      return response.status(400).json({ errors: errors.array() as BadRequestError[] });
+      return response
+        .status(400)
+        .json({ errors: errors.array() as BadRequestError[] });
     }
 
     const marketName = request.params.market_name;
@@ -261,7 +265,9 @@ class MarketsController implements Controller {
   ) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
-      return response.status(400).json({ errors: errors.array() as BadRequestError[] });
+      return response
+        .status(400)
+        .json({ errors: errors.array() as BadRequestError[] });
     }
 
     const allMarketConfigs = getAllMarkets(
@@ -280,16 +286,17 @@ class MarketsController implements Controller {
     if ("s" in parsedTradesResponse && parsedTradesResponse["s"] === "error") {
       tradeDtos = [];
     } else {
-    tradeDtos = parsedTradesResponse["data"].map((trade: any) => {
-      return {
-        id: trade["orderId"],
-        liquidation: undefined,
-        price: trade["price"],
-        side: trade["side"],
-        size: trade["size"],
-        time: new Date(trade["time"]),
-      } as TradeDto;
-    })};
+      tradeDtos = parsedTradesResponse["data"].map((trade: any) => {
+        return {
+          id: trade["orderId"],
+          liquidation: undefined,
+          price: trade["price"],
+          side: trade["side"],
+          size: trade["size"],
+          time: new Date(trade["time"]),
+        } as TradeDto;
+      });
+    }
 
     response.send({ success: true, result: tradeDtos } as TradesDto);
   };
@@ -301,7 +308,10 @@ class MarketsController implements Controller {
   ) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
-      return response.status(400).json({ errors: errors.array() as BadRequestError[] });    }
+      return response
+        .status(400)
+        .json({ errors: errors.array() as BadRequestError[] });
+    }
 
     const marketName = request.params.market_name;
     const resolution = String(request.query.resolution);

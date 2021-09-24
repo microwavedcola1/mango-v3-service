@@ -15,8 +15,6 @@ class App {
   constructor() {
     this.app = express();
     MangoSimpleClient.create().then((mangoSimpleClient) => {
-
-
       this.mangoSimpleClient = mangoSimpleClient;
 
       this.app.use(bodyParser.json({ limit: "50mb" }));

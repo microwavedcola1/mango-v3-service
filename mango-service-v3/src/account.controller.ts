@@ -1,7 +1,7 @@
 import {
   getMarketByPublicKey,
   PerpMarket,
-  ZERO_BN
+  ZERO_BN,
 } from "@blockworks-foundation/mango-client";
 import BN from "bn.js";
 import Controller from "controller.interface";
@@ -122,7 +122,8 @@ class AccountController implements Controller {
           openSize: undefined,
           realizedPnl: undefined,
           recentAverageOpenPrice: undefined,
-          recentBreakEvenPrice: breakEvenPrice!=null?breakEvenPrice.toNumber():null,
+          recentBreakEvenPrice:
+            breakEvenPrice != null ? breakEvenPrice.toNumber() : null,
           recentPnl: undefined,
           shortOrderSize: undefined,
           side: perpAccount.basePosition.gt(ZERO_BN) ? "long" : "short",

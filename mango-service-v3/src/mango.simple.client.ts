@@ -6,13 +6,14 @@ import {
   getMarketByBaseSymbolAndKind,
   getMarketByPublicKey,
   getMultipleAccounts,
-  GroupConfig, MangoAccount,
+  GroupConfig,
+  MangoAccount,
   MangoClient,
   MangoGroup,
   MarketConfig,
   PerpMarket,
   PerpMarketLayout,
-  PerpOrder
+  PerpOrder,
 } from "@blockworks-foundation/mango-client";
 import { Market, Orderbook } from "@project-serum/serum";
 import { Order } from "@project-serum/serum/lib/market";
@@ -21,7 +22,7 @@ import {
   AccountInfo,
   Commitment,
   Connection,
-  PublicKey
+  PublicKey,
 } from "@solana/web3.js";
 import fs from "fs";
 import fetch from "node-fetch";
@@ -92,11 +93,11 @@ class MangoSimpleClient {
     logger.info(`- loading cache`);
     await mangoGroup.loadCache(connection);
 
+    const privateKeyPath =
+      process.env.PRIVATE_KEY_PATH || os.homedir() + "/.config/solana/id.json";
+    logger.info(`- loading private key at location ${privateKeyPath}`);
     const owner = new Account(
-      JSON.parse(
-        process.env.KEYPAIR ||
-          fs.readFileSync(os.homedir() + "/.config/solana/id.json", "utf-8")
-      )
+      JSON.parse(fs.readFileSync(privateKeyPath, "utf-8"))
     );
 
     logger.info(`- fetching mango accounts for ${owner.publicKey.toBase58()}`);

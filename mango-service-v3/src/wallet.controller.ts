@@ -1,7 +1,9 @@
 import {
-  getTokenBySymbol, I80F48, nativeI80F48ToUi,
+  getTokenBySymbol,
+  I80F48,
+  nativeI80F48ToUi,
   nativeToUi,
-  QUOTE_INDEX
+  QUOTE_INDEX,
 } from "@blockworks-foundation/mango-client";
 import { OpenOrders } from "@project-serum/serum";
 import Controller from "controller.interface";
