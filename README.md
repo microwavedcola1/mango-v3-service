@@ -26,16 +26,23 @@ See Todos
 # Todos
 ## Small
 losely sorted in order of importance/priority
-- cache various mango related things which change infrequently like e.g. spot+perp markets, placed orders for user, etc.
-- combine instructions e.g. cancel+place-> modify, cancel many
-- order types e.g. stop loss, market orders
+- rpc node related issues
+  - how to ensure that order has been placed or definitely not placed?
+  - off chain services might use other nodes, mixing data from various nodes, what if one node is behind?
 - missing endpoints
-  - funding rates?
-  - maker taker fees
+  - stop loss, 
+  - market orders
+  - modify order
+  - funding rates
+  - withdraw
+  - funding payments
+- advanced order types e.g. split 
 - populate still undefined fields in various endpoints
-- identify which endpoints are still slow
+- cache various mango related things which change infrequently like e.g. spot+perp markets, placed orders for user, etc.
+- identify which endpoints are still slow, comparison with ftx, you can use https://ftx.com/latency-stats to see how long your orders are taking to get through FTX’s engines (usually ~50ms), or just measure the time it takes a response to be received for your request for round trip time. FTX CLI isn’t focussed on being the absolute fastest, so you won’t be competing with HFT firms. FTX recommends AWS Tokyo as your trading instance base for the lowest latencies.
 - todos sprinkled over code
 - when null vs when undefined as return field value,- doublecheck for every endpoint/dto
+- serum-history might be decomissioned, seek replacement
 - how often to load/reload certain mango things e.g. account, cache, rootbanks, etc.?
 - technical debt
   - cleanup tsconfig.json
