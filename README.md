@@ -26,6 +26,7 @@ See Todos
 # Todos
 ## Small
 losely sorted in order of importance/priority
+- error thrown in endpoints just crashes expressjs, need explicit handling
 - rpc node related issues
   - how to ensure that order has been placed or definitely not placed?
   - off chain services might use other nodes, mixing data from various nodes, what if one node is behind?
