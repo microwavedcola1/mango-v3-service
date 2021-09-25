@@ -10,7 +10,7 @@ All environment variables are optional.
 
 # How to run while developing
 * `yarn install`
-* `yarn nodemon ./src/server.ts`
+* `yarn ts-node ./src/server.ts` or if you have `nodemon` installed then, `nodemon ./src/server.ts`
 
 # How to run using docker
 * `docker pull microwavedcola/mango-service-v3`
