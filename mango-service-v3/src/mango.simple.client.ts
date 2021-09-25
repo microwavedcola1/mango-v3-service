@@ -8,6 +8,9 @@ import {
   getMultipleAccounts,
   getTokenBySymbol,
   GroupConfig,
+  makeCancelPerpOrderInstruction,
+  makeCancelSpotOrderInstruction,
+  makeSettleFundsInstruction,
   MangoAccount,
   MangoClient,
   MangoGroup,
@@ -15,6 +18,7 @@ import {
   PerpMarket,
   PerpMarketLayout,
   PerpOrder,
+  QUOTE_INDEX,
 } from "@blockworks-foundation/mango-client";
 import { Market, Orderbook } from "@project-serum/serum";
 import { Order } from "@project-serum/serum/lib/market";
@@ -32,6 +36,7 @@ import os from "os";
 import { OrderInfo } from "types";
 import { logger, zipDict } from "./utils";
 import BN from "bn.js";
+import { Transaction } from "@solana/web3.js";
 
 class MangoSimpleClient {
   constructor(
@@ -422,15 +427,37 @@ class MangoSimpleClient {
   public async cancelAllOrders(): Promise<void> {
     const allMarkets = await this.fetchAllMarkets();
     const orders = (await this.fetchAllBidsAndAsks(true)).flat();
-    // todo combine multiple cancels into one transaction
-    await Promise.all(
+
+    const transactions = await Promise.all(
       orders.map((orderInfo) =>
-        this.cancelOrder(
+        this.buildCancelOrderTransaction(
           orderInfo,
           allMarkets[orderInfo.market.account.publicKey.toBase58()]
         )
       )
     );
+
+    let i, j;
+    // assuming we can fit 10 cancel order transactions in a solana transaction
+    // we could switch to computing actual transactionSize every time we add an 
+    // instruction and use a dynamic chunk size
+    const chunk = 10;
+    const transactionsToSend: Transaction[] = [];
+
+    for (i = 0, j = transactions.length; i < j; i += chunk) {
+      const transactionsChunk = transactions.slice(i, i + chunk);
+      const transactionToSend = new Transaction();
+      for (const transaction of transactionsChunk) {
+        for (const instruction of transaction.instructions) {
+          transactionToSend.add(instruction);
+        }
+      }
+      transactionsToSend.push(transactionToSend);
+    }
+
+    for (const transaction of transactionsToSend) {
+      await this.client.sendTransaction(transaction, this.owner, []);
+    }
   }
 
   public async cancelOrder(orderInfo: OrderInfo, market?: Market | PerpMarket) {
@@ -470,6 +497,55 @@ class MangoSimpleClient {
         );
       }
       await this.client.cancelSpotOrder(
+        this.mangoGroup,
+        this.mangoAccount,
+        this.owner,
+        market as Market,
+        orderInfo.order as Order
+      );
+    }
+  }
+
+  public async buildCancelOrderTransaction(
+    orderInfo: OrderInfo,
+    market?: Market | PerpMarket
+  ): Promise<Transaction> {
+    if (orderInfo.market.config.kind === "perp") {
+      const perpMarketConfig = getMarketByBaseSymbolAndKind(
+        this.mangoGroupConfig,
+        orderInfo.market.config.baseSymbol,
+        "perp"
+      );
+      if (market === undefined) {
+        market = await this.mangoGroup.loadPerpMarket(
+          this.connection,
+          perpMarketConfig.marketIndex,
+          perpMarketConfig.baseDecimals,
+          perpMarketConfig.quoteDecimals
+        );
+      }
+      return this.buildCancelPerpOrderInstruction(
+        this.mangoGroup,
+        this.mangoAccount,
+        this.owner,
+        market as PerpMarket,
+        orderInfo.order as PerpOrder
+      );
+    } else {
+      const spotMarketConfig = getMarketByBaseSymbolAndKind(
+        this.mangoGroupConfig,
+        orderInfo.market.config.baseSymbol,
+        "spot"
+      );
+      if (market === undefined) {
+        market = await Market.load(
+          this.connection,
+          spotMarketConfig.publicKey,
+          undefined,
+          this.mangoGroupConfig.serumProgramId
+        );
+      }
+      return await this.buildCancelSpotOrderTransaction(
         this.mangoGroup,
         this.mangoAccount,
         this.owner,
@@ -578,6 +654,102 @@ class MangoSimpleClient {
       order,
       market: { account: market, config },
     }));
+  }
+
+  private buildCancelPerpOrderInstruction(
+    mangoGroup: MangoGroup,
+    mangoAccount: MangoAccount,
+    owner: Account,
+    perpMarket: PerpMarket,
+    order: PerpOrder,
+    invalidIdOk = false // Don't throw error if order is invalid
+  ): Transaction {
+    const instruction = makeCancelPerpOrderInstruction(
+      this.mangoGroupConfig.mangoProgramId,
+      mangoGroup.publicKey,
+      mangoAccount.publicKey,
+      owner.publicKey,
+      perpMarket.publicKey,
+      perpMarket.bids,
+      perpMarket.asks,
+      order,
+      invalidIdOk
+    );
+
+    const transaction = new Transaction();
+    transaction.add(instruction);
+    return transaction;
+  }
+
+  private async buildCancelSpotOrderTransaction(
+    mangoGroup: MangoGroup,
+    mangoAccount: MangoAccount,
+    owner: Account,
+    spotMarket: Market,
+    order: Order
+  ): Promise<Transaction> {
+    const transaction = new Transaction();
+    const instruction = makeCancelSpotOrderInstruction(
+      this.mangoGroupConfig.mangoProgramId,
+      mangoGroup.publicKey,
+      owner.publicKey,
+      mangoAccount.publicKey,
+      spotMarket.programId,
+      spotMarket.publicKey,
+      spotMarket["_decoded"].bids,
+      spotMarket["_decoded"].asks,
+      order.openOrdersAddress,
+      mangoGroup.signerKey,
+      spotMarket["_decoded"].eventQueue,
+      order
+    );
+    transaction.add(instruction);
+
+    const dexSigner = await PublicKey.createProgramAddress(
+      [
+        spotMarket.publicKey.toBuffer(),
+        spotMarket["_decoded"].vaultSignerNonce.toArrayLike(Buffer, "le", 8),
+      ],
+      spotMarket.programId
+    );
+
+    const marketIndex = mangoGroup.getSpotMarketIndex(spotMarket.publicKey);
+    if (!mangoGroup.rootBankAccounts.length) {
+      await mangoGroup.loadRootBanks(this.connection);
+    }
+    const baseRootBank = mangoGroup.rootBankAccounts[marketIndex];
+    const quoteRootBank = mangoGroup.rootBankAccounts[QUOTE_INDEX];
+    const baseNodeBank = baseRootBank?.nodeBankAccounts[0];
+    const quoteNodeBank = quoteRootBank?.nodeBankAccounts[0];
+
+    if (!baseNodeBank || !quoteNodeBank) {
+      throw new Error("Invalid or missing node banks");
+    }
+
+    // todo what is a makeSettleFundsInstruction?
+    const settleFundsInstruction = makeSettleFundsInstruction(
+      this.mangoGroupConfig.mangoProgramId,
+      mangoGroup.publicKey,
+      mangoGroup.mangoCache,
+      owner.publicKey,
+      mangoAccount.publicKey,
+      spotMarket.programId,
+      spotMarket.publicKey,
+      mangoAccount.spotOpenOrders[marketIndex],
+      mangoGroup.signerKey,
+      spotMarket["_decoded"].baseVault,
+      spotMarket["_decoded"].quoteVault,
+      mangoGroup.tokens[marketIndex].rootBank,
+      baseNodeBank.publicKey,
+      mangoGroup.tokens[QUOTE_INDEX].rootBank,
+      quoteNodeBank.publicKey,
+      baseNodeBank.vault,
+      quoteNodeBank.vault,
+      dexSigner
+    );
+    transaction.add(settleFundsInstruction);
+
+    return transaction;
   }
 
   private roundRobinClusterUrl() {
