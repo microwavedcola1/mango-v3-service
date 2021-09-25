@@ -28,15 +28,15 @@ import {
   Commitment,
   Connection,
   PublicKey,
+  Transaction,
   TransactionSignature,
 } from "@solana/web3.js";
+import BN from "bn.js";
 import fs from "fs";
 import fetch from "node-fetch";
 import os from "os";
 import { OrderInfo } from "types";
 import { logger, zipDict } from "./utils";
-import BN from "bn.js";
-import { Transaction } from "@solana/web3.js";
 
 class MangoSimpleClient {
   constructor(
@@ -437,14 +437,15 @@ class MangoSimpleClient {
       )
     );
 
-    let i, j;
+    let i;
+    const j = transactions.length;
     // assuming we can fit 10 cancel order transactions in a solana transaction
-    // we could switch to computing actual transactionSize every time we add an 
+    // we could switch to computing actual transactionSize every time we add an
     // instruction and use a dynamic chunk size
     const chunk = 10;
     const transactionsToSend: Transaction[] = [];
 
-    for (i = 0, j = transactions.length; i < j; i += chunk) {
+    for (i = 0; i < j; i += chunk) {
       const transactionsChunk = transactions.slice(i, i + chunk);
       const transactionToSend = new Transaction();
       for (const transaction of transactionsChunk) {
@@ -545,7 +546,7 @@ class MangoSimpleClient {
           this.mangoGroupConfig.serumProgramId
         );
       }
-      return await this.buildCancelSpotOrderTransaction(
+      return this.buildCancelSpotOrderTransaction(
         this.mangoGroup,
         this.mangoAccount,
         this.owner,
@@ -757,7 +758,7 @@ class MangoSimpleClient {
       return;
     }
 
-    let possibleClustersUrls = [
+    const possibleClustersUrls = [
       "https://api.mainnet-beta.solana.com",
       "https://lokidfxnwlabdq.main.genesysgo.net:8899/",
       "https://solana-api.projectserum.com/",

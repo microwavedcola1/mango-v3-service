@@ -150,12 +150,10 @@ class MarketsController implements Controller {
 
     // latest trade+price
     const parsedTradesResponse = (await tradesResponse.json()) as any;
-    let lastPrice;
-    if ("s" in parsedTradesResponse && parsedTradesResponse["s"] === "error") {
-      lastPrice = null;
-    } else {
-      lastPrice = parsedTradesResponse["data"][0]["price"];
-    }
+    const lastPrice =
+      "s" in parsedTradesResponse && parsedTradesResponse["s"] === "error"
+        ? null
+        : parsedTradesResponse["data"][0]["price"];
 
     // size increments
     let minOrderSize;
@@ -402,7 +400,7 @@ async function getOhlcv(
 
 export async function getVolumeForMarket(
   marketConfig: MarketConfig
-): Promise<Number> {
+): Promise<number> {
   const perpVolume = await fetch(
     `https://event-history-api.herokuapp.com/stats/perps/${marketConfig.publicKey.toBase58()}`
   );
