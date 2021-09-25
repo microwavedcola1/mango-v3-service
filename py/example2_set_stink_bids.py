@@ -14,8 +14,6 @@ def fibonacci_of(n):
 
 
 if __name__ == "__main__":
-    os.environ["DELAY"] = 1
-
     mango_service_v3_client = MangoServiceV3Client()
 
     market = mango_service_v3_client.get_market_by_market_name("BTC-PERP")[0]
