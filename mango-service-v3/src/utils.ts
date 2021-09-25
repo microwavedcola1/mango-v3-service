@@ -1,8 +1,23 @@
 import { Config, GroupConfig } from "@blockworks-foundation/mango-client";
 import { I80F48 } from "@blockworks-foundation/mango-client/lib/src/fixednum";
 import { CustomValidator } from "express-validator";
-/// logging related
 import pino from "pino";
+import { Transaction, Connection, Account } from "@solana/web3.js";
+
+/// solana related
+
+export async function transactionSize(
+  connection: Connection,
+  singleTransaction: Transaction,
+  owner: Account
+) {
+  singleTransaction.recentBlockhash = (
+    await connection.getRecentBlockhash()
+  ).blockhash;
+  singleTransaction.setSigners(owner.publicKey);
+  singleTransaction.sign(this.owner);
+  return singleTransaction.serialize().length;
+}
 
 /// mango related
 
