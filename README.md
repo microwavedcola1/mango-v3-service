@@ -8,7 +8,7 @@ Aimed to follow spec as close as possible to popular exchanges like ftx, etc.
 Traders should be able to bring their existing tools to mango markets. 
 
 # Note
-REST Service requires user to run a local copy with his/her own private key. An alternative approach which is known and was not taken is to prepare solana transactions in a centrally hosted REST API Service and send them back to the client for signing using their wallet.
+REST Service requires user to run a local copy with his/her own private key. An alternative approach which is known and was not taken is to prepare solana transactions in a centrally hosted REST API Service and send them back to the client for signing using their wallet. The advantages of this would be that we could have a centrally hosted service, and would save local hosting, the disadvantages of this would be complicating the REST clients users want to use with solana specific signing code and would need us to ship and mantain clients for various programming languages. Also such a centrally hosted service would then need authorization, authentication, rate limiting, etc. to prevent abuse of the configured RPC node which so far is not the aim of this project. 
 
 # Documentation
 See https://microwavedcola1.github.io/mango-service-v3/#tag/default
