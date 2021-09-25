@@ -49,6 +49,7 @@ losely sorted in order of importance/priority
 ## Large
 - integration with freqtrade and/or ccxt https://github.com/ccxt/ccxt/blob/master/js/ftx.js
 - integration with tradingview or https://github.com/thibaultyou/tradingview-alerts-processor/blob/master/docs/2_Alerts.md & https://www.tradingview.com/support/solutions/43000529348-about-webhooks/
+- integrate with hummingbot
 
 ## Community feedback
 - requests https://twitter.com/microwavedcola1/status/1438439176194727937
