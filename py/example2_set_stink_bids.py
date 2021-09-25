@@ -17,6 +17,7 @@ if __name__ == "__main__":
     mango_service_v3_client = MangoServiceV3Client()
 
     market = mango_service_v3_client.get_market_by_market_name("BTC-PERP")[0]
+    print(f"latest btc-perp price is {market.last}")
 
     mango_service_v3_client.cancel_all_orders()
 
@@ -30,7 +31,7 @@ if __name__ == "__main__":
     fibs_sum = sum(fibs)
 
     for i, fib in enumerate(fibs):
-        price = market.last * (100 - fibs[-1] + fib) / 100
+        price = market.last * ((100 - fibs[-1] + fib) / 100)
         price = mango_service_v3_client.to_nearest(price, market.price_increment)
 
         size = (total_usd_balance / market.price) * (fibs[len(fibs) - 1 - i] / fibs_sum)

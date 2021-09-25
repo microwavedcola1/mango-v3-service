@@ -1,4 +1,5 @@
 mango-service-v3/node_modules
+mango-service-v3/dist
 mango-service-v3/run-dev-server.sh
 mango-service-v3/run-build-and-publish-docker-image.sh
 mango-service-v3/run-update-api-docs.sh
