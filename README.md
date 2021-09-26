@@ -26,7 +26,6 @@ See Todos
 # Todos
 ## Small
 losely sorted in order of importance/priority
-- devenet integration tests
 - retry framework in python
 - error thrown in endpoints just crashes expressjs, need explicit handling
 - rpc node related issues

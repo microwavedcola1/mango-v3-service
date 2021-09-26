@@ -5,8 +5,14 @@ import {
 } from "@blockworks-foundation/mango-client";
 import BN from "bn.js";
 import Controller from "controller.interface";
+import { RequestErrorCustom } from "dtos";
 import { NextFunction, Request, Response, Router } from "express";
 import MangoSimpleClient from "mango.simple.client";
+import {
+  logger,
+  patchExternalMarketName,
+  patchInternalMarketName,
+} from "./utils";
 
 class AccountController implements Controller {
   public path = "/api/positions";
@@ -26,6 +32,19 @@ class AccountController implements Controller {
     response: Response,
     next: NextFunction
   ) => {
+    this.fetchPerpPositionsInternal()
+      .then((postionDtos) => {
+        response.send({ success: true, result: postionDtos } as PositionsDto);
+      })
+      .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
+        });
+      });
+  };
+
+  private async fetchPerpPositionsInternal() {
     const groupConfig = this.mangoSimpleClient.mangoGroupConfig;
     const mangoGroup = this.mangoSimpleClient.mangoGroup;
 
@@ -114,7 +133,7 @@ class AccountController implements Controller {
           cumulativeSellSize: undefined,
           entryPrice,
           estimatedLiquidationPrice: undefined,
-          future: marketConfig.name,
+          future: patchInternalMarketName(marketConfig.name),
           initialMarginRequirement: undefined,
           longOrderSize: undefined,
           maintenanceMarginRequirement: undefined,
@@ -133,9 +152,8 @@ class AccountController implements Controller {
         } as PositionDto;
       }
     );
-
-    response.send({ success: true, result: postionDtos } as PositionsDto);
-  };
+    return postionDtos;
+  }
 }
 
 export default AccountController;
@@ -182,7 +200,7 @@ interface PositionDto {
   cumulativeSellSize: number;
   entryPrice: number;
   estimatedLiquidationPrice: number;
-  future: "ETH-PERP";
+  future: string;
   initialMarginRequirement: number;
   longOrderSize: number;
   maintenanceMarginRequirement: number;

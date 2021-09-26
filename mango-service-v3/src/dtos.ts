@@ -5,6 +5,6 @@ export interface BadRequestError {
   location: string;
 }
 
-export interface BadRequestErrorCustom {
+export interface RequestErrorCustom {
   msg: string;
 }

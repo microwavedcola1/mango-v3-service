@@ -1,12 +1,17 @@
 import { PerpOrder } from "@blockworks-foundation/mango-client";
 import { Order } from "@project-serum/serum/lib/market";
-import { BadRequestError, BadRequestErrorCustom } from "dtos";
+import { BadRequestError, RequestErrorCustom } from "dtos";
 import { NextFunction, Request, Response, Router } from "express";
 import { body, query, validationResult } from "express-validator";
 import Controller from "./controller.interface";
 import MangoSimpleClient from "./mango.simple.client";
 import { OrderInfo } from "./types";
-import { isValidMarket, logger } from "./utils";
+import {
+  isValidMarket,
+  logger,
+  patchExternalMarketName,
+  patchInternalMarketName,
+} from "./utils";
 
 class OrdersController implements Controller {
   public path = "/api/orders";
@@ -67,61 +72,20 @@ class OrdersController implements Controller {
         .json({ errors: errors.array() as BadRequestError[] });
     }
 
-    const openOrders = await this.mangoSimpleClient.fetchAllBidsAndAsks(
-      true,
-      request.query.market ? String(request.query.market) : undefined
-    );
+    const marketName = request.query.market
+      ? patchExternalMarketName(String(request.query.market))
+      : undefined;
 
-    const orderDtos = openOrders.flat().map((orderInfo: OrderInfo) => {
-      if ("bestInitial" in orderInfo.order) {
-        const perpOrder = orderInfo.order as PerpOrder;
-        return {
-          createdAt: new Date(perpOrder.timestamp.toNumber() * 1000),
-          filledSize: undefined,
-          future: orderInfo.market.config.name,
-          id: perpOrder.orderId.toString(),
-          market: orderInfo.market.config.name,
-          price: perpOrder.price,
-          avgFillPrice: undefined,
-          remainingSize: undefined,
-          side: perpOrder.side,
-          size: perpOrder.size,
-          status: "open",
-          type: "limit",
-          reduceOnly: undefined,
-          ioc: undefined,
-          postOnly: undefined,
-          clientId:
-            perpOrder.clientId && perpOrder.clientId.toString() !== "0"
-              ? perpOrder.clientId.toString()
-              : undefined,
-        } as OrderDto;
-      }
-
-      const spotOrder = orderInfo.order as Order;
-      return {
-        createdAt: undefined,
-        filledSize: undefined,
-        future: orderInfo.market.config.name,
-        id: spotOrder.orderId.toString(),
-        market: orderInfo.market.config.name,
-        price: spotOrder.price,
-        avgFillPrice: undefined,
-        remainingSize: undefined,
-        side: spotOrder.side,
-        size: spotOrder.size,
-        status: "open",
-        type: undefined,
-        reduceOnly: undefined,
-        ioc: undefined,
-        postOnly: undefined,
-        clientId:
-          spotOrder.clientId && spotOrder.clientId.toString() !== "0"
-            ? spotOrder.clientId.toString()
-            : undefined,
-      } as OrderDto;
-    });
-    response.send({ success: true, result: orderDtos } as OrdersDto);
+    this.getOpenOrdersInternal(marketName)
+      .then((orderDtos) => {
+        return response.send({ success: true, result: orderDtos } as OrdersDto);
+      })
+      .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
+        });
+      });
   };
 
   private placeOrder = async (
@@ -139,9 +103,9 @@ class OrdersController implements Controller {
     const placeOrderDto = request.body as PlaceOrderDto;
     logger.info(`placing order`);
 
-    try {
-      await this.mangoSimpleClient.placeOrder(
-        placeOrderDto.market,
+    this.mangoSimpleClient
+      .placeOrder(
+        patchExternalMarketName(placeOrderDto.market),
         placeOrderDto.type,
         placeOrderDto.side,
         placeOrderDto.size,
@@ -152,35 +116,16 @@ class OrdersController implements Controller {
           ? "postOnly"
           : "limit",
         placeOrderDto.clientId
-      );
-    } catch (error) {
-      return response.status(400).send({
-        errors: [{ msg: error.message } as BadRequestErrorCustom],
+      )
+      .then(() => {
+        return response.status(200).send();
+      })
+      .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
+        });
       });
-    }
-
-    response.send({
-      success: true,
-      result: {
-        createdAt: new Date(),
-        filledSize: undefined,
-        future: placeOrderDto.market,
-        id: undefined,
-        market: placeOrderDto.market,
-        price: undefined,
-        remainingSize: undefined,
-        side: placeOrderDto.side,
-        size: placeOrderDto.size,
-        status: undefined,
-        type: placeOrderDto.type,
-        reduceOnly: undefined,
-        ioc: placeOrderDto.ioc,
-        postOnly: placeOrderDto.postOnly,
-        clientId: placeOrderDto.clientId
-          ? placeOrderDto.clientId.toString()
-          : null,
-      },
-    } as PlaceOrderResponseDto);
   };
 
   private cancelAllOrders = async (
@@ -189,9 +134,17 @@ class OrdersController implements Controller {
     next: NextFunction
   ) => {
     logger.info(`cancelling all orders...`);
-    // todo: leads to 429 if too many orders exist, needs optimization
-    await this.mangoSimpleClient.cancelAllOrders();
-    response.send();
+    this.mangoSimpleClient
+      .cancelAllOrders()
+      .then(() => {
+        return response.status(200).send();
+      })
+      .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
+        });
+      });
   };
 
   private cancelOrderByOrderId = async (
@@ -212,16 +165,16 @@ class OrdersController implements Controller {
         this.mangoSimpleClient
           .cancelOrder(orderInfos[0])
           .then(() => response.send())
-          .catch(() => {
+          .catch((error) => {
+            logger.error(`message - ${error.message}, ${error.stack}`);
             return response
-              .status(400)
-              .json({ errors: [{ msg: "Unexpected error occured!" }] });
+              .status(500)
+              .json({ errors: [{ msg: error.message }] });
           });
       })
-      .catch(() => {
-        return response
-          .status(400)
-          .json({ errors: [{ msg: "Unexpected error occured!" }] });
+      .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).json({ errors: [{ msg: error.message }] });
       });
   };
 
@@ -243,18 +196,76 @@ class OrdersController implements Controller {
         this.mangoSimpleClient
           .cancelOrder(orderInfos[0])
           .then(() => response.send())
-          .catch(() => {
+          .catch((error) => {
+            logger.error(`message - ${error.message}, ${error.stack}`);
             return response
-              .status(400)
-              .json({ errors: [{ msg: "Unexpected error occured!" }] });
+              .status(500)
+              .json({ errors: [{ msg: error.message }] });
           });
       })
-      .catch(() => {
-        return response
-          .status(400)
-          .json({ errors: [{ msg: "Unexpected error occured!" }] });
+      .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).json({ errors: [{ msg: error.message }] });
       });
   };
+
+  private async getOpenOrdersInternal(marketName: string) {
+    const openOrders = await this.mangoSimpleClient.fetchAllBidsAndAsks(
+      true,
+      marketName
+    );
+
+    const orderDtos = openOrders.flat().map((orderInfo: OrderInfo) => {
+      if ("bestInitial" in orderInfo.order) {
+        const perpOrder = orderInfo.order as PerpOrder;
+        return {
+          createdAt: new Date(perpOrder.timestamp.toNumber() * 1000),
+          filledSize: undefined,
+          future: patchInternalMarketName(orderInfo.market.config.name),
+          id: perpOrder.orderId.toString(),
+          market: patchInternalMarketName(orderInfo.market.config.name),
+          price: perpOrder.price,
+          avgFillPrice: undefined,
+          remainingSize: undefined,
+          side: perpOrder.side,
+          size: perpOrder.size,
+          status: "open",
+          type: "limit",
+          reduceOnly: undefined,
+          ioc: undefined,
+          postOnly: undefined,
+          clientId:
+            perpOrder.clientId && perpOrder.clientId.toString() !== "0"
+              ? perpOrder.clientId.toString()
+              : undefined,
+        } as OrderDto;
+      }
+
+      const spotOrder = orderInfo.order as Order;
+      return {
+        createdAt: undefined,
+        filledSize: undefined,
+        future: patchInternalMarketName(orderInfo.market.config.name),
+        id: spotOrder.orderId.toString(),
+        market: patchInternalMarketName(orderInfo.market.config.name),
+        price: spotOrder.price,
+        avgFillPrice: undefined,
+        remainingSize: undefined,
+        side: spotOrder.side,
+        size: spotOrder.size,
+        status: "open",
+        type: undefined,
+        reduceOnly: undefined,
+        ioc: undefined,
+        postOnly: undefined,
+        clientId:
+          spotOrder.clientId && spotOrder.clientId.toString() !== "0"
+            ? spotOrder.clientId.toString()
+            : undefined,
+      } as OrderDto;
+    });
+    return orderDtos;
+  }
 }
 
 export default OrdersController;

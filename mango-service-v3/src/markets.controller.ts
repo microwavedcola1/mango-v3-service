@@ -5,15 +5,21 @@ import {
   PerpMarket,
 } from "@blockworks-foundation/mango-client";
 import { Market } from "@project-serum/serum";
+import { PublicKey } from "@solana/web3.js";
 import Big from "big.js";
-import { BadRequestError } from "dtos";
+import { BadRequestError, RequestErrorCustom } from "dtos";
 import { NextFunction, Request, Response, Router } from "express";
 import { param, query, validationResult } from "express-validator";
 import fetch from "node-fetch";
 import { OrderInfo } from "types";
 import Controller from "./controller.interface";
 import MangoSimpleClient from "./mango.simple.client";
-import { isValidMarket } from "./utils";
+import {
+  isValidMarket,
+  logger,
+  patchExternalMarketName,
+  patchInternalMarketName,
+} from "./utils";
 
 class MarketsController implements Controller {
   public path = "/api/markets";
@@ -64,10 +70,19 @@ class MarketsController implements Controller {
     response: Response,
     next: NextFunction
   ) => {
-    response.send({
-      success: true,
-      result: await this.fetchMarketsInternal(),
-    } as MarketsDto);
+    this.fetchMarketsInternal()
+      .then((marketsDto) => {
+        response.send({
+          success: true,
+          result: marketsDto,
+        } as MarketsDto);
+      })
+      .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
+        });
+      });
   };
 
   private fetchMarket = async (
@@ -82,11 +97,21 @@ class MarketsController implements Controller {
         .json({ errors: errors.array() as BadRequestError[] });
     }
 
-    const marketName = request.params.market_name;
-    response.send({
-      success: true,
-      result: await this.fetchMarketsInternal(marketName),
-    } as MarketsDto);
+    const marketName = patchExternalMarketName(request.params.market_name);
+
+    this.fetchMarketsInternal(marketName)
+      .then((marketsDto) => {
+        response.send({
+          success: true,
+          result: marketsDto,
+        } as MarketsDto);
+      })
+      .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
+        });
+      });
   };
 
   private async fetchMarketsInternal(
@@ -191,7 +216,7 @@ class MarketsController implements Controller {
     }
 
     return {
-      name: marketConfig.name,
+      name: patchInternalMarketName(marketConfig.name),
       baseCurrency: marketConfig.baseSymbol,
       quoteCurrency: "USDC",
       quoteVolume24h: volume,
@@ -227,34 +252,50 @@ class MarketsController implements Controller {
         .json({ errors: errors.array() as BadRequestError[] });
     }
 
-    const marketName = request.params.market_name;
+    const marketName = patchExternalMarketName(request.params.market_name);
     const depth = Number(request.query.depth) || 20;
 
+    this.getOrderBookInternal(marketName, depth)
+      .then(({ asks, bids }) => {
+        return response.send({
+          success: true,
+          result: {
+            asks: asks,
+            bids: bids,
+          },
+        });
+      })
+      .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
+        });
+      });
+  };
+
+  private async getOrderBookInternal(marketName: string, depth: number) {
     const ordersInfo = await this.mangoSimpleClient.fetchAllBidsAndAsks(
       false,
       marketName
     );
-    const bids = ordersInfo
+    const bids_ = ordersInfo
       .flat()
       .filter((orderInfo) => orderInfo.order.side === "buy")
       .sort((b1, b2) => b2.order.price - b1.order.price);
-    const asks = ordersInfo
+    const asks_ = ordersInfo
       .flat()
       .filter((orderInfo) => orderInfo.order.side === "sell")
       .sort((a1, a2) => a1.order.price - a2.order.price);
 
-    response.send({
-      success: true,
-      result: {
-        asks: asks
-          .slice(0, depth)
-          .map((ask) => [ask.order.price, ask.order.size]),
-        bids: bids
-          .slice(0, depth)
-          .map((bid) => [bid.order.price, bid.order.size]),
-      },
-    } as OrdersDto);
-  };
+    const asks = asks_
+      .slice(0, depth)
+      .map((ask) => [ask.order.price, ask.order.size]);
+
+    const bids = bids_
+      .slice(0, depth)
+      .map((bid) => [bid.order.price, bid.order.size]);
+    return { asks, bids };
+  }
 
   private getTrades = async (
     request: Request,
@@ -271,33 +312,45 @@ class MarketsController implements Controller {
     const allMarketConfigs = getAllMarkets(
       this.mangoSimpleClient.mangoGroupConfig
     );
-    const marketName = request.params.market_name;
+    const marketName = patchExternalMarketName(request.params.market_name);
     const marketPk = allMarketConfigs.filter(
       (marketConfig) => marketConfig.name === marketName
     )[0].publicKey;
 
+    this.getTradesInternal(marketPk)
+      .then((tradeDtos) => {
+        return response.send({
+          success: true,
+          result: tradeDtos,
+        });
+      })
+      .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
+        });
+      });
+  };
+
+  private async getTradesInternal(marketPk: PublicKey) {
     const tradesResponse = await fetch(
       `https://serum-history.herokuapp.com/trades/address/${marketPk.toBase58()}`
     );
     const parsedTradesResponse = (await tradesResponse.json()) as any;
-    let tradeDtos;
     if ("s" in parsedTradesResponse && parsedTradesResponse["s"] === "error") {
-      tradeDtos = [];
-    } else {
-      tradeDtos = parsedTradesResponse["data"].map((trade: any) => {
-        return {
-          id: trade["orderId"],
-          liquidation: undefined,
-          price: trade["price"],
-          side: trade["side"],
-          size: trade["size"],
-          time: new Date(trade["time"]),
-        } as TradeDto;
-      });
+      return [];
     }
-
-    response.send({ success: true, result: tradeDtos } as TradesDto);
-  };
+    return parsedTradesResponse["data"].map((trade: any) => {
+      return {
+        id: trade["orderId"],
+        liquidation: undefined,
+        price: trade["price"],
+        side: trade["side"],
+        size: trade["size"],
+        time: new Date(trade["time"]),
+      } as TradeDto;
+    });
+  }
 
   private getCandles = async (
     request: Request,
@@ -311,31 +364,35 @@ class MarketsController implements Controller {
         .json({ errors: errors.array() as BadRequestError[] });
     }
 
-    const marketName = request.params.market_name;
+    const marketName = patchExternalMarketName(request.params.market_name);
     const resolution = String(request.query.resolution);
     const fromEpochS = Number(request.query.start_time);
     const toEpochS = Number(request.query.end_time);
 
-    const { t, o, h, l, c, v } = await getOhlcv(
-      marketName,
-      resolution,
-      fromEpochS,
-      toEpochS
-    );
-
-    const ohlcvDtos: OhlcvDto[] = [];
-    for (let i = 0; i < t.length; i++) {
-      ohlcvDtos.push({
-        time: t[i],
-        open: o[i],
-        high: h[i],
-        low: l[i],
-        close: c[i],
-        volume: v[i],
-      } as OhlcvDto);
-    }
-
-    response.send({ success: true, result: ohlcvDtos } as OhlcvsDto);
+    await getOhlcv(marketName, resolution, fromEpochS, toEpochS)
+      .then(({ t, o, h, l, c, v }) => {
+        const ohlcvDtos: OhlcvDto[] = [];
+        for (let i = 0; i < t.length; i++) {
+          ohlcvDtos.push({
+            time: t[i],
+            open: o[i],
+            high: h[i],
+            low: l[i],
+            close: c[i],
+            volume: v[i],
+          } as OhlcvDto);
+        }
+        return response.send({
+          success: true,
+          result: ohlcvDtos,
+        });
+      })
+      .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
+        });
+      });
   };
 }
 

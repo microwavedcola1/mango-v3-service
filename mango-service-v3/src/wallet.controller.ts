@@ -7,13 +7,18 @@ import {
 } from "@blockworks-foundation/mango-client";
 import { OpenOrders } from "@project-serum/serum";
 import Controller from "controller.interface";
-import { BadRequestErrorCustom } from "dtos";
+import { RequestErrorCustom } from "dtos";
 import e, { NextFunction, Request, Response, Router } from "express";
 import { body } from "express-validator";
 import { sumBy } from "lodash";
 import MangoSimpleClient from "mango.simple.client";
 import { Balances } from "./types";
-import { i80f48ToPercent, isValidCoin } from "./utils";
+import {
+  i80f48ToPercent,
+  isValidCoin,
+  logger,
+  patchInternalMarketName,
+} from "./utils";
 
 class WalletController implements Controller {
   public path = "/api/wallet";
@@ -41,6 +46,22 @@ class WalletController implements Controller {
     response: Response,
     next: NextFunction
   ) => {
+    this.fetchBalancesInternal()
+      .then((balanceDtos) => {
+        return response.send({
+          success: true,
+          result: balanceDtos,
+        } as BalancesDto);
+      })
+      .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
+        });
+      });
+  };
+
+  private async fetchBalancesInternal() {
     // local copies of mango objects
     const mangoGroupConfig = this.mangoSimpleClient.mangoGroupConfig;
     const mangoGroup = this.mangoSimpleClient.mangoGroup;
@@ -67,7 +88,7 @@ class WalletController implements Controller {
       name,
     } of mangoGroupConfig.spotMarkets) {
       if (!mangoAccount || !mangoGroup) {
-        response.send([]);
+        return [];
       }
 
       const openOrders: OpenOrders =
@@ -198,11 +219,10 @@ class WalletController implements Controller {
     const value = net.mul(mangoGroup.getPrice(tokenIndex, mangoCache));
     /* tslint:enable */
     ////// end of copy pasta block from mango-ui-v3
-
     // append balances for base symbols
     const balanceDtos = baseBalances.map((baseBalance) => {
       return {
-        coin: baseBalance.key,
+        coin: patchInternalMarketName(baseBalance.key),
         free: baseBalance.deposits.toNumber(),
         spotBorrow: baseBalance.borrows.toNumber(),
         total: baseBalance.net.toNumber(),
@@ -215,16 +235,17 @@ class WalletController implements Controller {
 
     // append balance for quote symbol
     balanceDtos.push({
-      coin: this.mangoSimpleClient.mangoGroupConfig.quoteSymbol,
+      coin: patchInternalMarketName(
+        this.mangoSimpleClient.mangoGroupConfig.quoteSymbol
+      ),
       free: quoteMeta.deposits.toNumber(),
       spotBorrow: quoteMeta.borrows.toNumber(),
       total: net.toNumber(),
       usdValue: value.toNumber(),
       availableWithoutBorrow: net.sub(quoteMeta.borrows).toNumber(),
     });
-
-    response.send({ success: true, result: balanceDtos } as BalancesDto);
-  };
+    return balanceDtos;
+  }
 
   private withdraw = async (
     request: Request,
@@ -238,8 +259,9 @@ class WalletController implements Controller {
         response.status(200);
       })
       .catch((error) => {
-        return response.status(400).send({
-          errors: [{ msg: error.message } as BadRequestErrorCustom],
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
         });
       });
   };

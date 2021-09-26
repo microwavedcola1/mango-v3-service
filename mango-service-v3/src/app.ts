@@ -1,6 +1,7 @@
 import bodyParser from "body-parser";
 import Controller from "controller.interface";
 import express from "express";
+import { logger } from "./utils";
 import AccountController from "./account.controller";
 import CoinController from "./coin.controller";
 import MangoSimpleClient from "./mango.simple.client";
@@ -36,7 +37,9 @@ class App {
   }
 
   public listen() {
-    this.app.listen(process.env.PORT || 3000);
+    const port = process.env.PORT || 3000;
+    this.app.listen(port);
+    logger.info(`App listening on port ${port}`);
   }
 
   public getServer() {
