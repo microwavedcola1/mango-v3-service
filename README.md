@@ -26,6 +26,8 @@ See Todos
 # Todos
 ## Small
 losely sorted in order of importance/priority
+- devenet integration tests
+- retry framework in python
 - error thrown in endpoints just crashes expressjs, need explicit handling
 - rpc node related issues
   - how to ensure that order has been placed or definitely not placed?

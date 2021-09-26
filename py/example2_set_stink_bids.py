@@ -1,4 +1,3 @@
-import os
 import time
 
 from mango_service_v3_py.api import MangoServiceV3Client

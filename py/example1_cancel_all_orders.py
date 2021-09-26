@@ -1,5 +1,4 @@
 from mango_service_v3_py.api import MangoServiceV3Client
-from mango_service_v3_py.dtos import PlaceOrder
 
 if __name__ == "__main__":
 

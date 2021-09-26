@@ -245,7 +245,7 @@ class MM:
 if __name__ == "__main__":
 
     mm = MM()
-    logger.info("deleting all orders...")
+    logger.info("cancelling all orders...")
 
     try:
         mm.mango_service_v3_client.cancel_all_orders()
