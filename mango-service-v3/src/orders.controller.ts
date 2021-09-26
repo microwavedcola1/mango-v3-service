@@ -6,7 +6,12 @@ import { body, query, validationResult } from "express-validator";
 import Controller from "./controller.interface";
 import MangoSimpleClient from "./mango.simple.client";
 import { OrderInfo } from "./types";
-import { isValidMarket, logger } from "./utils";
+import {
+  isValidMarket,
+  logger,
+  patchExternalMarketName,
+  patchInternalMarketName,
+} from "./utils";
 
 class OrdersController implements Controller {
   public path = "/api/orders";
@@ -68,7 +73,7 @@ class OrdersController implements Controller {
     }
 
     const marketName = request.query.market
-      ? String(request.query.market)
+      ? patchExternalMarketName(String(request.query.market))
       : undefined;
 
     this.getOpenOrdersInternal(marketName)
@@ -76,6 +81,7 @@ class OrdersController implements Controller {
         return response.send({ success: true, result: orderDtos } as OrdersDto);
       })
       .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
         return response.status(500).send({
           errors: [{ msg: error.message } as RequestErrorCustom],
         });
@@ -99,7 +105,7 @@ class OrdersController implements Controller {
 
     this.mangoSimpleClient
       .placeOrder(
-        placeOrderDto.market,
+        patchExternalMarketName(placeOrderDto.market),
         placeOrderDto.type,
         placeOrderDto.side,
         placeOrderDto.size,
@@ -115,6 +121,7 @@ class OrdersController implements Controller {
         return response.status(200).send();
       })
       .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
         return response.status(500).send({
           errors: [{ msg: error.message } as RequestErrorCustom],
         });
@@ -133,6 +140,7 @@ class OrdersController implements Controller {
         return response.status(200).send();
       })
       .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
         return response.status(500).send({
           errors: [{ msg: error.message } as RequestErrorCustom],
         });
@@ -157,16 +165,16 @@ class OrdersController implements Controller {
         this.mangoSimpleClient
           .cancelOrder(orderInfos[0])
           .then(() => response.send())
-          .catch(() => {
+          .catch((error) => {
+            logger.error(`message - ${error.message}, ${error.stack}`);
             return response
               .status(500)
-              .json({ errors: [{ msg: "Unexpected error occured!" }] });
+              .json({ errors: [{ msg: error.message }] });
           });
       })
-      .catch(() => {
-        return response
-          .status(500)
-          .json({ errors: [{ msg: "Unexpected error occured!" }] });
+      .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).json({ errors: [{ msg: error.message }] });
       });
   };
 
@@ -188,16 +196,16 @@ class OrdersController implements Controller {
         this.mangoSimpleClient
           .cancelOrder(orderInfos[0])
           .then(() => response.send())
-          .catch(() => {
+          .catch((error) => {
+            logger.error(`message - ${error.message}, ${error.stack}`);
             return response
               .status(500)
-              .json({ errors: [{ msg: "Unexpected error occured!" }] });
+              .json({ errors: [{ msg: error.message }] });
           });
       })
-      .catch(() => {
-        return response
-          .status(500)
-          .json({ errors: [{ msg: "Unexpected error occured!" }] });
+      .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
+        return response.status(500).json({ errors: [{ msg: error.message }] });
       });
   };
 
@@ -213,9 +221,9 @@ class OrdersController implements Controller {
         return {
           createdAt: new Date(perpOrder.timestamp.toNumber() * 1000),
           filledSize: undefined,
-          future: orderInfo.market.config.name,
+          future: patchInternalMarketName(orderInfo.market.config.name),
           id: perpOrder.orderId.toString(),
-          market: orderInfo.market.config.name,
+          market: patchInternalMarketName(orderInfo.market.config.name),
           price: perpOrder.price,
           avgFillPrice: undefined,
           remainingSize: undefined,
@@ -237,9 +245,9 @@ class OrdersController implements Controller {
       return {
         createdAt: undefined,
         filledSize: undefined,
-        future: orderInfo.market.config.name,
+        future: patchInternalMarketName(orderInfo.market.config.name),
         id: spotOrder.orderId.toString(),
-        market: orderInfo.market.config.name,
+        market: patchInternalMarketName(orderInfo.market.config.name),
         price: spotOrder.price,
         avgFillPrice: undefined,
         remainingSize: undefined,

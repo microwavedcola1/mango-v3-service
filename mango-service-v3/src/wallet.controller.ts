@@ -13,7 +13,12 @@ import { body } from "express-validator";
 import { sumBy } from "lodash";
 import MangoSimpleClient from "mango.simple.client";
 import { Balances } from "./types";
-import { i80f48ToPercent, isValidCoin } from "./utils";
+import {
+  i80f48ToPercent,
+  isValidCoin,
+  logger,
+  patchInternalMarketName,
+} from "./utils";
 
 class WalletController implements Controller {
   public path = "/api/wallet";
@@ -49,6 +54,7 @@ class WalletController implements Controller {
         } as BalancesDto);
       })
       .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
         return response.status(500).send({
           errors: [{ msg: error.message } as RequestErrorCustom],
         });
@@ -216,7 +222,7 @@ class WalletController implements Controller {
     // append balances for base symbols
     const balanceDtos = baseBalances.map((baseBalance) => {
       return {
-        coin: baseBalance.key,
+        coin: patchInternalMarketName(baseBalance.key),
         free: baseBalance.deposits.toNumber(),
         spotBorrow: baseBalance.borrows.toNumber(),
         total: baseBalance.net.toNumber(),
@@ -229,7 +235,9 @@ class WalletController implements Controller {
 
     // append balance for quote symbol
     balanceDtos.push({
-      coin: this.mangoSimpleClient.mangoGroupConfig.quoteSymbol,
+      coin: patchInternalMarketName(
+        this.mangoSimpleClient.mangoGroupConfig.quoteSymbol
+      ),
       free: quoteMeta.deposits.toNumber(),
       spotBorrow: quoteMeta.borrows.toNumber(),
       total: net.toNumber(),
@@ -251,6 +259,7 @@ class WalletController implements Controller {
         response.status(200);
       })
       .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
         return response.status(500).send({
           errors: [{ msg: error.message } as RequestErrorCustom],
         });

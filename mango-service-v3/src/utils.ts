@@ -30,7 +30,7 @@ const mangoGroupConfig: GroupConfig = Config.ids().groups.filter(
 )[0];
 
 const allMarketNames = mangoGroupConfig.spotMarkets
-  .map((spotMarketConfig) => spotMarketConfig.name)
+  .map((spotMarketConfig) => spotMarketConfig.baseSymbol + "-SPOT")
   .concat(
     mangoGroupConfig.perpMarkets.map(
       (perpMarketConfig) => perpMarketConfig.name
@@ -40,6 +40,20 @@ const allMarketNames = mangoGroupConfig.spotMarkets
 const allCoins = mangoGroupConfig.tokens.map(
   (tokenConfig) => tokenConfig.symbol
 );
+
+export function patchExternalMarketName(marketName: string) {
+  if (marketName.includes("-SPOT")) {
+    marketName = marketName.replace("-SPOT", "/USDC");
+  }
+  return marketName;
+}
+
+export function patchInternalMarketName(marketName: string) {
+  if (marketName.includes("/USDC")) {
+    marketName = marketName.replace("/USDC", "-SPOT");
+  }
+  return marketName;
+}
 
 /// general
 

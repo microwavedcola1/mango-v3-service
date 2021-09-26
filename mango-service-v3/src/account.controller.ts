@@ -8,6 +8,11 @@ import Controller from "controller.interface";
 import { RequestErrorCustom } from "dtos";
 import { NextFunction, Request, Response, Router } from "express";
 import MangoSimpleClient from "mango.simple.client";
+import {
+  logger,
+  patchExternalMarketName,
+  patchInternalMarketName,
+} from "./utils";
 
 class AccountController implements Controller {
   public path = "/api/positions";
@@ -32,6 +37,7 @@ class AccountController implements Controller {
         response.send({ success: true, result: postionDtos } as PositionsDto);
       })
       .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
         return response.status(500).send({
           errors: [{ msg: error.message } as RequestErrorCustom],
         });
@@ -127,7 +133,7 @@ class AccountController implements Controller {
           cumulativeSellSize: undefined,
           entryPrice,
           estimatedLiquidationPrice: undefined,
-          future: marketConfig.name,
+          future: patchInternalMarketName(marketConfig.name),
           initialMarginRequirement: undefined,
           longOrderSize: undefined,
           maintenanceMarginRequirement: undefined,
@@ -194,7 +200,7 @@ interface PositionDto {
   cumulativeSellSize: number;
   entryPrice: number;
   estimatedLiquidationPrice: number;
-  future: "ETH-PERP";
+  future: string;
   initialMarginRequirement: number;
   longOrderSize: number;
   maintenanceMarginRequirement: number;

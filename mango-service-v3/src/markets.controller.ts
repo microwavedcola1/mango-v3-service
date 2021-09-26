@@ -14,7 +14,12 @@ import fetch from "node-fetch";
 import { OrderInfo } from "types";
 import Controller from "./controller.interface";
 import MangoSimpleClient from "./mango.simple.client";
-import { isValidMarket } from "./utils";
+import {
+  isValidMarket,
+  logger,
+  patchExternalMarketName,
+  patchInternalMarketName,
+} from "./utils";
 
 class MarketsController implements Controller {
   public path = "/api/markets";
@@ -73,6 +78,7 @@ class MarketsController implements Controller {
         } as MarketsDto);
       })
       .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
         return response.status(500).send({
           errors: [{ msg: error.message } as RequestErrorCustom],
         });
@@ -91,7 +97,7 @@ class MarketsController implements Controller {
         .json({ errors: errors.array() as BadRequestError[] });
     }
 
-    const marketName = request.params.market_name;
+    const marketName = patchExternalMarketName(request.params.market_name);
 
     this.fetchMarketsInternal(marketName)
       .then((marketsDto) => {
@@ -101,6 +107,7 @@ class MarketsController implements Controller {
         } as MarketsDto);
       })
       .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
         return response.status(500).send({
           errors: [{ msg: error.message } as RequestErrorCustom],
         });
@@ -209,7 +216,7 @@ class MarketsController implements Controller {
     }
 
     return {
-      name: marketConfig.name,
+      name: patchInternalMarketName(marketConfig.name),
       baseCurrency: marketConfig.baseSymbol,
       quoteCurrency: "USDC",
       quoteVolume24h: volume,
@@ -245,7 +252,7 @@ class MarketsController implements Controller {
         .json({ errors: errors.array() as BadRequestError[] });
     }
 
-    const marketName = request.params.market_name;
+    const marketName = patchExternalMarketName(request.params.market_name);
     const depth = Number(request.query.depth) || 20;
 
     this.getOrderBookInternal(marketName, depth)
@@ -259,6 +266,7 @@ class MarketsController implements Controller {
         });
       })
       .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
         return response.status(500).send({
           errors: [{ msg: error.message } as RequestErrorCustom],
         });
@@ -304,7 +312,7 @@ class MarketsController implements Controller {
     const allMarketConfigs = getAllMarkets(
       this.mangoSimpleClient.mangoGroupConfig
     );
-    const marketName = request.params.market_name;
+    const marketName = patchExternalMarketName(request.params.market_name);
     const marketPk = allMarketConfigs.filter(
       (marketConfig) => marketConfig.name === marketName
     )[0].publicKey;
@@ -317,6 +325,7 @@ class MarketsController implements Controller {
         });
       })
       .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
         return response.status(500).send({
           errors: [{ msg: error.message } as RequestErrorCustom],
         });
@@ -355,7 +364,7 @@ class MarketsController implements Controller {
         .json({ errors: errors.array() as BadRequestError[] });
     }
 
-    const marketName = request.params.market_name;
+    const marketName = patchExternalMarketName(request.params.market_name);
     const resolution = String(request.query.resolution);
     const fromEpochS = Number(request.query.start_time);
     const toEpochS = Number(request.query.end_time);
@@ -379,6 +388,7 @@ class MarketsController implements Controller {
         });
       })
       .catch((error) => {
+        logger.error(`message - ${error.message}, ${error.stack}`);
         return response.status(500).send({
           errors: [{ msg: error.message } as RequestErrorCustom],
         });
