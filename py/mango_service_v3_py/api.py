@@ -33,26 +33,29 @@ def delayed(seconds):
 
 
 class MangoServiceV3Client:
-    def __init__(self):
+    def __init__(self, timeout):
+        self.timeout = timeout if timeout else 10.0
         if "BASE_URL" in os.environ:
             self.BASE_URL = f"{os.environ['BASE_URL']}/api"
         else:
             self.BASE_URL = "http://localhost:3000/api"
 
     def get_open_positions(self) -> List[Position]:
-        response = httpx.get(f"{self.BASE_URL}/positions", timeout=10.0)
+        response = httpx.get(f"{self.BASE_URL}/positions", timeout=self.timeout)
         return parse_obj_as(List[Position], json.loads(response.text)["result"])
 
     def get_balances(self) -> List[Balance]:
-        response = httpx.get(f"{self.BASE_URL}/wallet/balances", timeout=10.0)
+        response = httpx.get(f"{self.BASE_URL}/wallet/balances", timeout=self.timeout)
         return parse_obj_as(List[Balance], json.loads(response.text)["result"])
 
     def get_markets(self) -> List[Market]:
-        response = httpx.get(f"{self.BASE_URL}/markets", timeout=10.0)
+        response = httpx.get(f"{self.BASE_URL}/markets", timeout=self.timeout)
         return parse_obj_as(List[Market], json.loads(response.text)["result"])
 
     def get_market_by_market_name(self, market_name: str) -> List[Market]:
-        response = httpx.get(f"{self.BASE_URL}/markets/{market_name}", timeout=10.0)
+        response = httpx.get(
+            f"{self.BASE_URL}/markets/{market_name}", timeout=self.timeout
+        )
         return parse_obj_as(List[Market], json.loads(response.text)["result"])
 
     def get_orderboook(self, market_name: str, depth: int = 30) -> Orderbook:
@@ -63,7 +66,7 @@ class MangoServiceV3Client:
 
     def get_trades(self, market_name: str) -> List[Trade]:
         response = httpx.get(
-            f"{self.BASE_URL}/markets/{market_name}/trades", timeout=10.0
+            f"{self.BASE_URL}/markets/{market_name}/trades", timeout=self.timeout
         )
         return parse_obj_as(List[Trade], json.loads(response.text)["result"])
 
@@ -76,34 +79,34 @@ class MangoServiceV3Client:
         return parse_obj_as(List[Candle], json.loads(response.text)["result"])
 
     def get_orders(self,) -> List[Order]:
-        response = httpx.get(f"{self.BASE_URL}/orders", timeout=10.0)
+        response = httpx.get(f"{self.BASE_URL}/orders", timeout=self.timeout)
         return parse_obj_as(List[Order], json.loads(response.text)["result"])
 
     def get_orders_by_market_name(self, market_name: str) -> List[Order]:
         response = httpx.get(
-            f"{self.BASE_URL}/orders?market={market_name}", timeout=10.0
+            f"{self.BASE_URL}/orders?market={market_name}", timeout=self.timeout
         )
         return parse_obj_as(List[Order], json.loads(response.text)["result"])
 
     def place_order(self, order: PlaceOrder) -> None:
         response = httpx.post(
-            f"{self.BASE_URL}/orders", json=order.dict(by_alias=True), timeout=10.0
+            f"{self.BASE_URL}/orders",
+            json=order.dict(by_alias=True),
+            timeout=self.timeout,
         )
-        # if response.status_code == httpx.codes.BAD_REQUEST:
-        #     return parse_obj_as(
-        #         List[BadRequestError], json.loads(response.text)["errors"]
-        #     )
 
     def cancel_order_by_client_id(self, client_id):
         response = httpx.delete(
-            f"{self.BASE_URL}/orders/by_client_id/{client_id}", timeout=10.0
+            f"{self.BASE_URL}/orders/by_client_id/{client_id}", timeout=self.timeout
         )
 
     def cancel_order_by_order_id(self, order_id):
-        response = httpx.delete(f"{self.BASE_URL}/orders/{order_id}", timeout=10.0)
+        response = httpx.delete(
+            f"{self.BASE_URL}/orders/{order_id}", timeout=self.timeout
+        )
 
     def cancel_all_orders(self):
-        response = httpx.delete(f"{self.BASE_URL}/orders", timeout=10.0)
+        response = httpx.delete(f"{self.BASE_URL}/orders", timeout=self.timeout)
 
     @staticmethod
     def to_nearest(num, tickDec):
