@@ -33,10 +33,10 @@ def delayed(seconds):
 
 
 class MangoServiceV3Client:
-    def __init__(self, timeout):
+    def __init__(self, base_url, timeout):
         self.timeout = timeout if timeout else 10.0
-        if "BASE_URL" in os.environ:
-            self.BASE_URL = f"{os.environ['BASE_URL']}/api"
+        if base_url:
+            self.BASE_URL = base_url
         else:
             self.BASE_URL = "http://localhost:3000/api"
 
