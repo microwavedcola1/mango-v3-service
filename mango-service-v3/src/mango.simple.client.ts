@@ -51,7 +51,7 @@ class MangoSimpleClient {
   }
 
   static async create() {
-    const groupName = "mainnet.1";
+    const groupName = process.env.GROUP_NAME || "mainnet.1";
     const clusterUrl =
       process.env.CLUSTER_URL || "https://api.mainnet-beta.solana.com";
 

@@ -1,6 +1,6 @@
 import { PerpOrder } from "@blockworks-foundation/mango-client";
 import { Order } from "@project-serum/serum/lib/market";
-import { BadRequestError, BadRequestErrorCustom } from "dtos";
+import { BadRequestError, RequestErrorCustom } from "dtos";
 import { NextFunction, Request, Response, Router } from "express";
 import { body, query, validationResult } from "express-validator";
 import Controller from "./controller.interface";
@@ -67,9 +67,144 @@ class OrdersController implements Controller {
         .json({ errors: errors.array() as BadRequestError[] });
     }
 
+    const marketName = request.query.market
+      ? String(request.query.market)
+      : undefined;
+
+    this.getOpenOrdersInternal(marketName)
+      .then((orderDtos) => {
+        return response.send({ success: true, result: orderDtos } as OrdersDto);
+      })
+      .catch((error) => {
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
+        });
+      });
+  };
+
+  private placeOrder = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) => {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      return response
+        .status(400)
+        .json({ errors: errors.array() as BadRequestError[] });
+    }
+
+    const placeOrderDto = request.body as PlaceOrderDto;
+    logger.info(`placing order`);
+
+    this.mangoSimpleClient
+      .placeOrder(
+        placeOrderDto.market,
+        placeOrderDto.type,
+        placeOrderDto.side,
+        placeOrderDto.size,
+        placeOrderDto.price,
+        placeOrderDto.ioc
+          ? "ioc"
+          : placeOrderDto.postOnly
+          ? "postOnly"
+          : "limit",
+        placeOrderDto.clientId
+      )
+      .then(() => {
+        return response.status(200).send();
+      })
+      .catch((error) => {
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
+        });
+      });
+  };
+
+  private cancelAllOrders = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) => {
+    logger.info(`cancelling all orders...`);
+    this.mangoSimpleClient
+      .cancelAllOrders()
+      .then(() => {
+        return response.status(200).send();
+      })
+      .catch((error) => {
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
+        });
+      });
+  };
+
+  private cancelOrderByOrderId = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) => {
+    const orderId = request.params.order_id;
+    logger.info(`cancelling order with orderId ${orderId}...`);
+    this.mangoSimpleClient
+      .getOrderByOrderId(orderId)
+      .then((orderInfos) => {
+        if (!orderInfos.length) {
+          return response
+            .status(400)
+            .json({ errors: [{ msg: "Order not found!" }] });
+        }
+        this.mangoSimpleClient
+          .cancelOrder(orderInfos[0])
+          .then(() => response.send())
+          .catch(() => {
+            return response
+              .status(500)
+              .json({ errors: [{ msg: "Unexpected error occured!" }] });
+          });
+      })
+      .catch(() => {
+        return response
+          .status(500)
+          .json({ errors: [{ msg: "Unexpected error occured!" }] });
+      });
+  };
+
+  private cancelOrderByClientId = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) => {
+    const clientId = request.params.client_id;
+    logger.info(`cancelling order with clientId ${clientId}...`);
+    this.mangoSimpleClient
+      .getOrderByClientId(clientId)
+      .then((orderInfos) => {
+        if (!orderInfos.length) {
+          return response
+            .status(400)
+            .json({ errors: [{ msg: "Order not found!" }] });
+        }
+        this.mangoSimpleClient
+          .cancelOrder(orderInfos[0])
+          .then(() => response.send())
+          .catch(() => {
+            return response
+              .status(500)
+              .json({ errors: [{ msg: "Unexpected error occured!" }] });
+          });
+      })
+      .catch(() => {
+        return response
+          .status(500)
+          .json({ errors: [{ msg: "Unexpected error occured!" }] });
+      });
+  };
+
+  private async getOpenOrdersInternal(marketName: string) {
     const openOrders = await this.mangoSimpleClient.fetchAllBidsAndAsks(
       true,
-      request.query.market ? String(request.query.market) : undefined
+      marketName
     );
 
     const orderDtos = openOrders.flat().map((orderInfo: OrderInfo) => {
@@ -121,140 +256,8 @@ class OrdersController implements Controller {
             : undefined,
       } as OrderDto;
     });
-    response.send({ success: true, result: orderDtos } as OrdersDto);
-  };
-
-  private placeOrder = async (
-    request: Request,
-    response: Response,
-    next: NextFunction
-  ) => {
-    const errors = validationResult(request);
-    if (!errors.isEmpty()) {
-      return response
-        .status(400)
-        .json({ errors: errors.array() as BadRequestError[] });
-    }
-
-    const placeOrderDto = request.body as PlaceOrderDto;
-    logger.info(`placing order`);
-
-    try {
-      await this.mangoSimpleClient.placeOrder(
-        placeOrderDto.market,
-        placeOrderDto.type,
-        placeOrderDto.side,
-        placeOrderDto.size,
-        placeOrderDto.price,
-        placeOrderDto.ioc
-          ? "ioc"
-          : placeOrderDto.postOnly
-          ? "postOnly"
-          : "limit",
-        placeOrderDto.clientId
-      );
-    } catch (error) {
-      return response.status(400).send({
-        errors: [{ msg: error.message } as BadRequestErrorCustom],
-      });
-    }
-
-    response.send({
-      success: true,
-      result: {
-        createdAt: new Date(),
-        filledSize: undefined,
-        future: placeOrderDto.market,
-        id: undefined,
-        market: placeOrderDto.market,
-        price: undefined,
-        remainingSize: undefined,
-        side: placeOrderDto.side,
-        size: placeOrderDto.size,
-        status: undefined,
-        type: placeOrderDto.type,
-        reduceOnly: undefined,
-        ioc: placeOrderDto.ioc,
-        postOnly: placeOrderDto.postOnly,
-        clientId: placeOrderDto.clientId
-          ? placeOrderDto.clientId.toString()
-          : null,
-      },
-    } as PlaceOrderResponseDto);
-  };
-
-  private cancelAllOrders = async (
-    request: Request,
-    response: Response,
-    next: NextFunction
-  ) => {
-    logger.info(`cancelling all orders...`);
-    // todo: leads to 429 if too many orders exist, needs optimization
-    await this.mangoSimpleClient.cancelAllOrders();
-    response.send();
-  };
-
-  private cancelOrderByOrderId = async (
-    request: Request,
-    response: Response,
-    next: NextFunction
-  ) => {
-    const orderId = request.params.order_id;
-    logger.info(`cancelling order with orderId ${orderId}...`);
-    this.mangoSimpleClient
-      .getOrderByOrderId(orderId)
-      .then((orderInfos) => {
-        if (!orderInfos.length) {
-          return response
-            .status(400)
-            .json({ errors: [{ msg: "Order not found!" }] });
-        }
-        this.mangoSimpleClient
-          .cancelOrder(orderInfos[0])
-          .then(() => response.send())
-          .catch(() => {
-            return response
-              .status(400)
-              .json({ errors: [{ msg: "Unexpected error occured!" }] });
-          });
-      })
-      .catch(() => {
-        return response
-          .status(400)
-          .json({ errors: [{ msg: "Unexpected error occured!" }] });
-      });
-  };
-
-  private cancelOrderByClientId = async (
-    request: Request,
-    response: Response,
-    next: NextFunction
-  ) => {
-    const clientId = request.params.client_id;
-    logger.info(`cancelling order with clientId ${clientId}...`);
-    this.mangoSimpleClient
-      .getOrderByClientId(clientId)
-      .then((orderInfos) => {
-        if (!orderInfos.length) {
-          return response
-            .status(400)
-            .json({ errors: [{ msg: "Order not found!" }] });
-        }
-        this.mangoSimpleClient
-          .cancelOrder(orderInfos[0])
-          .then(() => response.send())
-          .catch(() => {
-            return response
-              .status(400)
-              .json({ errors: [{ msg: "Unexpected error occured!" }] });
-          });
-      })
-      .catch(() => {
-        return response
-          .status(400)
-          .json({ errors: [{ msg: "Unexpected error occured!" }] });
-      });
-  };
+    return orderDtos;
+  }
 }
 
 export default OrdersController;

@@ -5,6 +5,7 @@ import {
 } from "@blockworks-foundation/mango-client";
 import BN from "bn.js";
 import Controller from "controller.interface";
+import { RequestErrorCustom } from "dtos";
 import { NextFunction, Request, Response, Router } from "express";
 import MangoSimpleClient from "mango.simple.client";
 
@@ -26,6 +27,18 @@ class AccountController implements Controller {
     response: Response,
     next: NextFunction
   ) => {
+    this.fetchPerpPositionsInternal()
+      .then((postionDtos) => {
+        response.send({ success: true, result: postionDtos } as PositionsDto);
+      })
+      .catch((error) => {
+        return response.status(500).send({
+          errors: [{ msg: error.message } as RequestErrorCustom],
+        });
+      });
+  };
+
+  private async fetchPerpPositionsInternal() {
     const groupConfig = this.mangoSimpleClient.mangoGroupConfig;
     const mangoGroup = this.mangoSimpleClient.mangoGroup;
 
@@ -133,9 +146,8 @@ class AccountController implements Controller {
         } as PositionDto;
       }
     );
-
-    response.send({ success: true, result: postionDtos } as PositionsDto);
-  };
+    return postionDtos;
+  }
 }
 
 export default AccountController;
