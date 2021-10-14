@@ -1,8 +1,10 @@
 # Introduction
-REST API Service for mango  markets version 3, and some simple clients and examples. Aimed to follow spec as close as possible to popular exchanges like ftx, etc. Current motivation is to enable traders to bring their existing tools to mango markets. 
+REST and WEBSOCKET API Services for mango  markets version 3, and some simple clients and examples. Aimed to follow spec as close as possible to popular exchanges like ftx, etc. Current motivation is to enable traders to bring their existing tools to mango markets. 
 
 # Note
 REST Service requires the user to run a local copy with his/her own private key. An alternative approach which is known and was not taken is to prepare solana transactions in a centrally hosted REST API Service and send them back to the client for signing using their wallet. The advantages of this would be that we could have a centrally hosted service, and would save local hosting, the disadvantages of this would be complicating the REST clients users want to use with solana specific signing code and would need us to ship and maintain clients for various programming languages. Also such a centrally hosted service would then need authorization, authentication, rate limiting, etc. to prevent abuse of the configured RPC node, which so far is not the aim of this project.
+
+WEBSOCKET API currently streams L1, and L2 level orderbook data.
 
 # Documentation
 See https://microwavedcola1.github.io/mango-service-v3/#tag/default
