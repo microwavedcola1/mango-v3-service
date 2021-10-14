@@ -33,7 +33,7 @@ def delayed(seconds):
 
 
 class MangoServiceV3Client:
-    def __init__(self, base_url, timeout):
+    def __init__(self, base_url=None, timeout=None):
         self.timeout = timeout if timeout else 10.0
         if base_url:
             self.BASE_URL = base_url
