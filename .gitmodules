@@ -1,0 +1,3 @@
+[submodule "mango-vial"]
+	path = mango-vial
+	url = git@github.com:microwavedcola1/mango-vial.git
