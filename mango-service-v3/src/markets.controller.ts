@@ -219,7 +219,8 @@ class MarketsController implements Controller {
       name: patchInternalMarketName(marketConfig.name),
       baseCurrency: marketConfig.baseSymbol,
       quoteCurrency: "USDC",
-      quoteVolume24h: volume,
+      // note: event-history-api doesn't index volume for spot
+      quoteVolume24h: volume !== 0 ? volume : undefined,
       change1h,
       change24h,
       changeBod,
@@ -236,7 +237,8 @@ class MarketsController implements Controller {
       priceIncrement: tickSize,
       sizeIncrement: minOrderSize,
       restricted: undefined,
-      volumeUsd24h: volume,
+      // note: event-history-api doesn't index volume for spot
+      volumeUsd24h: volume !== 0 ? volume : undefined,
     } as MarketDto;
   }
 
