@@ -58,7 +58,7 @@ class MangoServiceV3Client:
         )
         return parse_obj_as(List[Market], json.loads(response.text)["result"])
 
-    def get_orderboook(self, market_name: str, depth: int = 30) -> Orderbook:
+    def get_orderbook(self, market_name: str, depth: int = 30) -> Orderbook:
         response = httpx.get(
             f"{self.BASE_URL}/markets/{market_name}/orderbook?depth={depth}"
         )
