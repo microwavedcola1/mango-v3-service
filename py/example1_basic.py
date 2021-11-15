@@ -19,7 +19,7 @@ if __name__ == "__main__":
         )
     )
 
-    for order in mango_service_v3_client.get_orderboook("BTC-PERP"):
+    for order in mango_service_v3_client.get_orderbook("BTC-PERP"):
         print(order.json(indent=4, sort_keys=True))
 
     for trade in mango_service_v3_client.get_trades("BTC-PERP"):

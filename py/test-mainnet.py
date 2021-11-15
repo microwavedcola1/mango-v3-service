@@ -58,7 +58,7 @@ def test_get_candles(mango_service_v3_client, market):
 
 @pytest.mark.parametrize("market", SPOT_AND_PERP_MARKETS)
 def test_get_orderbook(mango_service_v3_client, market):
-    ob = mango_service_v3_client.get_orderboook(market)
+    ob = mango_service_v3_client.get_orderbook(market)
     assert len(ob.asks) > 0
     assert len(ob.bids) > 0
 
