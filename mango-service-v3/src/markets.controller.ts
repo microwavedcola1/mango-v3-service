@@ -185,12 +185,15 @@ class MarketsController implements Controller {
     if (market instanceof Market && market.minOrderSize) {
       minOrderSize = market.minOrderSize;
     } else if (market instanceof PerpMarket) {
-      const token = getTokenBySymbol(
-        this.mangoSimpleClient.mangoGroupConfig,
-        marketConfig.baseSymbol
-      );
+      // todo: remove hardcoding
+      // const baseDecimals = getTokenBySymbol(
+      //   this.mangoSimpleClient.mangoGroupConfig,
+      //   marketConfig.baseSymbol
+      // ).decimals;
+      const baseDecimals = 6;
+
       minOrderSize = new Big(market.baseLotSize.toString())
-        .div(new Big(10).pow(token.decimals))
+        .div(new Big(10).pow(baseDecimals))
         .toNumber();
     }
 
@@ -199,10 +202,13 @@ class MarketsController implements Controller {
     if (market instanceof Market) {
       tickSize = market.tickSize;
     } else if (market instanceof PerpMarket) {
-      const baseDecimals = getTokenBySymbol(
-        this.mangoSimpleClient.mangoGroupConfig,
-        marketConfig.baseSymbol
-      ).decimals;
+      // todo: remove hardcoding
+      // const baseDecimals = getTokenBySymbol(
+      //   this.mangoSimpleClient.mangoGroupConfig,
+      //   marketConfig.baseSymbol
+      // ).decimals;
+      const baseDecimals = 6;
+
       const quoteDecimals = getTokenBySymbol(
         this.mangoSimpleClient.mangoGroupConfig,
         this.mangoSimpleClient.mangoGroupConfig.quoteSymbol
