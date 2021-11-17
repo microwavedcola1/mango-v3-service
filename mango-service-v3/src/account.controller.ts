@@ -70,6 +70,19 @@ export class AccountController implements Controller {
   }
 }
 
+/**
+ * {
+  "success": true,
+  "result": {
+    "spotOpenOrdersAccounts": [
+      {
+        "name": "MNGO-SPOT",
+        "publicKey": "..."
+      }
+    ]
+  }
+}
+ */
 interface AccountDto {
   success: boolean;
   result: AccountInternalDto;
