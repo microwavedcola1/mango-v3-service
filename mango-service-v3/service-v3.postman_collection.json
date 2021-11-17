@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "43c10ec3-c29d-47b0-99ad-6522ba33dc50",
+		"_postman_id": "6400c7b4-eaa6-4a86-b7df-19857192378e",
 		"name": "service-v3",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -32,68 +32,37 @@
 					]
 				}
 			},
-			"response": [
-				{
-					"name": "positions - get open positions",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/positions",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"positions"
-							]
+			"response": []
+		},
+		{
+			"name": "account",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "201"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"c9-lXVNPOifywr2dkOvjRFkYN+3Sjc\""
-						},
-						{
-							"key": "Date",
-							"value": "Thu, 23 Sep 2021 07:35:59 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/mango/account",
+					"host": [
+						"{{baseUrl}}"
 					],
-					"cookie": [],
-					"body": "{\n    \"success\": true,\n    \"result\": [\n        {\n            \"cost\": 4.4113252,\n            \"entryPrice\": \"50195.9\",\n            \"future\": \"BTC-PERP\",\n            \"netSize\": 0.0001,\n            \"recentBreakEvenPrice\": 50195.9,\n            \"side\": \"long\",\n            \"size\": 0.0001,\n            \"unrealizedPnl\": -0.6082648000000002\n        }\n    ]\n}"
+					"path": [
+						"mango",
+						"account"
+					]
 				}
-			]
+			},
+			"response": []
 		},
 		{
 			"name": "coins - get all",
@@ -122,68 +91,7 @@
 					]
 				}
 			},
-			"response": [
-				{
-					"name": "coins - get all",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/coins",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"coins"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "269"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"10d-Anlhnoh/EcbivfhlZpCuuV8mqsU\""
-						},
-						{
-							"key": "Date",
-							"value": "Thu, 23 Sep 2021 20:29:38 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"success\": true,\n    \"result\": [\n        {\n            \"name\": \"USDC\",\n            \"id\": \"USDC\"\n        },\n        {\n            \"name\": \"MNGO\",\n            \"id\": \"MNGO\"\n        },\n        {\n            \"name\": \"BTC\",\n            \"id\": \"BTC\"\n        },\n        {\n            \"name\": \"ETH\",\n            \"id\": \"ETH\"\n        },\n        {\n            \"name\": \"SOL\",\n            \"id\": \"SOL\"\n        },\n        {\n            \"name\": \"USDT\",\n            \"id\": \"USDT\"\n        },\n        {\n            \"name\": \"SRM\",\n            \"id\": \"SRM\"\n        },\n        {\n            \"name\": \"RAY\",\n            \"id\": \"RAY\"\n        },\n        {\n            \"name\": \"COPE\",\n            \"id\": \"COPE\"\n        }\n    ]\n}"
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "wallet - balances",
@@ -219,15 +127,6 @@
 					"originalRequest": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
 							"raw": "{{baseUrl}}/wallet/balances",
 							"host": [
@@ -302,69 +201,7 @@
 					]
 				}
 			},
-			"response": [
-				{
-					"name": "wallet - withdraw",
-					"originalRequest": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"coin\": \"USDC\",\n  \"size\": 1000\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/wallet/withdrawals",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"wallet",
-								"withdrawals"
-							]
-						}
-					},
-					"status": "Bad Request",
-					"code": 400,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "98"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"62-a5tgkKEcwWc3BLd/jTRTDN5QwDI\""
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 24 Sep 2021 14:00:15 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"errors\": [\n        {\n            \"msg\": \"Transaction failed: MangoErrorCode::InsufficientFunds; src/processor.rs:831\"\n        }\n    ]\n}"
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "markets - get all",
@@ -381,59 +218,7 @@
 					]
 				}
 			},
-			"response": [
-				{
-					"name": "markets - get all",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/markets",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"markets"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "3586"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"e02-YRmxFLVXSYLthxhkA8fbq9xtHVM\""
-						},
-						{
-							"key": "Date",
-							"value": "Thu, 23 Sep 2021 20:22:58 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"success\": true,\n    \"result\": [\n        {\n            \"name\": \"MNGO/USDC\",\n            \"baseCurrency\": \"MNGO\",\n            \"quoteCurrency\": \"USDC\",\n            \"quoteVolume24h\": 0,\n            \"change1h\": 0.011748958194213307,\n            \"change24h\": 0.10497017397919645,\n            \"changeBod\": -0.06941209645738362,\n            \"type\": \"spot\",\n            \"underlying\": \"MNGO\",\n            \"ask\": 0.3014,\n            \"bid\": 0.3009,\n            \"last\": 0.3010999858379364,\n            \"price\": 0.3010999858379364,\n            \"priceIncrement\": 0.0001,\n            \"sizeIncrement\": 1,\n            \"volumeUsd24h\": 0\n        },\n        {\n            \"name\": \"BTC/USDC\",\n            \"baseCurrency\": \"BTC\",\n            \"quoteCurrency\": \"USDC\",\n            \"quoteVolume24h\": 0,\n            \"change1h\": -0.0006023196102002198,\n            \"change24h\": 0.07534008825160178,\n            \"changeBod\": -0.023842158866775508,\n            \"type\": \"spot\",\n            \"underlying\": \"BTC\",\n            \"ask\": 44548.9,\n            \"bid\": 44542.5,\n            \"last\": 44651.8984375,\n            \"price\": 44651.8984375,\n            \"priceIncrement\": 0.1,\n            \"sizeIncrement\": 0.0001,\n            \"volumeUsd24h\": 0\n        },\n        {\n            \"name\": \"ETH/USDC\",\n            \"baseCurrency\": \"ETH\",\n            \"quoteCurrency\": \"USDC\",\n            \"quoteVolume24h\": 0,\n            \"change1h\": -0.0011764022806535397,\n            \"change24h\": 0.11286709397685381,\n            \"changeBod\": -0.015943185029389125,\n            \"type\": \"spot\",\n            \"underlying\": \"ETH\",\n            \"ask\": 3128.36,\n            \"bid\": 3128.35,\n            \"last\": 3129.22998046875,\n            \"price\": 3129.22998046875,\n            \"priceIncrement\": 0.01,\n            \"sizeIncrement\": 0.001,\n            \"volumeUsd24h\": 0\n        },\n        {\n            \"name\": \"SOL/USDC\",\n            \"baseCurrency\": \"SOL\",\n            \"quoteCurrency\": \"USDC\",\n            \"quoteVolume24h\": 0,\n            \"change1h\": 0.005815162979254202,\n            \"change24h\": 0.19738252608394014,\n            \"changeBod\": 0.0008962996612425303,\n            \"type\": \"spot\",\n            \"underlying\": \"SOL\",\n            \"ask\": 147.977,\n            \"bid\": 147.976,\n            \"last\": 148.39999389648438,\n            \"price\": 148.39999389648438,\n            \"priceIncrement\": 0.001,\n            \"sizeIncrement\": 0.1,\n            \"volumeUsd24h\": 0\n        },\n        {\n            \"name\": \"USDT/USDC\",\n            \"baseCurrency\": \"USDT\",\n            \"quoteCurrency\": \"USDC\",\n            \"quoteVolume24h\": 0,\n            \"change1h\": -0.0002998106640841958,\n            \"change24h\": 0.0004001268051988224,\n            \"changeBod\": 0,\n            \"type\": \"spot\",\n            \"underlying\": \"USDT\",\n            \"ask\": 1.0002,\n            \"bid\": 1.0001,\n            \"last\": 1.000100016593933,\n            \"price\": 1.000100016593933,\n            \"priceIncrement\": 0.0001,\n            \"sizeIncrement\": 1,\n            \"volumeUsd24h\": 0\n        },\n        {\n            \"name\": \"SRM/USDC\",\n            \"baseCurrency\": \"SRM\",\n            \"quoteCurrency\": \"USDC\",\n            \"quoteVolume24h\": 0,\n            \"change1h\": 0.0055427640345401905,\n            \"change24h\": 0.17148090555117187,\n            \"changeBod\": -0.03061106244377288,\n            \"type\": \"spot\",\n            \"underlying\": \"SRM\",\n            \"ask\": 8.584,\n            \"bid\": 8.581,\n            \"last\": 8.586999893188477,\n            \"price\": 8.586999893188477,\n            \"priceIncrement\": 0.001,\n            \"sizeIncrement\": 0.1,\n            \"volumeUsd24h\": 0\n        },\n        {\n            \"name\": \"RAY/USDC\",\n            \"baseCurrency\": \"RAY\",\n            \"quoteCurrency\": \"USDC\",\n            \"quoteVolume24h\": 0,\n            \"change1h\": 0.005089718359209593,\n            \"change24h\": 0.13928952392352087,\n            \"changeBod\": -0.07953655366580142,\n            \"type\": \"spot\",\n            \"underlying\": \"RAY\",\n            \"ask\": 11.576,\n            \"bid\": 11.513,\n            \"last\": 11.460000038146973,\n            \"price\": 11.460000038146973,\n            \"priceIncrement\": 0.001,\n            \"sizeIncrement\": 0.1,\n            \"volumeUsd24h\": 0\n        },\n        {\n            \"name\": \"COPE/USDC\",\n            \"baseCurrency\": \"COPE\",\n            \"quoteCurrency\": \"USDC\",\n            \"quoteVolume24h\": 0,\n            \"change1h\": 0.010653081408407839,\n            \"change24h\": 0.16617556935957428,\n            \"changeBod\": -0.07962964986577366,\n            \"type\": \"spot\",\n            \"underlying\": \"COPE\",\n            \"ask\": 2.17,\n            \"bid\": 2.154,\n            \"last\": 2.1600000858306885,\n            \"price\": 2.1600000858306885,\n            \"priceIncrement\": 0.001,\n            \"sizeIncrement\": 0.001,\n            \"volumeUsd24h\": 0\n        },\n        {\n            \"name\": \"BTC-PERP\",\n            \"baseCurrency\": \"BTC\",\n            \"quoteCurrency\": \"USDC\",\n            \"quoteVolume24h\": 1281273.38619,\n            \"change1h\": 0.00005133289030753979,\n            \"change24h\": 0.07514224962752904,\n            \"changeBod\": -0.022951987551960477,\n            \"type\": \"futures\",\n            \"underlying\": \"BTC\",\n            \"ask\": 44701.7,\n            \"bid\": 44701.6,\n            \"last\": 44841.3984375,\n            \"price\": 44841.3984375,\n            \"priceIncrement\": 0.1,\n            \"sizeIncrement\": 0.0001,\n            \"volumeUsd24h\": 1281273.38619\n        },\n        {\n            \"name\": \"SOL-PERP\",\n            \"baseCurrency\": \"SOL\",\n            \"quoteCurrency\": \"USDC\",\n            \"quoteVolume24h\": 2712627.9067,\n            \"change1h\": 0.0004682451126406075,\n            \"change24h\": 0.17839077057911942,\n            \"changeBod\": -0.00013510009773373964,\n            \"type\": \"futures\",\n            \"underlying\": \"SOL\",\n            \"ask\": 148.91,\n            \"bid\": 148.35,\n            \"last\": 148.07000732421875,\n            \"price\": 148.07000732421875,\n            \"priceIncrement\": 0.01,\n            \"sizeIncrement\": 0.01,\n            \"volumeUsd24h\": 2712627.9067\n        }\n    ]\n}"
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "markets - get by name",
@@ -451,60 +236,7 @@
 					]
 				}
 			},
-			"response": [
-				{
-					"name": "markets - get by name",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/markets/BTC-PERP",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"markets",
-								"BTC-PERP"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "382"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"17e-z9W038dzxfdr4BfXX+bWq16SDlg\""
-						},
-						{
-							"key": "Date",
-							"value": "Thu, 23 Sep 2021 07:36:51 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"success\": true,\n    \"result\": [\n        {\n            \"name\": \"BTC-PERP\",\n            \"baseCurrency\": \"BTC\",\n            \"quoteCurrency\": \"USDC\",\n            \"quoteVolume24h\": 2655725.30683,\n            \"change1h\": 0.013732274607999357,\n            \"change24h\": 0.07514224962752904,\n            \"changeBod\": -0.009334104720180893,\n            \"type\": \"futures\",\n            \"underlying\": \"BTC\",\n            \"ask\": 44180.1,\n            \"bid\": 44136,\n            \"last\": 44225,\n            \"price\": 44225,\n            \"priceIncrement\": 0.1,\n            \"sizeIncrement\": 0.0001,\n            \"volumeUsd24h\": 2655725.30683\n        }\n    ]\n}"
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "markets - get orderbook by name",
@@ -529,67 +261,7 @@
 					]
 				}
 			},
-			"response": [
-				{
-					"name": "markets - get orderbook by name",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/markets/BTC-PERP/orderbook?depth=30",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"markets",
-								"BTC-PERP",
-								"orderbook"
-							],
-							"query": [
-								{
-									"key": "depth",
-									"value": "30"
-								}
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "938"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"3aa-Ccs7Ua2tiiO/lkO7VymHA7B1P14\""
-						},
-						{
-							"key": "Date",
-							"value": "Thu, 23 Sep 2021 07:36:55 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"success\": true,\n    \"result\": {\n        \"asks\": [\n            [\n                44170.6,\n                0.0251\n            ],\n            [\n                44197.1,\n                1.2613\n            ],\n            [\n                44289.7,\n                4\n            ],\n            [\n                44289.8,\n                0.1614\n            ],\n            [\n                44295.6,\n                0.8055\n            ],\n            [\n                44319.1,\n                18.352\n            ],\n            [\n                44382.5,\n                0.0022\n            ],\n            [\n                44399.8,\n                0.0022\n            ],\n            [\n                44444,\n                0.1\n            ],\n            [\n                44444,\n                0.1168\n            ],\n            [\n                44500,\n                0.005\n            ],\n            [\n                44500,\n                0.0022\n            ],\n            [\n                44665.5,\n                0.0006\n            ],\n            [\n                44750,\n                0.005\n            ],\n            [\n                44800,\n                0.0025\n            ],\n            [\n                45000,\n                0.005\n            ],\n            [\n                45000,\n                0.0055\n            ],\n            [\n                45250,\n                0.005\n            ],\n            [\n                45265,\n                0.0044\n            ],\n            [\n                45500,\n                0.005\n            ],\n            [\n                45500,\n                0.0065\n            ],\n            [\n                45750,\n                0.005\n            ],\n            [\n                45762,\n                0.025\n            ],\n            [\n                46000,\n                0.005\n            ],\n            [\n                46250,\n                0.005\n            ],\n            [\n                46500,\n                0.005\n            ],\n            [\n                46662,\n                2.8458\n            ],\n            [\n                47000,\n                0.005\n            ],\n            [\n                47250,\n                0.005\n            ],\n            [\n                47500,\n                0.005\n            ]\n        ],\n        \"bids\": [\n            [\n                44126.4,\n                0.0251\n            ],\n            [\n                44108.8,\n                1.2613\n            ],\n            [\n                44030.7,\n                0.8055\n            ],\n            [\n                44013,\n                4\n            ],\n            [\n                43326.1,\n                0.0026\n            ],\n            [\n                43326.1,\n                0.0026\n            ],\n            [\n                43326.1,\n                0.0026\n            ],\n            [\n                43095,\n                0.5\n            ],\n            [\n                42790,\n                0.001\n            ],\n            [\n                42750,\n                0.001\n            ],\n            [\n                42500,\n                0.0005\n            ],\n            [\n                42500,\n                0.05\n            ],\n            [\n                42400,\n                0.0002\n            ],\n            [\n                42300,\n                0.0002\n            ],\n            [\n                42300,\n                0.0002\n            ],\n            [\n                42250,\n                0.005\n            ],\n            [\n                42200,\n                0.0002\n            ],\n            [\n                42100,\n                0.0002\n            ],\n            [\n                42000,\n                0.005\n            ],\n            [\n                42000,\n                0.0002\n            ],\n            [\n                41900,\n                0.0002\n            ],\n            [\n                41800,\n                0.0002\n            ],\n            [\n                41750,\n                0.005\n            ],\n            [\n                41700,\n                0.0002\n            ],\n            [\n                41600,\n                0.0002\n            ],\n            [\n                41500,\n                0.0002\n            ],\n            [\n                41500,\n                0.005\n            ],\n            [\n                41400,\n                0.0002\n            ],\n            [\n                41300,\n                0.0002\n            ],\n            [\n                41200,\n                0.0002\n            ]\n        ]\n    }\n}"
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "markets - get trades by name",
@@ -608,61 +280,7 @@
 					]
 				}
 			},
-			"response": [
-				{
-					"name": "markets - get trades by name",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/markets/BTC-PERP/trades",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"markets",
-								"BTC-PERP",
-								"trades"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "5312"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"14c0-m9KQO5LD/I0Uw6cCaUCV19BzvEU\""
-						},
-						{
-							"key": "Date",
-							"value": "Thu, 23 Sep 2021 07:37:00 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"success\": true,\n    \"result\": [\n        {\n            \"id\": \"\",\n            \"price\": 44225,\n            \"side\": \"buy\",\n            \"size\": 0.00009999999747378752,\n            \"time\": \"2021-09-23T07:35:48.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44066.5,\n            \"side\": \"buy\",\n            \"size\": 0.0031999999191612005,\n            \"time\": \"2021-09-23T07:15:00.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44168.8984375,\n            \"side\": \"buy\",\n            \"size\": 0.0008999999845400453,\n            \"time\": \"2021-09-23T07:12:01.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44359.30078125,\n            \"side\": \"buy\",\n            \"size\": 0.03799999877810478,\n            \"time\": \"2021-09-23T06:58:40.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44321.8984375,\n            \"side\": \"buy\",\n            \"size\": 0.02500000037252903,\n            \"time\": \"2021-09-23T06:58:38.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44315.80078125,\n            \"side\": \"buy\",\n            \"size\": 0.002199999988079071,\n            \"time\": \"2021-09-23T06:58:38.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44280.8984375,\n            \"side\": \"buy\",\n            \"size\": 0.002199999988079071,\n            \"time\": \"2021-09-23T06:58:38.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44229.3984375,\n            \"side\": \"buy\",\n            \"size\": 0.002199999988079071,\n            \"time\": \"2021-09-23T06:58:12.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44218,\n            \"side\": \"buy\",\n            \"size\": 0.002199999988079071,\n            \"time\": \"2021-09-23T06:57:38.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44199.8984375,\n            \"side\": \"buy\",\n            \"size\": 0.002199999988079071,\n            \"time\": \"2021-09-23T06:57:38.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44176,\n            \"side\": \"buy\",\n            \"size\": 0.0010000000474974513,\n            \"time\": \"2021-09-23T06:57:38.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44121.8984375,\n            \"side\": \"buy\",\n            \"size\": 0.0020000000949949026,\n            \"time\": \"2021-09-23T06:51:31.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44084,\n            \"side\": \"buy\",\n            \"size\": 0.01360000018030405,\n            \"time\": \"2021-09-23T06:51:00.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44065.69921875,\n            \"side\": \"buy\",\n            \"size\": 0.03799999877810478,\n            \"time\": \"2021-09-23T06:50:40.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43934,\n            \"side\": \"buy\",\n            \"size\": 0.0044999998062849045,\n            \"time\": \"2021-09-23T06:50:22.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43758.3984375,\n            \"side\": \"sell\",\n            \"size\": 0.00009999999747378752,\n            \"time\": \"2021-09-23T06:26:19.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43844.3984375,\n            \"side\": \"sell\",\n            \"size\": 0.00019999999494757503,\n            \"time\": \"2021-09-23T05:41:04.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43832.8984375,\n            \"side\": \"sell\",\n            \"size\": 0.00019999999494757503,\n            \"time\": \"2021-09-23T05:40:48.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43832.6015625,\n            \"side\": \"sell\",\n            \"size\": 0.0024999999441206455,\n            \"time\": \"2021-09-23T05:37:04.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43805.5,\n            \"side\": \"buy\",\n            \"size\": 0.0020000000949949026,\n            \"time\": \"2021-09-23T05:34:50.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43782,\n            \"side\": \"sell\",\n            \"size\": 0.0142000000923872,\n            \"time\": \"2021-09-23T05:33:53.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43780.69921875,\n            \"side\": \"sell\",\n            \"size\": 0.0066999997943639755,\n            \"time\": \"2021-09-23T05:32:50.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43800,\n            \"side\": \"sell\",\n            \"size\": 0.003000000026077032,\n            \"time\": \"2021-09-23T05:32:50.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43806.1015625,\n            \"side\": \"sell\",\n            \"size\": 0.025299999862909317,\n            \"time\": \"2021-09-23T05:32:50.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43850,\n            \"side\": \"sell\",\n            \"size\": 0.003000000026077032,\n            \"time\": \"2021-09-23T05:32:50.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43906.6015625,\n            \"side\": \"sell\",\n            \"size\": 0.015699999406933784,\n            \"time\": \"2021-09-23T05:24:40.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43920,\n            \"side\": \"sell\",\n            \"size\": 0.0020000000949949026,\n            \"time\": \"2021-09-23T05:24:40.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43990.8984375,\n            \"side\": \"buy\",\n            \"size\": 0.07750000059604645,\n            \"time\": \"2021-09-23T05:24:15.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43955.19921875,\n            \"side\": \"buy\",\n            \"size\": 0.025200000032782555,\n            \"time\": \"2021-09-23T05:24:15.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 43948.3984375,\n            \"side\": \"sell\",\n            \"size\": 0.012600000016391277,\n            \"time\": \"2021-09-23T05:24:01.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44121.8984375,\n            \"side\": \"buy\",\n            \"size\": 0.00019999999494757503,\n            \"time\": \"2021-09-23T05:13:32.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44059.8984375,\n            \"side\": \"sell\",\n            \"size\": 0.05000000074505806,\n            \"time\": \"2021-09-23T05:04:25.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44121.80078125,\n            \"side\": \"sell\",\n            \"size\": 0.025100000202655792,\n            \"time\": \"2021-09-23T05:04:25.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44159.5,\n            \"side\": \"buy\",\n            \"size\": 0.009999999776482582,\n            \"time\": \"2021-09-23T04:49:23.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44358,\n            \"side\": \"buy\",\n            \"size\": 0.04619999974966049,\n            \"time\": \"2021-09-23T04:40:41.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44295.19921875,\n            \"side\": \"buy\",\n            \"size\": 0.0044999998062849045,\n            \"time\": \"2021-09-23T04:40:41.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44295.19921875,\n            \"side\": \"buy\",\n            \"size\": 0.0010999999940395355,\n            \"time\": \"2021-09-23T04:40:41.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44282.3984375,\n            \"side\": \"buy\",\n            \"size\": 0.06750000268220901,\n            \"time\": \"2021-09-23T04:37:42.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44271.1015625,\n            \"side\": \"buy\",\n            \"size\": 0.025100000202655792,\n            \"time\": \"2021-09-23T04:37:42.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44267.80078125,\n            \"side\": \"buy\",\n            \"size\": 0.0010999999940395355,\n            \"time\": \"2021-09-23T04:37:42.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44242.80078125,\n            \"side\": \"buy\",\n            \"size\": 0.0032999999821186066,\n            \"time\": \"2021-09-23T04:37:42.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44215.6015625,\n            \"side\": \"buy\",\n            \"size\": 0.002199999988079071,\n            \"time\": \"2021-09-23T04:37:42.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44242.80078125,\n            \"side\": \"buy\",\n            \"size\": 0.0012000000569969416,\n            \"time\": \"2021-09-23T04:34:17.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44231.6015625,\n            \"side\": \"buy\",\n            \"size\": 0.002199999988079071,\n            \"time\": \"2021-09-23T04:34:17.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44222.19921875,\n            \"side\": \"buy\",\n            \"size\": 0.002199999988079071,\n            \"time\": \"2021-09-23T04:34:17.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44163.8984375,\n            \"side\": \"sell\",\n            \"size\": 0.03359999880194664,\n            \"time\": \"2021-09-23T04:30:30.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44200,\n            \"side\": \"sell\",\n            \"size\": 0.04129999876022339,\n            \"time\": \"2021-09-23T04:30:30.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44215.6015625,\n            \"side\": \"sell\",\n            \"size\": 0.025100000202655792,\n            \"time\": \"2021-09-23T04:30:30.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44243.6015625,\n            \"side\": \"buy\",\n            \"size\": 0.05420000106096268,\n            \"time\": \"2021-09-23T04:28:07.000Z\"\n        },\n        {\n            \"id\": \"\",\n            \"price\": 44239.69921875,\n            \"side\": \"buy\",\n            \"size\": 0.025100000202655792,\n            \"time\": \"2021-09-23T04:28:07.000Z\"\n        }\n    ]\n}"
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "markets - get candles/ohlcv by name",
@@ -695,75 +313,7 @@
 					]
 				}
 			},
-			"response": [
-				{
-					"name": "markets - get candles/ohlcv by name",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/markets/BTC-PERP/candles?resolution=60&start_time=1625922900&end_time=1631214960",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"markets",
-								"BTC-PERP",
-								"candles"
-							],
-							"query": [
-								{
-									"key": "resolution",
-									"value": "60"
-								},
-								{
-									"key": "start_time",
-									"value": "1625922900"
-								},
-								{
-									"key": "end_time",
-									"value": "1631214960"
-								}
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "34002"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"84d2-Zq2XDImXPAq27houhhi6VqGKoa8\""
-						},
-						{
-							"key": "Date",
-							"value": "Thu, 23 Sep 2021 07:37:05 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"success\": true,\n    \"result\": [\n        {\n            \"time\": 1629914400,\n            \"open\": 49000.80078125,\n            \"high\": 49000.80078125,\n            \"low\": 49000.80078125,\n            \"close\": 49000.80078125,\n            \"volume\": 0.00009999999747378752\n        },\n        {\n            \"time\": 1629918000,\n            \"open\": 48846.19921875,\n            \"high\": 48846.19921875,\n            \"low\": 48846.19921875,\n            \"close\": 48846.19921875,\n            \"volume\": 0.00019999999494757503\n        },\n        {\n            \"time\": 1629921600,\n            \"open\": 48846.19921875,\n            \"high\": 48846.19921875,\n            \"low\": 48846.19921875,\n            \"close\": 48846.19921875,\n            \"volume\": 0.0017999999690800905\n        },\n        {\n            \"time\": 1629925200,\n            \"open\": 48799.69921875,\n            \"high\": 48799.69921875,\n            \"low\": 48799.69921875,\n            \"close\": 48799.69921875,\n            \"volume\": 0.013199999928474426\n        },\n        {\n            \"time\": 1629928800,\n            \"open\": 49016.80078125,\n            \"high\": 49016.80078125,\n            \"low\": 49016.80078125,\n            \"close\": 49016.80078125,\n            \"volume\": 0.0010000000474974513\n        },\n        {\n            \"time\": 1629939600,\n            \"open\": 49323.30078125,\n            \"high\": 49323.30078125,\n            \"low\": 48858.19921875,\n            \"close\": 48858.19921875,\n            \"volume\": 0.00019999999494757503\n        },\n        {\n            \"time\": 1629957600,\n            \"open\": 47031.1015625,\n            \"high\": 47031.1015625,\n            \"low\": 46957.19921875,\n            \"close\": 47001.30078125,\n            \"volume\": 0.1702000005170703\n        },\n        {\n            \"time\": 1629961200,\n            \"open\": 46749.80078125,\n            \"high\": 46749.80078125,\n            \"low\": 46749.80078125,\n            \"close\": 46749.80078125,\n            \"volume\": 0.019999999552965164\n        },\n        {\n            \"time\": 1629990000,\n            \"open\": 46896.80078125,\n            \"high\": 46896.80078125,\n            \"low\": 46772.3984375,\n            \"close\": 46772.3984375,\n            \"volume\": 0.0009999999747378752\n        },\n        {\n            \"time\": 1630004400,\n            \"open\": 46844.6015625,\n            \"high\": 46844.6015625,\n            \"low\": 46844.6015625,\n            \"close\": 46844.6015625,\n            \"volume\": 0.00009999999747378752\n        },\n        {\n            \"time\": 1630008000,\n            \"open\": 46902.1015625,\n            \"high\": 46902.1015625,\n            \"low\": 46902.1015625,\n            \"close\": 46902.1015625,\n            \"volume\": 0.0020000000949949026\n        },\n        {\n            \"time\": 1630011600,\n            \"open\": 47225.3984375,\n            \"high\": 47225.3984375,\n            \"low\": 47158,\n            \"close\": 47158,\n            \"volume\": 0.00019999999494757503\n        },\n        {\n            \"time\": 1630033200,\n            \"open\": 47114.69921875,\n            \"high\": 47114.69921875,\n            \"low\": 47079.8984375,\n            \"close\": 47079.8984375,\n            \"volume\": 0.00019999999494757503\n        },\n        {\n            \"time\": 1630065600,\n            \"open\": 47388.69921875,\n            \"high\": 47388.69921875,\n            \"low\": 47388.69921875,\n            \"close\": 47388.69921875,\n            \"volume\": 0.002099999925121665\n        },\n        {\n            \"time\": 1630072800,\n            \"open\": 47288.19921875,\n            \"high\": 47288.19921875,\n            \"low\": 47288.19921875,\n            \"close\": 47288.19921875,\n            \"volume\": 0.0019000000320374966\n        },\n        {\n            \"time\": 1630101600,\n            \"open\": 48885.80078125,\n            \"high\": 48888,\n            \"low\": 48885.80078125,\n            \"close\": 48888,\n            \"volume\": 0.03079999948386103\n        },\n        {\n            \"time\": 1630108800,\n            \"open\": 48932,\n            \"high\": 49262.5,\n            \"low\": 48919.1015625,\n            \"close\": 49220,\n            \"volume\": 0.2243000006856164\n        },\n        {\n            \"time\": 1630155600,\n            \"open\": 48804.3984375,\n            \"high\": 48884,\n            \"low\": 48761.80078125,\n            \"close\": 48775.1015625,\n            \"volume\": 0.047300000791437924\n        },\n        {\n            \"time\": 1630162800,\n            \"open\": 48664.5,\n            \"high\": 48664.5,\n            \"low\": 48664.5,\n            \"close\": 48664.5,\n            \"volume\": 0.00019999999494757503\n        },\n        {\n            \"time\": 1630166400,\n            \"open\": 48809.5,\n            \"high\": 48809.5,\n            \"low\": 48809.5,\n            \"close\": 48809.5,\n            \"volume\": 0.00019999999494757503\n        },\n        {\n            \"time\": 1630173600,\n            \"open\": 48992.3984375,\n            \"high\": 48996.19921875,\n            \"low\": 48992.3984375,\n            \"close\": 48996.19921875,\n            \"volume\": 0.006199999945238233\n        },\n        {\n            \"time\": 1630177200,\n            \"open\": 48647.8984375,\n            \"high\": 48656.1015625,\n            \"low\": 48625.80078125,\n            \"close\": 48625.80078125,\n            \"volume\": 0.009000000078231096\n        },\n        {\n            \"time\": 1630180800,\n            \"open\": 48712.69921875,\n            \"high\": 48712.69921875,\n            \"low\": 48712.69921875,\n            \"close\": 48712.69921875,\n            \"volume\": 0.002400000113993883\n        },\n        {\n            \"time\": 1630188000,\n            \"open\": 48746.3984375,\n            \"high\": 48751.6015625,\n            \"low\": 48746.3984375,\n            \"close\": 48751.6015625,\n            \"volume\": 0.0024000000848900527\n        },\n        {\n            \"time\": 1630191600,\n            \"open\": 48834.1015625,\n            \"high\": 48834.1015625,\n            \"low\": 48805.19921875,\n            \"close\": 48805.19921875,\n            \"volume\": 0.004000000189989805\n        },\n        {\n            \"time\": 1630195200,\n            \"open\": 48972,\n            \"high\": 48972,\n            \"low\": 48961.80078125,\n            \"close\": 48961.80078125,\n            \"volume\": 0.0005999999848427251\n        },\n        {\n            \"time\": 1630198800,\n            \"open\": 48972,\n            \"high\": 48972,\n            \"low\": 48972,\n            \"close\": 48972,\n            \"volume\": 0.019600000232458115\n        },\n        {\n            \"time\": 1630213200,\n            \"open\": 48187.80078125,\n            \"high\": 48187.80078125,\n            \"low\": 48187.80078125,\n            \"close\": 48187.80078125,\n            \"volume\": 0.0017999999690800905\n        },\n        {\n            \"time\": 1630216800,\n            \"open\": 48333.30078125,\n            \"high\": 48463,\n            \"low\": 48333.30078125,\n            \"close\": 48463,\n            \"volume\": 0.0012000000569969416\n        },\n        {\n            \"time\": 1630227600,\n            \"open\": 48530.5,\n            \"high\": 48530.5,\n            \"low\": 48517.5,\n            \"close\": 48517.5,\n            \"volume\": 0.00039999998989515007\n        },\n        {\n            \"time\": 1630231200,\n            \"open\": 48503.1015625,\n            \"high\": 48503.1015625,\n            \"low\": 48503.1015625,\n            \"close\": 48503.1015625,\n            \"volume\": 0.00139999995008111\n        },\n        {\n            \"time\": 1630234800,\n            \"open\": 48496.1015625,\n            \"high\": 48496.1015625,\n            \"low\": 48496.1015625,\n            \"close\": 48496.1015625,\n            \"volume\": 0.3871999979019165\n        },\n        {\n            \"time\": 1630238400,\n            \"open\": 48496,\n            \"high\": 48534.8984375,\n            \"low\": 48246.5,\n            \"close\": 48534.8984375,\n            \"volume\": 0.4375999973999569\n        },\n        {\n            \"time\": 1630260000,\n            \"open\": 48782.5,\n            \"high\": 48795.5,\n            \"low\": 48782.5,\n            \"close\": 48795.5,\n            \"volume\": 0.0023999999393709004\n        },\n        {\n            \"time\": 1630263600,\n            \"open\": 48845.80078125,\n            \"high\": 48864.3984375,\n            \"low\": 48825.69921875,\n            \"close\": 48856.30078125,\n            \"volume\": 0.023799999660695903\n        },\n        {\n            \"time\": 1630267200,\n            \"open\": 48972.69921875,\n            \"high\": 48972.69921875,\n            \"low\": 48972.69921875,\n            \"close\": 48972.69921875,\n            \"volume\": 0.004999999888241291\n        },\n        {\n            \"time\": 1630274400,\n            \"open\": 49012.5,\n            \"high\": 49399.8984375,\n            \"low\": 49012.5,\n            \"close\": 49393.5,\n            \"volume\": 0.024599999756901525\n        },\n        {\n            \"time\": 1630285200,\n            \"open\": 49028.3984375,\n            \"high\": 49028.3984375,\n            \"low\": 48512.80078125,\n            \"close\": 48545.80078125,\n            \"volume\": 0.0221999998902902\n        },\n        {\n            \"time\": 1630292400,\n            \"open\": 48500,\n            \"high\": 48500,\n            \"low\": 48500,\n            \"close\": 48500,\n            \"volume\": 0.0009999999747378752\n        },\n        {\n            \"time\": 1630296000,\n            \"open\": 48000,\n            \"high\": 48000,\n            \"low\": 47870,\n            \"close\": 47870,\n            \"volume\": 0.010600000168778934\n        },\n        {\n            \"time\": 1630299600,\n            \"open\": 48053.30078125,\n            \"high\": 48053.30078125,\n            \"low\": 48053.30078125,\n            \"close\": 48053.30078125,\n            \"volume\": 0.00039999998989515007\n        },\n        {\n            \"time\": 1630303200,\n            \"open\": 47970,\n            \"high\": 48020.69921875,\n            \"low\": 47858.30078125,\n            \"close\": 47858.30078125,\n            \"volume\": 0.0021999999444233254\n        },\n        {\n            \"time\": 1630332000,\n            \"open\": 47842.1015625,\n            \"high\": 47842.1015625,\n            \"low\": 47820.19921875,\n            \"close\": 47820.19921875,\n            \"volume\": 0.0020000000367872417\n        },\n        {\n            \"time\": 1630335600,\n            \"open\": 47889.80078125,\n            \"high\": 48108.69921875,\n            \"low\": 47889.80078125,\n            \"close\": 48108.69921875,\n            \"volume\": 0.003000000142492354\n        },\n        {\n            \"time\": 1630350000,\n            \"open\": 48322.3984375,\n            \"high\": 48322.3984375,\n            \"low\": 48322.3984375,\n            \"close\": 48322.3984375,\n            \"volume\": 0.0007999999797903001\n        },\n        {\n            \"time\": 1630353600,\n            \"open\": 48697.5,\n            \"high\": 48697.5,\n            \"low\": 48647,\n            \"close\": 48647,\n            \"volume\": 0.004799999995157123\n        },\n        {\n            \"time\": 1630357200,\n            \"open\": 48356.6015625,\n            \"high\": 48356.6015625,\n            \"low\": 48356.6015625,\n            \"close\": 48356.6015625,\n            \"volume\": 0.00019999999494757503\n        },\n        {\n            \"time\": 1630360800,\n            \"open\": 47881.5,\n            \"high\": 47881.5,\n            \"low\": 47881.5,\n            \"close\": 47881.5,\n            \"volume\": 0.0007999999797903001\n        },\n        {\n            \"time\": 1630364400,\n            \"open\": 47584.8984375,\n            \"high\": 47594.5,\n            \"low\": 47584.8984375,\n            \"close\": 47594.5,\n            \"volume\": 0.0019999999494757503\n        },\n        {\n            \"time\": 1630368000,\n            \"open\": 47151.80078125,\n            \"high\": 47151.80078125,\n            \"low\": 47151.80078125,\n            \"close\": 47151.80078125,\n            \"volume\": 0.00039999998989515007\n        },\n        {\n            \"time\": 1630371600,\n            \"open\": 46933.19921875,\n            \"high\": 46933.19921875,\n            \"low\": 46933.19921875,\n            \"close\": 46933.19921875,\n            \"volume\": 0.0026000000070780516\n        },\n        {\n            \"time\": 1630389600,\n            \"open\": 46877,\n            \"high\": 46877,\n            \"low\": 46877,\n            \"close\": 46877,\n            \"volume\": 0.005799999926239252\n        },\n        {\n            \"time\": 1630407600,\n            \"open\": 46877,\n            \"high\": 47715.5,\n            \"low\": 46877,\n            \"close\": 47702.3984375,\n            \"volume\": 0.8079999990295619\n        },\n        {\n            \"time\": 1630425600,\n            \"open\": 47468,\n            \"high\": 47468,\n            \"low\": 47468,\n            \"close\": 47468,\n            \"volume\": 0.00019999999494757503\n        },\n        {\n            \"time\": 1630432800,\n            \"open\": 47064.3984375,\n            \"high\": 47302.6015625,\n            \"low\": 47064.3984375,\n            \"close\": 47255.8984375,\n            \"volume\": 0.011600000318139791\n        },\n        {\n            \"time\": 1630436400,\n            \"open\": 47334.6015625,\n            \"high\": 47359.80078125,\n            \"low\": 47326.6015625,\n            \"close\": 47337.3984375,\n            \"volume\": 5.89269996189978\n        },\n        {\n            \"time\": 1630440000,\n            \"open\": 47337.5,\n            \"high\": 47338.30078125,\n            \"low\": 47125,\n            \"close\": 47125,\n            \"volume\": 1.106599988808739\n        },\n        {\n            \"time\": 1630443600,\n            \"open\": 47125,\n            \"high\": 47251.80078125,\n            \"low\": 46923.19921875,\n            \"close\": 47154.1015625,\n            \"volume\": 4.789599977448233\n        },\n        {\n            \"time\": 1630447200,\n            \"open\": 47138.80078125,\n            \"high\": 47138.80078125,\n            \"low\": 46956.69921875,\n            \"close\": 47093.5,\n            \"volume\": 0.43509999627713114\n        },\n        {\n            \"time\": 1630450800,\n            \"open\": 47187.3984375,\n            \"high\": 47275,\n            \"low\": 47179,\n            \"close\": 47274.5,\n            \"volume\": 0.4232999963860493\n        },\n        {\n            \"time\": 1630454400,\n            \"open\": 47177.19921875,\n            \"high\": 47177.19921875,\n            \"low\": 46875,\n            \"close\": 46875,\n            \"volume\": 1.840599970659241\n        },\n        {\n            \"time\": 1630458000,\n            \"open\": 46875,\n            \"high\": 46901.80078125,\n            \"low\": 46619.5,\n            \"close\": 46901.80078125,\n            \"volume\": 0.4684000070847105\n        },\n        {\n            \"time\": 1630461600,\n            \"open\": 46910.1015625,\n            \"high\": 47108.69921875,\n            \"low\": 46834.1015625,\n            \"close\": 46914.3984375,\n            \"volume\": 1.7004999950149795\n        },\n        {\n            \"time\": 1630465200,\n            \"open\": 46921.30078125,\n            \"high\": 46967,\n            \"low\": 46793.1015625,\n            \"close\": 46966.80078125,\n            \"volume\": 2.370599990419578\n        },\n        {\n            \"time\": 1630468800,\n            \"open\": 47066.30078125,\n            \"high\": 47249.3984375,\n            \"low\": 47066.30078125,\n            \"close\": 47118,\n            \"volume\": 16.093300388347416\n        },\n        {\n            \"time\": 1630472400,\n            \"open\": 47275,\n            \"high\": 47472.8984375,\n            \"low\": 47275,\n            \"close\": 47468.30078125,\n            \"volume\": 1.2473999824142084\n        },\n        {\n            \"time\": 1630476000,\n            \"open\": 47475,\n            \"high\": 47505.1015625,\n            \"low\": 47272.69921875,\n            \"close\": 47350,\n            \"volume\": 9.030000110033143\n        },\n        {\n            \"time\": 1630479600,\n            \"open\": 47350,\n            \"high\": 47350,\n            \"low\": 47235.69921875,\n            \"close\": 47237.5,\n            \"volume\": 1.2152000038186088\n        },\n        {\n            \"time\": 1630483200,\n            \"open\": 47206,\n            \"high\": 47349.5,\n            \"low\": 47206,\n            \"close\": 47302.8984375,\n            \"volume\": 4.199999954551458\n        },\n        {\n            \"time\": 1630486800,\n            \"open\": 47326.30078125,\n            \"high\": 47350,\n            \"low\": 47326.30078125,\n            \"close\": 47350,\n            \"volume\": 2.2224000468850136\n        },\n        {\n            \"time\": 1630490400,\n            \"open\": 47349.8984375,\n            \"high\": 47762.6015625,\n            \"low\": 47349.80078125,\n            \"close\": 47619.30078125,\n            \"volume\": 145.18420038506156\n        },\n        {\n            \"time\": 1630494000,\n            \"open\": 47620,\n            \"high\": 47756.19921875,\n            \"low\": 47620,\n            \"close\": 47701.80078125,\n            \"volume\": 0.2995000052615069\n        },\n        {\n            \"time\": 1630501200,\n            \"open\": 47770,\n            \"high\": 47770.1015625,\n            \"low\": 47566,\n            \"close\": 47566,\n            \"volume\": 66.64100000823964\n        },\n        {\n            \"time\": 1630504800,\n            \"open\": 47560.5,\n            \"high\": 47581.1015625,\n            \"low\": 47475,\n            \"close\": 47486,\n            \"volume\": 2.855699992767768\n        },\n        {\n            \"time\": 1630508400,\n            \"open\": 47485,\n            \"high\": 47490,\n            \"low\": 47485,\n            \"close\": 47486.3984375,\n            \"volume\": 4.628300077478343\n        },\n        {\n            \"time\": 1630512000,\n            \"open\": 47487,\n            \"high\": 48500,\n            \"low\": 47487,\n            \"close\": 48465.6015625,\n            \"volume\": 59.558000268094474\n        },\n        {\n            \"time\": 1630515600,\n            \"open\": 48453.5,\n            \"high\": 48799,\n            \"low\": 48404.30078125,\n            \"close\": 48762.69921875,\n            \"volume\": 8.928400024102302\n        },\n        {\n            \"time\": 1630519200,\n            \"open\": 48775.6015625,\n            \"high\": 48996.30078125,\n            \"low\": 48708.80078125,\n            \"close\": 48708.80078125,\n            \"volume\": 21.64030013726733\n        },\n        {\n            \"time\": 1630522800,\n            \"open\": 48708.8984375,\n            \"high\": 48709.6015625,\n            \"low\": 48137.1015625,\n            \"close\": 48233.19921875,\n            \"volume\": 10.90820001521206\n        },\n        {\n            \"time\": 1630526400,\n            \"open\": 48224,\n            \"high\": 48331.19921875,\n            \"low\": 48186.6015625,\n            \"close\": 48297,\n            \"volume\": 1.1281000038725324\n        },\n        {\n            \"time\": 1630530000,\n            \"open\": 48358.69921875,\n            \"high\": 48520.69921875,\n            \"low\": 48358.69921875,\n            \"close\": 48422,\n            \"volume\": 1.7427000110474182\n        },\n        {\n            \"time\": 1630533600,\n            \"open\": 48421,\n            \"high\": 48730,\n            \"low\": 48390.3984375,\n            \"close\": 48461,\n            \"volume\": 3.303799980225449\n        },\n        {\n            \"time\": 1630537200,\n            \"open\": 48513.69921875,\n            \"high\": 48903.1015625,\n            \"low\": 48513.69921875,\n            \"close\": 48893.8984375,\n            \"volume\": 3.9552999951629317\n        },\n        {\n            \"time\": 1630540800,\n            \"open\": 48873.6015625,\n            \"high\": 49000,\n            \"low\": 48647,\n            \"close\": 48804.19921875,\n            \"volume\": 6.724900090783194\n        },\n        {\n            \"time\": 1630544400,\n            \"open\": 48774.6015625,\n            \"high\": 49867.8984375,\n            \"low\": 48773.80078125,\n            \"close\": 49777.1015625,\n            \"volume\": 10.64920006939792\n        },\n        {\n            \"time\": 1630548000,\n            \"open\": 49767.80078125,\n            \"high\": 49944,\n            \"low\": 49664.5,\n            \"close\": 49743.6015625,\n            \"volume\": 20.50760002808238\n        },\n        {\n            \"time\": 1630551600,\n            \"open\": 49679,\n            \"high\": 49747,\n            \"low\": 49663.1015625,\n            \"close\": 49672.1015625,\n            \"volume\": 5.578999946592376\n        },\n        {\n            \"time\": 1630555200,\n            \"open\": 49671.8984375,\n            \"high\": 49671.8984375,\n            \"low\": 49417.5,\n            \"close\": 49494.80078125,\n            \"volume\": 3.271000010499847\n        },\n        {\n            \"time\": 1630558800,\n            \"open\": 49486,\n            \"high\": 49764,\n            \"low\": 49486,\n            \"close\": 49613,\n            \"volume\": 11.560300198456389\n        },\n        {\n            \"time\": 1630562400,\n            \"open\": 49598.69921875,\n            \"high\": 50059.5,\n            \"low\": 49598.69921875,\n            \"close\": 50041.3984375,\n            \"volume\": 12.885400013045\n        },\n        {\n            \"time\": 1630566000,\n            \"open\": 50052.19921875,\n            \"high\": 50396.3984375,\n            \"low\": 49803.1015625,\n            \"close\": 49937.80078125,\n            \"volume\": 12.853199913253775\n        },\n        {\n            \"time\": 1630569600,\n            \"open\": 49953.8984375,\n            \"high\": 50249.1015625,\n            \"low\": 49837.80078125,\n            \"close\": 50225.1015625,\n            \"volume\": 25.987799906695727\n        },\n        {\n            \"time\": 1630573200,\n            \"open\": 50167,\n            \"high\": 50173.3984375,\n            \"low\": 49863.30078125,\n            \"close\": 49874.1015625,\n            \"volume\": 23.33379987513763\n        },\n        {\n            \"time\": 1630576800,\n            \"open\": 49886.3984375,\n            \"high\": 50148.8984375,\n            \"low\": 49829.80078125,\n            \"close\": 50099,\n            \"volume\": 28.80849987934198\n        },\n        {\n            \"time\": 1630580400,\n            \"open\": 50082.8984375,\n            \"high\": 50223.3984375,\n            \"low\": 50000,\n            \"close\": 50178.80078125,\n            \"volume\": 27.062800369458273\n        },\n        {\n            \"time\": 1630584000,\n            \"open\": 50175,\n            \"high\": 50249.80078125,\n            \"low\": 50000.19921875,\n            \"close\": 50049.6015625,\n            \"volume\": 2.4840000096155563\n        },\n        {\n            \"time\": 1630587600,\n            \"open\": 50030.3984375,\n            \"high\": 50305.69921875,\n            \"low\": 50030.3984375,\n            \"close\": 50238.8984375,\n            \"volume\": 12.24089990255743\n        },\n        {\n            \"time\": 1630591200,\n            \"open\": 50269.80078125,\n            \"high\": 50489.30078125,\n            \"low\": 49728.80078125,\n            \"close\": 49740,\n            \"volume\": 25.581399907598097\n        },\n        {\n            \"time\": 1630594800,\n            \"open\": 49770,\n            \"high\": 49895.5,\n            \"low\": 49690.1015625,\n            \"close\": 49769.80078125,\n            \"volume\": 1.6132000114084803\n        },\n        {\n            \"time\": 1630598400,\n            \"open\": 49680,\n            \"high\": 49843.1015625,\n            \"low\": 49680,\n            \"close\": 49806.8984375,\n            \"volume\": 0.3160000038915314\n        },\n        {\n            \"time\": 1630602000,\n            \"open\": 49754,\n            \"high\": 49754,\n            \"low\": 49448.80078125,\n            \"close\": 49495.3984375,\n            \"volume\": 3.7046999479352962\n        },\n        {\n            \"time\": 1630605600,\n            \"open\": 49600,\n            \"high\": 49650.1015625,\n            \"low\": 49474.5,\n            \"close\": 49476.1015625,\n            \"volume\": 4.322600083200086\n        },\n        {\n            \"time\": 1630609200,\n            \"open\": 49512.3984375,\n            \"high\": 49512.3984375,\n            \"low\": 49474.5,\n            \"close\": 49485.69921875,\n            \"volume\": 0.5881999931298196\n        },\n        {\n            \"time\": 1630612800,\n            \"open\": 49474.6015625,\n            \"high\": 50019.19921875,\n            \"low\": 49474.6015625,\n            \"close\": 49832.5,\n            \"volume\": 8.865199977517477\n        },\n        {\n            \"time\": 1630616400,\n            \"open\": 49882,\n            \"high\": 49946.80078125,\n            \"low\": 49641,\n            \"close\": 49731.5,\n            \"volume\": 0.9658999845632934\n        },\n        {\n            \"time\": 1630620000,\n            \"open\": 50017.19921875,\n            \"high\": 50033.3984375,\n            \"low\": 49897.80078125,\n            \"close\": 49951.3984375,\n            \"volume\": 0.8953000212350162\n        },\n        {\n            \"time\": 1630623600,\n            \"open\": 49889.1015625,\n            \"high\": 49889.19921875,\n            \"low\": 49526,\n            \"close\": 49526,\n            \"volume\": 1.7919999784135143\n        },\n        {\n            \"time\": 1630627200,\n            \"open\": 49525,\n            \"high\": 49525.8984375,\n            \"low\": 48776.5,\n            \"close\": 48776.5,\n            \"volume\": 6.658399991451006\n        },\n        {\n            \"time\": 1630630800,\n            \"open\": 48775.1015625,\n            \"high\": 48909.3984375,\n            \"low\": 48540.80078125,\n            \"close\": 48699.19921875,\n            \"volume\": 4.969800008220773\n        },\n        {\n            \"time\": 1630634400,\n            \"open\": 48668.6015625,\n            \"high\": 49161.1015625,\n            \"low\": 48668.6015625,\n            \"close\": 49161.1015625,\n            \"volume\": 2.2210000505438074\n        },\n        {\n            \"time\": 1630638000,\n            \"open\": 49142.8984375,\n            \"high\": 49526.1015625,\n            \"low\": 49076.1015625,\n            \"close\": 49526.1015625,\n            \"volume\": 0.4632999935784028\n        },\n        {\n            \"time\": 1630641600,\n            \"open\": 49575.30078125,\n            \"high\": 49654.5,\n            \"low\": 49575.30078125,\n            \"close\": 49654.5,\n            \"volume\": 0.1081999996677041\n        },\n        {\n            \"time\": 1630645200,\n            \"open\": 49787.1015625,\n            \"high\": 49788.19921875,\n            \"low\": 49578.3984375,\n            \"close\": 49578.3984375,\n            \"volume\": 2.192299953181646\n        },\n        {\n            \"time\": 1630648800,\n            \"open\": 49571.3984375,\n            \"high\": 49571.3984375,\n            \"low\": 49469.3984375,\n            \"close\": 49469.3984375,\n            \"volume\": 0.019999999552965164\n        },\n        {\n            \"time\": 1630652400,\n            \"open\": 49449.80078125,\n            \"high\": 49608.5,\n            \"low\": 49347.8984375,\n            \"close\": 49348.19921875,\n            \"volume\": 0.359400000423193\n        },\n        {\n            \"time\": 1630656000,\n            \"open\": 49384.69921875,\n            \"high\": 49899,\n            \"low\": 49283.3984375,\n            \"close\": 49899,\n            \"volume\": 0.34619999676942825\n        },\n        {\n            \"time\": 1630659600,\n            \"open\": 49898.8984375,\n            \"high\": 50163.30078125,\n            \"low\": 49828.1015625,\n            \"close\": 49903.8984375,\n            \"volume\": 3.1260999344376614\n        },\n        {\n            \"time\": 1630663200,\n            \"open\": 50022.3984375,\n            \"high\": 50441.6015625,\n            \"low\": 49747.69921875,\n            \"close\": 49747.69921875,\n            \"volume\": 0.640700007788837\n        },\n        {\n            \"time\": 1630666800,\n            \"open\": 49707.3984375,\n            \"high\": 50182.8984375,\n            \"low\": 49707.3984375,\n            \"close\": 50182.8984375,\n            \"volume\": 0.008900000131689012\n        },\n        {\n            \"time\": 1630670400,\n            \"open\": 50222.8984375,\n            \"high\": 50800,\n            \"low\": 50080.30078125,\n            \"close\": 50770.6015625,\n            \"volume\": 1.8428999744792236\n        },\n        {\n            \"time\": 1630674000,\n            \"open\": 50799.8984375,\n            \"high\": 51004.69921875,\n            \"low\": 50720,\n            \"close\": 50797.19921875,\n            \"volume\": 0.2186000037472695\n        },\n        {\n            \"time\": 1630677600,\n            \"open\": 50900,\n            \"high\": 50900,\n            \"low\": 50476.8984375,\n            \"close\": 50715.8984375,\n            \"volume\": 2.194599997761543\n        },\n        {\n            \"time\": 1630681200,\n            \"open\": 50854.69921875,\n            \"high\": 50891.5,\n            \"low\": 50675.69921875,\n            \"close\": 50675.69921875,\n            \"volume\": 1.1700000129567343\n        },\n        {\n            \"time\": 1630684800,\n            \"open\": 50698.1015625,\n            \"high\": 50897.69921875,\n            \"low\": 50684,\n            \"close\": 50769.19921875,\n            \"volume\": 3.6953999600955285\n        },\n        {\n            \"time\": 1630688400,\n            \"open\": 50719.69921875,\n            \"high\": 50945.30078125,\n            \"low\": 50548.6015625,\n            \"close\": 50658.69921875,\n            \"volume\": 2.7920999882917386\n        },\n        {\n            \"time\": 1630692000,\n            \"open\": 50632.3984375,\n            \"high\": 50764.30078125,\n            \"low\": 50510,\n            \"close\": 50692.80078125,\n            \"volume\": 0.09989999977551633\n        },\n        {\n            \"time\": 1630695600,\n            \"open\": 50673.80078125,\n            \"high\": 50678.80078125,\n            \"low\": 50519.30078125,\n            \"close\": 50602.19921875,\n            \"volume\": 0.08630000049015507\n        },\n        {\n            \"time\": 1630699200,\n            \"open\": 50590.30078125,\n            \"high\": 50602.3984375,\n            \"low\": 50250,\n            \"close\": 50403.5,\n            \"volume\": 0.5305000114894938\n        },\n        {\n            \"time\": 1630702800,\n            \"open\": 50370.30078125,\n            \"high\": 50431.19921875,\n            \"low\": 50252,\n            \"close\": 50283.69921875,\n            \"volume\": 0.6490000138583127\n        },\n        {\n            \"time\": 1630706400,\n            \"open\": 50284.80078125,\n            \"high\": 50338.30078125,\n            \"low\": 49835.1015625,\n            \"close\": 49835.1015625,\n            \"volume\": 2.41000004914531\n        },\n        {\n            \"time\": 1630710000,\n            \"open\": 49860.69921875,\n            \"high\": 50248,\n            \"low\": 49829.19921875,\n            \"close\": 50221.80078125,\n            \"volume\": 1.0680000061402097\n        },\n        {\n            \"time\": 1630713600,\n            \"open\": 50132.5,\n            \"high\": 50228.6015625,\n            \"low\": 49934,\n            \"close\": 50112.6015625,\n            \"volume\": 2.5974999938625842\n        },\n        {\n            \"time\": 1630717200,\n            \"open\": 50113.80078125,\n            \"high\": 50113.80078125,\n            \"low\": 49956.3984375,\n            \"close\": 49956.8984375,\n            \"volume\": 0.5643000049749389\n        },\n        {\n            \"time\": 1630720800,\n            \"open\": 49957,\n            \"high\": 50080.19921875,\n            \"low\": 49915.69921875,\n            \"close\": 50080.19921875,\n            \"volume\": 3.7616999979582033\n        },\n        {\n            \"time\": 1630724400,\n            \"open\": 50080.1015625,\n            \"high\": 50499,\n            \"low\": 50080.1015625,\n            \"close\": 50499,\n            \"volume\": 0.05969999945227755\n        },\n        {\n            \"time\": 1630728000,\n            \"open\": 50483.19921875,\n            \"high\": 50586.69921875,\n            \"low\": 50414.8984375,\n            \"close\": 50585.30078125,\n            \"volume\": 0.8302000143667101\n        },\n        {\n            \"time\": 1630731600,\n            \"open\": 50490.6015625,\n            \"high\": 50490.6015625,\n            \"low\": 50325.5,\n            \"close\": 50375.8984375,\n            \"volume\": 0.13500000134808943\n        },\n        {\n            \"time\": 1630735200,\n            \"open\": 50368.6015625,\n            \"high\": 50511,\n            \"low\": 50368.6015625,\n            \"close\": 50511,\n            \"volume\": 0.8025999846213381\n        },\n        {\n            \"time\": 1630738800,\n            \"open\": 50354.6015625,\n            \"high\": 50354.80078125,\n            \"low\": 50354.6015625,\n            \"close\": 50354.80078125,\n            \"volume\": 0.007799999955750536\n        },\n        {\n            \"time\": 1630742400,\n            \"open\": 50350,\n            \"high\": 50350,\n            \"low\": 50235.1015625,\n            \"close\": 50235.69921875,\n            \"volume\": 0.0009999999747378752\n        },\n        {\n            \"time\": 1630746000,\n            \"open\": 50472,\n            \"high\": 50472.69921875,\n            \"low\": 50472,\n            \"close\": 50472.69921875,\n            \"volume\": 0.03570000079344027\n        },\n        {\n            \"time\": 1630749600,\n            \"open\": 50517.30078125,\n            \"high\": 50618.1015625,\n            \"low\": 49854.69921875,\n            \"close\": 50094.69921875,\n            \"volume\": 11.258199856041756\n        },\n        {\n            \"time\": 1630753200,\n            \"open\": 50028,\n            \"high\": 50154.19921875,\n            \"low\": 49934.69921875,\n            \"close\": 49995.69921875,\n            \"volume\": 0.09149999944202136\n        },\n        {\n            \"time\": 1630756800,\n            \"open\": 50035,\n            \"high\": 50353.80078125,\n            \"low\": 50035,\n            \"close\": 50353.80078125,\n            \"volume\": 0.02150000020628795\n        },\n        {\n            \"time\": 1630760400,\n            \"open\": 50320,\n            \"high\": 50376.5,\n            \"low\": 50320,\n            \"close\": 50376.5,\n            \"volume\": 0.05450000008568168\n        },\n        {\n            \"time\": 1630764000,\n            \"open\": 50289.80078125,\n            \"high\": 50289.80078125,\n            \"low\": 50018.69921875,\n            \"close\": 50069.5,\n            \"volume\": 0.8699000131164212\n        },\n        {\n            \"time\": 1630767600,\n            \"open\": 50129.30078125,\n            \"high\": 50129.3984375,\n            \"low\": 50007.5,\n            \"close\": 50113.69921875,\n            \"volume\": 0.39430000039283186\n        },\n        {\n            \"time\": 1630771200,\n            \"open\": 50013,\n            \"high\": 50124.8984375,\n            \"low\": 50013,\n            \"close\": 50124.8984375,\n            \"volume\": 0.2837000007275492\n        },\n        {\n            \"time\": 1630774800,\n            \"open\": 50031.5,\n            \"high\": 50031.5,\n            \"low\": 49700.1015625,\n            \"close\": 49908.19921875,\n            \"volume\": 13.929600152339844\n        },\n        {\n            \"time\": 1630778400,\n            \"open\": 49985,\n            \"high\": 50181.19921875,\n            \"low\": 49985,\n            \"close\": 50149.1015625,\n            \"volume\": 4.608099994751683\n        },\n        {\n            \"time\": 1630782000,\n            \"open\": 50093.5,\n            \"high\": 50178.19921875,\n            \"low\": 49901.1015625,\n            \"close\": 50178.19921875,\n            \"volume\": 0.426600010941911\n        },\n        {\n            \"time\": 1630785600,\n            \"open\": 50138.8984375,\n            \"high\": 50181.19921875,\n            \"low\": 50138.8984375,\n            \"close\": 50181.1015625,\n            \"volume\": 0.13490000024467008\n        },\n        {\n            \"time\": 1630789200,\n            \"open\": 50181.19921875,\n            \"high\": 50181.19921875,\n            \"low\": 50181.1015625,\n            \"close\": 50181.1015625,\n            \"volume\": 0.45529999549034983\n        },\n        {\n            \"time\": 1630792800,\n            \"open\": 50181.19921875,\n            \"high\": 50369.69921875,\n            \"low\": 50100,\n            \"close\": 50100,\n            \"volume\": 5.718899945284647\n        },\n        {\n            \"time\": 1630796400,\n            \"open\": 50000.19921875,\n            \"high\": 50103.1015625,\n            \"low\": 50000.19921875,\n            \"close\": 50103.1015625,\n            \"volume\": 0.2420000023485045\n        },\n        {\n            \"time\": 1630800000,\n            \"open\": 50000,\n            \"high\": 50089.1015625,\n            \"low\": 49909.30078125,\n            \"close\": 50089.1015625,\n            \"volume\": 3.0399999871006003\n        },\n        {\n            \"time\": 1630803600,\n            \"open\": 50103.1015625,\n            \"high\": 50175,\n            \"low\": 50103.1015625,\n            \"close\": 50175,\n            \"volume\": 0.04690000179107301\n        },\n        {\n            \"time\": 1630807200,\n            \"open\": 50194.30078125,\n            \"high\": 50379,\n            \"low\": 50194.30078125,\n            \"close\": 50343.3984375,\n            \"volume\": 0.5442000126640778\n        },\n        {\n            \"time\": 1630810800,\n            \"open\": 50260,\n            \"high\": 50260,\n            \"low\": 50008.80078125,\n            \"close\": 50008.80078125,\n            \"volume\": 0.43739999923855066\n        },\n        {\n            \"time\": 1630814400,\n            \"open\": 49909.3984375,\n            \"high\": 49946.6015625,\n            \"low\": 49909.3984375,\n            \"close\": 49909.3984375,\n            \"volume\": 0.025699999649077654\n        },\n        {\n            \"time\": 1630818000,\n            \"open\": 49909.3984375,\n            \"high\": 50034.5,\n            \"low\": 49909.30078125,\n            \"close\": 49909.30078125,\n            \"volume\": 0.5611000052886084\n        },\n        {\n            \"time\": 1630821600,\n            \"open\": 49909.30078125,\n            \"high\": 50045.6015625,\n            \"low\": 49750.1015625,\n            \"close\": 50045.6015625,\n            \"volume\": 1.6246000149694737\n        },\n        {\n            \"time\": 1630825200,\n            \"open\": 50017.19921875,\n            \"high\": 50221.30078125,\n            \"low\": 50001.1015625,\n            \"close\": 50058.30078125,\n            \"volume\": 0.14940000496426364\n        },\n        {\n            \"time\": 1630828800,\n            \"open\": 50001,\n            \"high\": 50237,\n            \"low\": 50001,\n            \"close\": 50237,\n            \"volume\": 0.10010000022884924\n        },\n        {\n            \"time\": 1630832400,\n            \"open\": 50265.19921875,\n            \"high\": 50265.19921875,\n            \"low\": 50265.19921875,\n            \"close\": 50265.19921875,\n            \"volume\": 0.000699999975040555\n        },\n        {\n            \"time\": 1630836000,\n            \"open\": 50286.80078125,\n            \"high\": 50365.19921875,\n            \"low\": 50267.69921875,\n            \"close\": 50267.69921875,\n            \"volume\": 0.29400000006717164\n        },\n        {\n            \"time\": 1630839600,\n            \"open\": 50136.5,\n            \"high\": 50437.6015625,\n            \"low\": 50032,\n            \"close\": 50356.69921875,\n            \"volume\": 0.6524999975590617\n        },\n        {\n            \"time\": 1630843200,\n            \"open\": 50281.6015625,\n            \"high\": 50425,\n            \"low\": 50281.6015625,\n            \"close\": 50348.69921875,\n            \"volume\": 0.4712000049839844\n        },\n        {\n            \"time\": 1630846800,\n            \"open\": 50264.80078125,\n            \"high\": 50290.5,\n            \"low\": 50264.80078125,\n            \"close\": 50290.5,\n            \"volume\": 0.01719999982014997\n        },\n        {\n            \"time\": 1630850400,\n            \"open\": 50290.5,\n            \"high\": 50628.8984375,\n            \"low\": 50290.5,\n            \"close\": 50408.5,\n            \"volume\": 4.538999995100312\n        },\n        {\n            \"time\": 1630854000,\n            \"open\": 50402.3984375,\n            \"high\": 50443.19921875,\n            \"low\": 50336.8984375,\n            \"close\": 50434.19921875,\n            \"volume\": 0.03419999983452726\n        },\n        {\n            \"time\": 1630857600,\n            \"open\": 50387.19921875,\n            \"high\": 50590.19921875,\n            \"low\": 50330.6015625,\n            \"close\": 50590.19921875,\n            \"volume\": 0.7367000239464687\n        },\n        {\n            \"time\": 1630861200,\n            \"open\": 50589.1015625,\n            \"high\": 50645,\n            \"low\": 50468,\n            \"close\": 50498.69921875,\n            \"volume\": 0.38489999435842037\n        },\n        {\n            \"time\": 1630864800,\n            \"open\": 50417.6015625,\n            \"high\": 50571.30078125,\n            \"low\": 50417.6015625,\n            \"close\": 50571.30078125,\n            \"volume\": 0.1723999996247585\n        },\n        {\n            \"time\": 1630868400,\n            \"open\": 50557.5,\n            \"high\": 51036.80078125,\n            \"low\": 50557.5,\n            \"close\": 50934.6015625,\n            \"volume\": 3.4354000232488033\n        },\n        {\n            \"time\": 1630872000,\n            \"open\": 50934.6015625,\n            \"high\": 51909.69921875,\n            \"low\": 50934.6015625,\n            \"close\": 51909.69921875,\n            \"volume\": 4.818599965801695\n        },\n        {\n            \"time\": 1630875600,\n            \"open\": 52000,\n            \"high\": 52000,\n            \"low\": 51744.6015625,\n            \"close\": 51889.8984375,\n            \"volume\": 0.1397999987093499\n        },\n        {\n            \"time\": 1630879200,\n            \"open\": 51862.69921875,\n            \"high\": 51935.6015625,\n            \"low\": 51667,\n            \"close\": 51935.6015625,\n            \"volume\": 1.572500037480495\n        },\n        {\n            \"time\": 1630882800,\n            \"open\": 51948.6015625,\n            \"high\": 51982.8984375,\n            \"low\": 51765.30078125,\n            \"close\": 51773,\n            \"volume\": 0.5462999984592898\n        },\n        {\n            \"time\": 1630886400,\n            \"open\": 51886.80078125,\n            \"high\": 52000,\n            \"low\": 51717.1015625,\n            \"close\": 51900,\n            \"volume\": 0.6010999966674717\n        },\n        {\n            \"time\": 1630890000,\n            \"open\": 51900,\n            \"high\": 52001.30078125,\n            \"low\": 51898.30078125,\n            \"close\": 51947.30078125,\n            \"volume\": 0.19060000429453794\n        },\n        {\n            \"time\": 1630893600,\n            \"open\": 51940.6015625,\n            \"high\": 51967.30078125,\n            \"low\": 51823.80078125,\n            \"close\": 51823.80078125,\n            \"volume\": 0.3475000136604649\n        },\n        {\n            \"time\": 1630897200,\n            \"open\": 51873.30078125,\n            \"high\": 51873.30078125,\n            \"low\": 51703.1015625,\n            \"close\": 51703.1015625,\n            \"volume\": 0.0397000001030392\n        },\n        {\n            \"time\": 1630900800,\n            \"open\": 51738.3984375,\n            \"high\": 51875,\n            \"low\": 51738.3984375,\n            \"close\": 51755.1015625,\n            \"volume\": 0.21059999882709235\n        },\n        {\n            \"time\": 1630904400,\n            \"open\": 51788.69921875,\n            \"high\": 51979.6015625,\n            \"low\": 51759,\n            \"close\": 51938.69921875,\n            \"volume\": 0.40100000442180317\n        },\n        {\n            \"time\": 1630908000,\n            \"open\": 51966.1015625,\n            \"high\": 52000,\n            \"low\": 51907.1015625,\n            \"close\": 52000,\n            \"volume\": 2.2103999895916786\n        },\n        {\n            \"time\": 1630911600,\n            \"open\": 52000,\n            \"high\": 52000.5,\n            \"low\": 51850,\n            \"close\": 51850,\n            \"volume\": 0.9482000147982035\n        },\n        {\n            \"time\": 1630915200,\n            \"open\": 51875.8984375,\n            \"high\": 51922.69921875,\n            \"low\": 51830,\n            \"close\": 51830,\n            \"volume\": 0.34470001014415175\n        },\n        {\n            \"time\": 1630918800,\n            \"open\": 51861.80078125,\n            \"high\": 52037.3984375,\n            \"low\": 51861.80078125,\n            \"close\": 52037.3984375,\n            \"volume\": 0.7843999927281402\n        },\n        {\n            \"time\": 1630922400,\n            \"open\": 52028.19921875,\n            \"high\": 52028.19921875,\n            \"low\": 51806,\n            \"close\": 51967.6015625,\n            \"volume\": 1.4348999798239674\n        },\n        {\n            \"time\": 1630926000,\n            \"open\": 51921.5,\n            \"high\": 51990.3984375,\n            \"low\": 51667,\n            \"close\": 51667,\n            \"volume\": 2.17120001045987\n        },\n        {\n            \"time\": 1630929600,\n            \"open\": 51600,\n            \"high\": 51696.1015625,\n            \"low\": 51269.1015625,\n            \"close\": 51575.80078125,\n            \"volume\": 2.662400011642603\n        },\n        {\n            \"time\": 1630933200,\n            \"open\": 51568.1015625,\n            \"high\": 51671.69921875,\n            \"low\": 51435.1015625,\n            \"close\": 51671.69921875,\n            \"volume\": 1.2533999641018454\n        },\n        {\n            \"time\": 1630936800,\n            \"open\": 51672.80078125,\n            \"high\": 51964.69921875,\n            \"low\": 51672.80078125,\n            \"close\": 51939.5,\n            \"volume\": 1.606000007595867\n        },\n        {\n            \"time\": 1630940400,\n            \"open\": 51968.8984375,\n            \"high\": 51968.8984375,\n            \"low\": 51815,\n            \"close\": 51948,\n            \"volume\": 3.1822000236425083\n        },\n        {\n            \"time\": 1630944000,\n            \"open\": 51930.8984375,\n            \"high\": 51948.1015625,\n            \"low\": 51750.19921875,\n            \"close\": 51750.19921875,\n            \"volume\": 4.37320006761729\n        },\n        {\n            \"time\": 1630947600,\n            \"open\": 51750.6015625,\n            \"high\": 51840.6015625,\n            \"low\": 51690,\n            \"close\": 51795.6015625,\n            \"volume\": 5.386599992241827\n        },\n        {\n            \"time\": 1630951200,\n            \"open\": 51791.19921875,\n            \"high\": 51941.8984375,\n            \"low\": 51768.30078125,\n            \"close\": 51911.5,\n            \"volume\": 0.039200000173877925\n        },\n        {\n            \"time\": 1630954800,\n            \"open\": 51925.6015625,\n            \"high\": 52155.69921875,\n            \"low\": 51925.6015625,\n            \"close\": 51998.69921875,\n            \"volume\": 4.368900060086162\n        },\n        {\n            \"time\": 1630958400,\n            \"open\": 51986.5,\n            \"high\": 52203.19921875,\n            \"low\": 51986.5,\n            \"close\": 52203.19921875,\n            \"volume\": 0.4382000008263276\n        },\n        {\n            \"time\": 1630962000,\n            \"open\": 52185.8984375,\n            \"high\": 52241.80078125,\n            \"low\": 52112.1015625,\n            \"close\": 52230,\n            \"volume\": 0.7014999898819951\n        },\n        {\n            \"time\": 1630965600,\n            \"open\": 52230,\n            \"high\": 52749.3984375,\n            \"low\": 52230,\n            \"close\": 52749.3984375,\n            \"volume\": 0.6173999998136424\n        },\n        {\n            \"time\": 1630969200,\n            \"open\": 52767.80078125,\n            \"high\": 52914.80078125,\n            \"low\": 52643,\n            \"close\": 52861.3984375,\n            \"volume\": 1.4669999990510405\n        },\n        {\n            \"time\": 1630972800,\n            \"open\": 52899.80078125,\n            \"high\": 52914.69921875,\n            \"low\": 52702.19921875,\n            \"close\": 52702.19921875,\n            \"volume\": 0.4732000038638944\n        },\n        {\n            \"time\": 1630976400,\n            \"open\": 52686.1015625,\n            \"high\": 52745.6015625,\n            \"low\": 52682,\n            \"close\": 52745.6015625,\n            \"volume\": 0.7128999995911727\n        },\n        {\n            \"time\": 1630980000,\n            \"open\": 52744.8984375,\n            \"high\": 52914.80078125,\n            \"low\": 52684,\n            \"close\": 52823.6015625,\n            \"volume\": 7.756500077812234\n        },\n        {\n            \"time\": 1630983600,\n            \"open\": 52835.8984375,\n            \"high\": 52952.19921875,\n            \"low\": 52771.80078125,\n            \"close\": 52771.80078125,\n            \"volume\": 0.8646000040389481\n        },\n        {\n            \"time\": 1630987200,\n            \"open\": 52743.1015625,\n            \"high\": 52743.1015625,\n            \"low\": 52655.6015625,\n            \"close\": 52655.6015625,\n            \"volume\": 0.5112000162916956\n        },\n        {\n            \"time\": 1630990800,\n            \"open\": 52571,\n            \"high\": 52810.8984375,\n            \"low\": 52571,\n            \"close\": 52810.8984375,\n            \"volume\": 1.4314999890411855\n        },\n        {\n            \"time\": 1630994400,\n            \"open\": 52748.8984375,\n            \"high\": 52772.6015625,\n            \"low\": 52726.3984375,\n            \"close\": 52772.6015625,\n            \"volume\": 0.20039999976143008\n        },\n        {\n            \"time\": 1630998000,\n            \"open\": 52600,\n            \"high\": 52600,\n            \"low\": 52250.1015625,\n            \"close\": 52483.69921875,\n            \"volume\": 2.3199000097592943\n        },\n        {\n            \"time\": 1631001600,\n            \"open\": 52447.19921875,\n            \"high\": 52447.19921875,\n            \"low\": 51461.8984375,\n            \"close\": 51502.6015625,\n            \"volume\": 0.7129999989119824\n        },\n        {\n            \"time\": 1631005200,\n            \"open\": 51466.8984375,\n            \"high\": 51475,\n            \"low\": 50950.19921875,\n            \"close\": 50950.19921875,\n            \"volume\": 3.9457000347902067\n        },\n        {\n            \"time\": 1631008800,\n            \"open\": 51014.6015625,\n            \"high\": 51225.19921875,\n            \"low\": 50942.3984375,\n            \"close\": 51225.19921875,\n            \"volume\": 0.30339999683201313\n        },\n        {\n            \"time\": 1631012400,\n            \"open\": 51205.19921875,\n            \"high\": 51244.6015625,\n            \"low\": 51205,\n            \"close\": 51205,\n            \"volume\": 0.1818000005732756\n        },\n        {\n            \"time\": 1631016000,\n            \"open\": 51205,\n            \"high\": 51205,\n            \"low\": 50800,\n            \"close\": 51094.69921875,\n            \"volume\": 0.23250000140978955\n        },\n        {\n            \"time\": 1631019600,\n            \"open\": 51089.1015625,\n            \"high\": 51173.80078125,\n            \"low\": 50905.80078125,\n            \"close\": 50905.80078125,\n            \"volume\": 0.35310000453318935\n        },\n        {\n            \"time\": 1631023200,\n            \"open\": 50865.30078125,\n            \"high\": 50865.30078125,\n            \"low\": 48666,\n            \"close\": 48666.1015625,\n            \"volume\": 5.934499963528651\n        },\n        {\n            \"time\": 1631026800,\n            \"open\": 48666,\n            \"high\": 52504.1015625,\n            \"low\": 44000,\n            \"close\": 46849.3984375,\n            \"volume\": 59.03620015519846\n        },\n        {\n            \"time\": 1631030400,\n            \"open\": 46974,\n            \"high\": 47700,\n            \"low\": 46800,\n            \"close\": 47600,\n            \"volume\": 9.72979988509178\n        },\n        {\n            \"time\": 1631034000,\n            \"open\": 47460.30078125,\n            \"high\": 47460.30078125,\n            \"low\": 46735,\n            \"close\": 46735,\n            \"volume\": 0.43440000027476344\n        },\n        {\n            \"time\": 1631037600,\n            \"open\": 46684.1015625,\n            \"high\": 47185.80078125,\n            \"low\": 46438.69921875,\n            \"close\": 47103.69921875,\n            \"volume\": 5.85230007825885\n        },\n        {\n            \"time\": 1631041200,\n            \"open\": 47103.69921875,\n            \"high\": 47437.6015625,\n            \"low\": 47103.69921875,\n            \"close\": 47224.8984375,\n            \"volume\": 5.145600007657777\n        },\n        {\n            \"time\": 1631044800,\n            \"open\": 47323.8984375,\n            \"high\": 47323.8984375,\n            \"low\": 46868.1015625,\n            \"close\": 46868.1015625,\n            \"volume\": 0.5214000092528295\n        },\n        {\n            \"time\": 1631048400,\n            \"open\": 47036.6015625,\n            \"high\": 47036.6015625,\n            \"low\": 46602,\n            \"close\": 46602,\n            \"volume\": 0.7480000078794546\n        },\n        {\n            \"time\": 1631052000,\n            \"open\": 46648.69921875,\n            \"high\": 47224.6015625,\n            \"low\": 46648.69921875,\n            \"close\": 47224.6015625,\n            \"volume\": 1.8393000065698288\n        },\n        {\n            \"time\": 1631055600,\n            \"open\": 47088.19921875,\n            \"high\": 47283.80078125,\n            \"low\": 46932.5,\n            \"close\": 46991.69921875,\n            \"volume\": 4.442399992112769\n        },\n        {\n            \"time\": 1631059200,\n            \"open\": 46958.8984375,\n            \"high\": 47239.8984375,\n            \"low\": 46724.19921875,\n            \"close\": 47239.8984375,\n            \"volume\": 1.2096999902278185\n        },\n        {\n            \"time\": 1631062800,\n            \"open\": 47193.80078125,\n            \"high\": 47193.80078125,\n            \"low\": 47000,\n            \"close\": 47156.8984375,\n            \"volume\": 3.1559999629243976\n        },\n        {\n            \"time\": 1631066400,\n            \"open\": 47296.6015625,\n            \"high\": 47360.80078125,\n            \"low\": 47248.3984375,\n            \"close\": 47248.3984375,\n            \"volume\": 0.9930000175154419\n        },\n        {\n            \"time\": 1631070000,\n            \"open\": 47248.30078125,\n            \"high\": 47248.30078125,\n            \"low\": 46411.1015625,\n            \"close\": 46553.80078125,\n            \"volume\": 1.3070999992196448\n        },\n        {\n            \"time\": 1631073600,\n            \"open\": 46621.30078125,\n            \"high\": 46860,\n            \"low\": 46621.30078125,\n            \"close\": 46767.80078125,\n            \"volume\": 2.0531999812083086\n        },\n        {\n            \"time\": 1631077200,\n            \"open\": 46754.6015625,\n            \"high\": 46754.6015625,\n            \"low\": 46152,\n            \"close\": 46442.69921875,\n            \"volume\": 3.2000000434782123\n        },\n        {\n            \"time\": 1631080800,\n            \"open\": 46362.1015625,\n            \"high\": 46362.1015625,\n            \"low\": 46104.80078125,\n            \"close\": 46105.1015625,\n            \"volume\": 2.6379000400047516\n        },\n        {\n            \"time\": 1631084400,\n            \"open\": 46104.80078125,\n            \"high\": 46104.80078125,\n            \"low\": 45874.30078125,\n            \"close\": 45874.30078125,\n            \"volume\": 1.4956999564892612\n        },\n        {\n            \"time\": 1631088000,\n            \"open\": 45791.1015625,\n            \"high\": 46193.30078125,\n            \"low\": 44775.1015625,\n            \"close\": 46193.30078125,\n            \"volume\": 8.615799949417124\n        },\n        {\n            \"time\": 1631091600,\n            \"open\": 46193.5,\n            \"high\": 46377.8984375,\n            \"low\": 46078.69921875,\n            \"close\": 46246.69921875,\n            \"volume\": 1.0224999974452658\n        },\n        {\n            \"time\": 1631095200,\n            \"open\": 46317.69921875,\n            \"high\": 46629.6015625,\n            \"low\": 46104.69921875,\n            \"close\": 46629.6015625,\n            \"volume\": 3.1286999953445047\n        },\n        {\n            \"time\": 1631098800,\n            \"open\": 46649.1015625,\n            \"high\": 46881.69921875,\n            \"low\": 46569.3984375,\n            \"close\": 46569.3984375,\n            \"volume\": 0.26469999540859135\n        },\n        {\n            \"time\": 1631102400,\n            \"open\": 46547.6015625,\n            \"high\": 46638.5,\n            \"low\": 46349,\n            \"close\": 46501,\n            \"volume\": 0.809499997558305\n        },\n        {\n            \"time\": 1631106000,\n            \"open\": 46500.1015625,\n            \"high\": 46759.80078125,\n            \"low\": 45830.30078125,\n            \"close\": 46554.3984375,\n            \"volume\": 1.5922000148202642\n        },\n        {\n            \"time\": 1631109600,\n            \"open\": 46321.6015625,\n            \"high\": 46321.6015625,\n            \"low\": 46020.3984375,\n            \"close\": 46020.3984375,\n            \"volume\": 8.349400053048157\n        },\n        {\n            \"time\": 1631113200,\n            \"open\": 45911.19921875,\n            \"high\": 46172,\n            \"low\": 45911.1015625,\n            \"close\": 46079.80078125,\n            \"volume\": 1.347599982356769\n        },\n        {\n            \"time\": 1631116800,\n            \"open\": 46043.6015625,\n            \"high\": 46604,\n            \"low\": 46043.6015625,\n            \"close\": 46505.6015625,\n            \"volume\": 2.222200039133895\n        },\n        {\n            \"time\": 1631120400,\n            \"open\": 46500.1015625,\n            \"high\": 46500.1015625,\n            \"low\": 46160.5,\n            \"close\": 46281.69921875,\n            \"volume\": 1.2134999719273765\n        },\n        {\n            \"time\": 1631124000,\n            \"open\": 46272.30078125,\n            \"high\": 46453.3984375,\n            \"low\": 46272.30078125,\n            \"close\": 46453.3984375,\n            \"volume\": 0.6186000127345324\n        },\n        {\n            \"time\": 1631127600,\n            \"open\": 46546.6015625,\n            \"high\": 46626.19921875,\n            \"low\": 46450,\n            \"close\": 46512.5,\n            \"volume\": 3.1045000242593233\n        },\n        {\n            \"time\": 1631131200,\n            \"open\": 46484,\n            \"high\": 46512.19921875,\n            \"low\": 46118.8984375,\n            \"close\": 46150.30078125,\n            \"volume\": 2.348599974400713\n        },\n        {\n            \"time\": 1631134800,\n            \"open\": 46150.30078125,\n            \"high\": 46246,\n            \"low\": 46150.30078125,\n            \"close\": 46246,\n            \"volume\": 1.4628000168595463\n        },\n        {\n            \"time\": 1631138400,\n            \"open\": 46245.8984375,\n            \"high\": 46794.8984375,\n            \"low\": 46153.69921875,\n            \"close\": 46788.1015625,\n            \"volume\": 2.819299986353144\n        },\n        {\n            \"time\": 1631142000,\n            \"open\": 46697.1015625,\n            \"high\": 46700,\n            \"low\": 46178.30078125,\n            \"close\": 46185.69921875,\n            \"volume\": 1.0074999884018325\n        },\n        {\n            \"time\": 1631145600,\n            \"open\": 46165.8984375,\n            \"high\": 46320.1015625,\n            \"low\": 46136,\n            \"close\": 46277.69921875,\n            \"volume\": 0.24900000417255796\n        },\n        {\n            \"time\": 1631149200,\n            \"open\": 46241.69921875,\n            \"high\": 46241.69921875,\n            \"low\": 46140.1015625,\n            \"close\": 46186,\n            \"volume\": 0.1665999963224749\n        },\n        {\n            \"time\": 1631152800,\n            \"open\": 46186.1015625,\n            \"high\": 46300,\n            \"low\": 45861.19921875,\n            \"close\": 45955.69921875,\n            \"volume\": 2.5102000173646957\n        },\n        {\n            \"time\": 1631156400,\n            \"open\": 45864,\n            \"high\": 46037.3984375,\n            \"low\": 45818.1015625,\n            \"close\": 45991.5,\n            \"volume\": 1.942700017360039\n        },\n        {\n            \"time\": 1631160000,\n            \"open\": 46012.80078125,\n            \"high\": 46344.8984375,\n            \"low\": 46012.80078125,\n            \"close\": 46344.8984375,\n            \"volume\": 0.44440000620670617\n        },\n        {\n            \"time\": 1631163600,\n            \"open\": 46298.6015625,\n            \"high\": 46298.6015625,\n            \"low\": 46298.6015625,\n            \"close\": 46298.6015625,\n            \"volume\": 0.06689999997615814\n        },\n        {\n            \"time\": 1631167200,\n            \"open\": 46329.8984375,\n            \"high\": 46345,\n            \"low\": 46326.69921875,\n            \"close\": 46326.69921875,\n            \"volume\": 0.08739999782119412\n        },\n        {\n            \"time\": 1631170800,\n            \"open\": 46271.6015625,\n            \"high\": 46383.80078125,\n            \"low\": 46198.1015625,\n            \"close\": 46383.80078125,\n            \"volume\": 1.308399999543326\n        },\n        {\n            \"time\": 1631174400,\n            \"open\": 46328.1015625,\n            \"high\": 46550,\n            \"low\": 46328.1015625,\n            \"close\": 46500,\n            \"volume\": 0.14570000264939154\n        },\n        {\n            \"time\": 1631178000,\n            \"open\": 46426.8984375,\n            \"high\": 46426.8984375,\n            \"low\": 46426.80078125,\n            \"close\": 46426.80078125,\n            \"volume\": 0.003500000006170012\n        },\n        {\n            \"time\": 1631181600,\n            \"open\": 46426.80078125,\n            \"high\": 46426.80078125,\n            \"low\": 46022.3984375,\n            \"close\": 46166.3984375,\n            \"volume\": 2.2165999971912242\n        },\n        {\n            \"time\": 1631185200,\n            \"open\": 46244.19921875,\n            \"high\": 46461.3984375,\n            \"low\": 46244.19921875,\n            \"close\": 46461.3984375,\n            \"volume\": 0.4140000073239207\n        },\n        {\n            \"time\": 1631188800,\n            \"open\": 46422.1015625,\n            \"high\": 46647.8984375,\n            \"low\": 45799.80078125,\n            \"close\": 46647.8984375,\n            \"volume\": 4.724600019850186\n        },\n        {\n            \"time\": 1631192400,\n            \"open\": 46675.5,\n            \"high\": 47200,\n            \"low\": 46675.5,\n            \"close\": 47009,\n            \"volume\": 1.4821999786872766\n        },\n        {\n            \"time\": 1631196000,\n            \"open\": 46997.5,\n            \"high\": 47196.19921875,\n            \"low\": 46997.5,\n            \"close\": 47119.5,\n            \"volume\": 1.118599985144101\n        },\n        {\n            \"time\": 1631199600,\n            \"open\": 47119.5,\n            \"high\": 47119.5,\n            \"low\": 46897.8984375,\n            \"close\": 46981.8984375,\n            \"volume\": 1.0080999912024708\n        },\n        {\n            \"time\": 1631203200,\n            \"open\": 47009.1015625,\n            \"high\": 47242.80078125,\n            \"low\": 47009.1015625,\n            \"close\": 47242.80078125,\n            \"volume\": 0.566900002741022\n        },\n        {\n            \"time\": 1631206800,\n            \"open\": 47275,\n            \"high\": 47275,\n            \"low\": 46954.3984375,\n            \"close\": 46954.3984375,\n            \"volume\": 0.9366999858684721\n        },\n        {\n            \"time\": 1631210400,\n            \"open\": 46954.3984375,\n            \"high\": 46954.3984375,\n            \"low\": 46455.30078125,\n            \"close\": 46675.69921875,\n            \"volume\": 1.5358000127598643\n        },\n        {\n            \"time\": 1631214000,\n            \"open\": 46749.80078125,\n            \"high\": 46749.80078125,\n            \"low\": 46656.5,\n            \"close\": 46686.3984375,\n            \"volume\": 0.1715000006443006\n        }\n    ]\n}"
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "order - get all",
@@ -792,68 +342,7 @@
 					]
 				}
 			},
-			"response": [
-				{
-					"name": "order - get all",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/orders",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"orders"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "372"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"174-4e+l6qSclcxRWIbnJORKTKvzfx0\""
-						},
-						{
-							"key": "Date",
-							"value": "Thu, 23 Sep 2021 07:37:11 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"success\": true,\n    \"result\": [\n        {\n            \"future\": \"BTC/USDC\",\n            \"id\": \"3689367261485984022208514\",\n            \"market\": \"BTC/USDC\",\n            \"price\": 20000,\n            \"side\": \"buy\",\n            \"size\": 0.0001,\n            \"status\": \"open\",\n            \"clientId\": \"1632382504280\"\n        },\n        {\n            \"createdAt\": \"2021-09-23T07:35:23.000Z\",\n            \"future\": \"BTC-PERP\",\n            \"id\": \"3689367261485984029873284\",\n            \"market\": \"BTC-PERP\",\n            \"price\": 20000,\n            \"side\": \"buy\",\n            \"size\": 0.0001,\n            \"status\": \"open\",\n            \"type\": \"limit\"\n        }\n    ]\n}"
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "order - get by market",
@@ -888,74 +377,7 @@
 					]
 				}
 			},
-			"response": [
-				{
-					"name": "order - get by market",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/orders?market=BTC-PERP",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"orders"
-							],
-							"query": [
-								{
-									"key": "market",
-									"value": "BTC-PERP"
-								}
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "213"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"d5-teDVknx96LsRu3nJr8xRFTeW7c4\""
-						},
-						{
-							"key": "Date",
-							"value": "Thu, 23 Sep 2021 07:37:19 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"success\": true,\n    \"result\": [\n        {\n            \"createdAt\": \"2021-09-23T07:35:23.000Z\",\n            \"future\": \"BTC-PERP\",\n            \"id\": \"3689367261485984029873284\",\n            \"market\": \"BTC-PERP\",\n            \"price\": 20000,\n            \"side\": \"buy\",\n            \"size\": 0.0001,\n            \"status\": \"open\",\n            \"type\": \"limit\"\n        }\n    ]\n}"
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "order - place order perp",

@@ -1,3 +1,5 @@
+.idea
+__pycache__/
 mango-service-v3/node_modules
 mango-service-v3/dist
 mango-service-v3/run-dev-server.sh

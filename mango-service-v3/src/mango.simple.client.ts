@@ -253,6 +253,19 @@ class MangoSimpleClient {
     });
   }
 
+  public getSpotOpenOrdersAccount(
+    marketConfig: MarketConfig
+  ): PublicKey | null {
+    // not loaded by default, load explicitly
+    this.mangoAccount.loadOpenOrders(
+      this.connection,
+      new PublicKey(this.mangoGroupConfig.serumProgramId)
+    );
+    const spotOpenOrdersAccount =
+      this.mangoAccount.spotOpenOrdersAccounts[marketConfig.marketIndex];
+    return spotOpenOrdersAccount ? spotOpenOrdersAccount.publicKey : null;
+  }
+
   public async fetchAllSpotFills(): Promise<any[]> {
     const allMarketConfigs = getAllMarkets(this.mangoGroupConfig);
     const allMarkets = await this.fetchAllMarkets();

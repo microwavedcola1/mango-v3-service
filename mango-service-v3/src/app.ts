@@ -8,6 +8,7 @@ import MangoSimpleClient from "./mango.simple.client";
 import MarketsController from "./markets.controller";
 import OrdersController from "./orders.controller";
 import WalletController from "./wallet.controller";
+import { AccountController } from "./account.controller";
 
 class App {
   public app: express.Application;
@@ -26,6 +27,7 @@ class App {
         new OrdersController(this.mangoSimpleClient),
         new MarketsController(this.mangoSimpleClient),
         new PositionsController(this.mangoSimpleClient),
+        new AccountController(this.mangoSimpleClient),
       ]);
     });
   }
