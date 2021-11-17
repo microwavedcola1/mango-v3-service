@@ -2,7 +2,7 @@ import bodyParser from "body-parser";
 import Controller from "controller.interface";
 import express from "express";
 import { logger } from "./utils";
-import AccountController from "./account.controller";
+import PositionsController from "./positionsController";
 import CoinController from "./coin.controller";
 import MangoSimpleClient from "./mango.simple.client";
 import MarketsController from "./markets.controller";
@@ -25,7 +25,7 @@ class App {
         new WalletController(this.mangoSimpleClient),
         new OrdersController(this.mangoSimpleClient),
         new MarketsController(this.mangoSimpleClient),
-        new AccountController(this.mangoSimpleClient),
+        new PositionsController(this.mangoSimpleClient),
       ]);
     });
   }

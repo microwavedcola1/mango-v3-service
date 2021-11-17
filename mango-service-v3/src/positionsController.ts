@@ -14,7 +14,7 @@ import {
   patchInternalMarketName,
 } from "./utils";
 
-class AccountController implements Controller {
+class PositionsController implements Controller {
   public path = "/api/positions";
   public router = Router();
 
@@ -156,7 +156,7 @@ class AccountController implements Controller {
   }
 }
 
-export default AccountController;
+export default PositionsController;
 
 /// Dtos
 
