@@ -374,18 +374,12 @@ class MangoSimpleClient {
 
   public async placeOrder(
     market: string,
-    type: "market" | "limit",
     side: "buy" | "sell",
     quantity: number,
     price?: number,
-    orderType: "ioc" | "postOnly" | "limit" = "limit",
+    orderType: "ioc" | "postOnly" | "market" | "limit" = "limit",
     clientOrderId?: number
   ): Promise<void> {
-    if (type === "market") {
-      // todo
-      throw new Error("Not implemented!");
-    }
-
     if (market.includes("PERP")) {
       const perpMarketConfig = getMarketByBaseSymbolAndKind(
         this.mangoGroupConfig,
@@ -398,6 +392,9 @@ class MangoSimpleClient {
         perpMarketConfig.baseDecimals,
         perpMarketConfig.quoteDecimals
       );
+      // TODO: this is a workaround, mango-v3 has a assertion for price>0 for all order types
+      // this will be removed soon hopefully
+      price = orderType !== "market" ? price : 1;
       await this.client.placePerpOrder(
         this.mangoGroup,
         this.mangoAccount,
@@ -411,6 +408,11 @@ class MangoSimpleClient {
         clientOrderId
       );
     } else {
+      if (orderType === "market") {
+        // todo
+        throw new Error("Not implemented!");
+      }
+
       const spotMarketConfig = getMarketByBaseSymbolAndKind(
         this.mangoGroupConfig,
         market.split("/")[0],

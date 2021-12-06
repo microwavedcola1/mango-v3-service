@@ -35,7 +35,6 @@ class OrdersController implements Controller {
       body("market").not().isEmpty().custom(isValidMarket),
       body("side").not().isEmpty().isIn(["sell", "buy"]),
       body("type").not().isEmpty().isIn(["limit", "market"]),
-      body("price").isNumeric(),
       body("size").not().isEmpty().isNumeric(),
       body("reduceOnly").isBoolean(),
       body("ioc").isBoolean(),
@@ -101,16 +100,26 @@ class OrdersController implements Controller {
     }
 
     const placeOrderDto = request.body as PlaceOrderDto;
+
+    if (placeOrderDto.type !== "market" && placeOrderDto.price === undefined) {
+      logger.error("here");
+      return response.status(400).send({
+        errors: [{ msg: "missing price" } as RequestErrorCustom],
+      });
+    }
+
     logger.info(`placing order`);
 
     this.mangoSimpleClient
       .placeOrder(
         patchExternalMarketName(placeOrderDto.market),
-        placeOrderDto.type,
         placeOrderDto.side,
         placeOrderDto.size,
         placeOrderDto.price,
-        placeOrderDto.ioc
+        // preference - market, then ioc, then postOnly, otherwise default i.e. limit
+        placeOrderDto.type == "market"
+          ? "market"
+          : placeOrderDto.ioc
           ? "ioc"
           : placeOrderDto.postOnly
           ? "postOnly"

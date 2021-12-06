@@ -24,7 +24,7 @@ export async function transactionSize(
 export const i80f48ToPercent = (value: I80F48) =>
   value.mul(I80F48.fromNumber(100));
 
-const groupName = process.env.GROUP || "devnet.1";
+const groupName = process.env.GROUP || "mainnet.1";
 const mangoGroupConfig: GroupConfig = Config.ids().groups.filter(
   (group) => group.name === groupName
 )[0];
