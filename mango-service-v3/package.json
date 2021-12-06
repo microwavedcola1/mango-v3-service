@@ -12,7 +12,7 @@
   "author": "microwavedcola1",
   "license": "MIT",
   "dependencies": {
-    "@blockworks-foundation/mango-client": "^3.2.5",
+    "@blockworks-foundation/mango-client": "^3.2.14",
     "ansi-regex": "^6.0.1",
     "big.js": "^6.1.1",
     "body-parser": "^1.19.0",
