@@ -408,10 +408,11 @@ class MangoSimpleClient {
         clientOrderId
       );
     } else {
-      if (orderType === "market") {
-        // todo
-        throw new Error("Not implemented!");
-      }
+      // serum doesn't really support market orders, calculate a pseudo market price
+      price =
+        orderType !== "market"
+          ? price
+          : await this.calculateMarketOrderPrice(market, quantity, side);
 
       const spotMarketConfig = getMarketByBaseSymbolAndKind(
         this.mangoGroupConfig,
@@ -433,9 +434,48 @@ class MangoSimpleClient {
         side,
         price,
         quantity,
-        orderType,
+        orderType === "market" ? "limit" : orderType,
         new BN(clientOrderId)
       );
+    }
+  }
+
+  private async calculateMarketOrderPrice(
+    market: string,
+    quantity: number,
+    side: "buy" | "sell"
+  ): Promise<number> {
+    const bidsAndAsks = await this.fetchAllBidsAndAsks(false, market);
+
+    const bids = bidsAndAsks
+      .flat()
+      .filter((orderInfo) => orderInfo.order.side === "buy")
+      .sort((b1, b2) => b2.order.price - b1.order.price);
+    const asks = bidsAndAsks
+      .flat()
+      .filter((orderInfo) => orderInfo.order.side === "sell")
+      .sort((a1, a2) => a1.order.price - a2.order.price);
+
+    const orders: OrderInfo[] = side === "buy" ? asks : bids;
+
+    let acc = 0;
+    let selectedOrder;
+    for (const order of orders) {
+      acc += order.order.size;
+      if (acc >= quantity) {
+        selectedOrder = order;
+        break;
+      }
+    }
+
+    if (!selectedOrder) {
+      throw new Error("Orderbook empty!");
+    }
+
+    if (side === "buy") {
+      return selectedOrder.order.price * 1.05;
+    } else {
+      return selectedOrder.order.price * 0.95;
     }
   }
 
@@ -768,6 +808,7 @@ class MangoSimpleClient {
     return transaction;
   }
 
+  // todo remove
   private roundRobinClusterUrl() {
     if (process.env.CLUSTER_URL) {
       return;
