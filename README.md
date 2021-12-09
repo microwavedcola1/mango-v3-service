@@ -17,6 +17,13 @@ Directory structure
 ├── mango-vial       - WEBSOCKET API Service for L1, L2 orderbook data for mango markets version 3  
 └── py               - python3 client for above REST API Service
 ```
+
+# How to run
+* `docker-compose up` starts the REST API Service and the WEBSOCKET API Service, and a ngninx reverse proxy
+* The REST API is then available e.g. `curl http://localhost/api/wallet/balances`
+* the WEBSOCKET API is then available e.g.`wscat --connect ws://localhost/ws` (note by default the websocket program when run in isolation is available at `ws://localhost/v1/ws` )
+
+
 # Todos
 losely sorted in order of importance/priority
 - rpc node related issues
