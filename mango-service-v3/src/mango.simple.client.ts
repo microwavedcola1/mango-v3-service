@@ -48,6 +48,9 @@ class MangoSimpleClient {
     public mangoAccount: MangoAccount
   ) {
     setInterval(this.roundRobinClusterUrl, 1_000);
+
+    // refresh things which might get stale over time
+    setInterval(this.refresh, 3600_000);
   }
 
   static async create() {
@@ -133,6 +136,12 @@ class MangoSimpleClient {
       .join(", ");
     logger.info(
       `- found mango accounts ${debugAccounts}, using ${chosenMangoAccount.publicKey.toBase58()}`
+    );
+
+    // load open orders accounts, used by e.g. getSpotOpenOrdersAccountForMarket
+    await chosenMangoAccount.loadOpenOrders(
+      connection,
+      new PublicKey(mangoGroupConfig.serumProgramId)
     );
 
     return new MangoSimpleClient(
@@ -256,11 +265,6 @@ class MangoSimpleClient {
   public getSpotOpenOrdersAccount(
     marketConfig: MarketConfig
   ): PublicKey | null {
-    // not loaded by default, load explicitly
-    this.mangoAccount.loadOpenOrders(
-      this.connection,
-      new PublicKey(this.mangoGroupConfig.serumProgramId)
-    );
     const spotOpenOrdersAccount =
       this.mangoAccount.spotOpenOrdersAccounts[marketConfig.marketIndex];
     return spotOpenOrdersAccount ? spotOpenOrdersAccount.publicKey : null;
@@ -808,7 +812,13 @@ class MangoSimpleClient {
     return transaction;
   }
 
-  // todo remove
+  private refresh() {
+    this.mangoAccount.loadOpenOrders(
+      this.connection,
+      this.mangoGroupConfig.serumProgramId
+    );
+  }
+
   private roundRobinClusterUrl() {
     if (process.env.CLUSTER_URL) {
       return;
