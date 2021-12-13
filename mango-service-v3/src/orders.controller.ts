@@ -126,8 +126,11 @@ class OrdersController implements Controller {
           : "limit",
         placeOrderDto.clientId
       )
-      .then(() => {
-        return response.status(200).send();
+      .then((transactionSignature) => {
+        return response.send({
+          success: true,
+          result: { tx: transactionSignature },
+        });
       })
       .catch((error) => {
         logger.error(`message - ${error.message}, ${error.stack}`);
@@ -173,7 +176,12 @@ class OrdersController implements Controller {
         }
         this.mangoSimpleClient
           .cancelOrder(orderInfos[0])
-          .then(() => response.send())
+          .then((transactionSignature) =>
+            response.send({
+              success: true,
+              result: { tx: transactionSignature },
+            })
+          )
           .catch((error) => {
             logger.error(`message - ${error.message}, ${error.stack}`);
             return response
@@ -204,7 +212,12 @@ class OrdersController implements Controller {
         }
         this.mangoSimpleClient
           .cancelOrder(orderInfos[0])
-          .then(() => response.send())
+          .then((transactionSignature) =>
+            response.send({
+              success: true,
+              result: { tx: transactionSignature },
+            })
+          )
           .catch((error) => {
             logger.error(`message - ${error.message}, ${error.stack}`);
             return response

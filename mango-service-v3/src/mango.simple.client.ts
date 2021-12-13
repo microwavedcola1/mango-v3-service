@@ -383,7 +383,7 @@ class MangoSimpleClient {
     price?: number,
     orderType: "ioc" | "postOnly" | "market" | "limit" = "limit",
     clientOrderId?: number
-  ): Promise<void> {
+  ): Promise<TransactionSignature> {
     if (market.includes("PERP")) {
       const perpMarketConfig = getMarketByBaseSymbolAndKind(
         this.mangoGroupConfig,
@@ -399,7 +399,7 @@ class MangoSimpleClient {
       // TODO: this is a workaround, mango-v3 has a assertion for price>0 for all order types
       // this will be removed soon hopefully
       price = orderType !== "market" ? price : 1;
-      await this.client.placePerpOrder(
+      return await this.client.placePerpOrder(
         this.mangoGroup,
         this.mangoAccount,
         this.mangoGroup.mangoCache,
@@ -429,7 +429,7 @@ class MangoSimpleClient {
         undefined,
         this.mangoGroupConfig.serumProgramId
       );
-      await this.client.placeSpotOrder(
+      return await this.client.placeSpotOrder(
         this.mangoGroup,
         this.mangoAccount,
         this.mangoGroup.mangoCache,
@@ -520,7 +520,10 @@ class MangoSimpleClient {
     }
   }
 
-  public async cancelOrder(orderInfo: OrderInfo, market?: Market | PerpMarket) {
+  public async cancelOrder(
+    orderInfo: OrderInfo,
+    market?: Market | PerpMarket
+  ): Promise<TransactionSignature> {
     if (orderInfo.market.config.kind === "perp") {
       const perpMarketConfig = getMarketByBaseSymbolAndKind(
         this.mangoGroupConfig,
@@ -535,7 +538,7 @@ class MangoSimpleClient {
           perpMarketConfig.quoteDecimals
         );
       }
-      await this.client.cancelPerpOrder(
+      return await this.client.cancelPerpOrder(
         this.mangoGroup,
         this.mangoAccount,
         this.owner,
@@ -556,7 +559,7 @@ class MangoSimpleClient {
           this.mangoGroupConfig.serumProgramId
         );
       }
-      await this.client.cancelSpotOrder(
+      return await this.client.cancelSpotOrder(
         this.mangoGroup,
         this.mangoAccount,
         this.owner,
