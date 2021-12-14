@@ -5,6 +5,8 @@ import { patchInternalMarketName } from "./utils";
 import {
   getAllMarkets,
   MarketConfig,
+  nativeI80F48ToUi,
+  QUOTE_INDEX,
 } from "@blockworks-foundation/mango-client";
 
 /**
@@ -28,20 +30,55 @@ export class AccountController implements Controller {
     response: Response,
     next: NextFunction
   ) => {
-    const accountInternalDto = this.fetchAccountInternal();
+    const accountInternalDto = await this.fetchAccountInternal();
     response.send({
       success: true,
       result: accountInternalDto,
     } as AccountDto);
   };
 
-  private fetchAccountInternal(): AccountInternalDto {
+  private async fetchAccountInternal(): Promise<AccountInternalDto> {
     let allMarketConfigs = getAllMarkets(
       this.mangoSimpleClient.mangoGroupConfig
     );
 
+    const marketMarginAvailableListDtos = await this.getMarketMarginAvailable(
+      allMarketConfigs
+    );
+    const spotOpenOrdersAccountDtos =
+      this.getSpotOpenOrdersAccount(allMarketConfigs);
+    return {
+      spotOpenOrdersAccounts: spotOpenOrdersAccountDtos,
+      marketMarginAvailable: marketMarginAvailableListDtos,
+    } as AccountInternalDto;
+  }
+
+  private async getMarketMarginAvailable(
+    allMarketConfigs: MarketConfig[]
+  ): Promise<MarketMarginAvailableListDto[]> {
+    const mangoCache = await this.mangoSimpleClient.mangoGroup.loadCache(
+      this.mangoSimpleClient.connection
+    );
+    const marketMarginAvailableDtos: MarketMarginAvailableListDto[] = [];
+    for (let marketConfig of allMarketConfigs) {
+      marketMarginAvailableDtos.push({
+        name: patchInternalMarketName(marketConfig.name),
+        marginAvailable: nativeI80F48ToUi(
+          this.mangoSimpleClient.mangoAccount.getMarketMarginAvailable(
+            this.mangoSimpleClient.mangoGroup,
+            mangoCache,
+            marketConfig.marketIndex,
+            marketConfig.kind
+          ),
+          this.mangoSimpleClient.mangoGroup.tokens[QUOTE_INDEX].decimals
+        ).toNumber(),
+      } as MarketMarginAvailableListDto);
+    }
+    return marketMarginAvailableDtos;
+  }
+
+  private getSpotOpenOrdersAccount(allMarketConfigs: MarketConfig[]) {
     const spotOpenOrdersAccountDtos = allMarketConfigs
-      // filter only spot markets
       .filter((marketConfig) => !marketConfig.name.includes("PERP"))
       .map((spotMarketConfig) =>
         this.getSpotOpenOrdersAccountForMarket(spotMarketConfig)
@@ -50,9 +87,7 @@ export class AccountController implements Controller {
       .filter(
         (spotOpenOrdersAccount) => spotOpenOrdersAccount.publicKey != null
       );
-    return {
-      spotOpenOrdersAccounts: spotOpenOrdersAccountDtos,
-    } as AccountInternalDto;
+    return spotOpenOrdersAccountDtos;
   }
 
   private getSpotOpenOrdersAccountForMarket(
@@ -78,8 +113,16 @@ export class AccountController implements Controller {
       {
         "name": "MNGO-SPOT",
         "publicKey": "..."
-      }
-    ]
+      },
+      ...
+    ],
+  "marketMarginAvailable": [
+      {
+          "name": "MNGO-SPOT",
+          "marginAvailable": ...
+      },
+      ...
+    ],
   }
 }
  */
@@ -90,9 +133,14 @@ interface AccountDto {
 
 interface AccountInternalDto {
   spotOpenOrdersAccounts: SpotOpenOrdersAccountDto[];
+  marketMarginAvailable: MarketMarginAvailableListDto[];
 }
 
 interface SpotOpenOrdersAccountDto {
   name: string;
   publicKey: string;
+}
+interface MarketMarginAvailableListDto {
+  name: string;
+  marginAvailable: number;
 }
