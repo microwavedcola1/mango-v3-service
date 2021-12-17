@@ -1,0 +1,14 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/mango-service-v3"
+  schedule:
+    interval: daily
+    time: "01:00"
+    timezone: America/Los_Angeles
+  labels:
+    - "automerge"
+  commit-message:
+    prefix: "chore:"
+    include: "scope"
+  open-pull-requests-limit: 3
