@@ -1,0 +1,3 @@
+[submodule "mango-bowl"]
+	path = mango-bowl
+	url = https://github.com/tardis-dev/mango-bowl
