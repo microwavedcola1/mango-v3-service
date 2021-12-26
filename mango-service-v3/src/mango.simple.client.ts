@@ -47,8 +47,6 @@ class MangoSimpleClient {
     public owner: Account,
     public mangoAccount: MangoAccount
   ) {
-    setInterval(this.roundRobinClusterUrl, 1_000);
-
     // refresh things which might get stale over time
     setInterval(
       this.refresh,
@@ -827,24 +825,6 @@ class MangoSimpleClient {
     mangoAccount: MangoAccount
   ) {
     mangoAccount.loadOpenOrders(connection, mangoGroupConfig.serumProgramId);
-  }
-
-  private roundRobinClusterUrl() {
-    if (process.env.CLUSTER_URL) {
-      return;
-    }
-
-    const possibleClustersUrls = [
-      "https://api.mainnet-beta.solana.com",
-      "https://lokidfxnwlabdq.main.genesysgo.net:8899/",
-      "https://solana-api.projectserum.com/",
-    ];
-    const clusterUrl =
-      possibleClustersUrls[
-        Math.floor(Math.random() * possibleClustersUrls.length)
-      ];
-
-    this.connection = new Connection(clusterUrl, "processed" as Commitment);
   }
 }
 
