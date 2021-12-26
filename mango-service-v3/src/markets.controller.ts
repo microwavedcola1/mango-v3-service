@@ -445,9 +445,12 @@ async function getOhlcv(
   fromS: number,
   toS: number
 ) {
+  const fromSFixed = fromS.toFixed();
+  const toSFixed = toS.toFixed();
+
   const historyResponse = await fetch(
     `https://serum-history.herokuapp.com/tv/history` +
-      `?symbol=${market}&resolution=${resolution}&from=${fromS}&to=${toS}`
+      `?symbol=${market}&resolution=${resolution}&from=${fromSFixed}&to=${toSFixed}`
   );
   return historyResponse.json();
 }
