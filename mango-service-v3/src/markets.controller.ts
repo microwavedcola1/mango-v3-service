@@ -366,7 +366,7 @@ class MarketsController implements Controller {
     const fromEpochS = Number(request.query.start_time);
     const toEpochS = Number(request.query.end_time);
 
-    await getOhlcv(marketName, resolution, fromEpochS, toEpochS)
+    await getOhlcv(marketName, resolution, fromEpochS, toEpochS, false)
       .then(({ t, o, h, l, c, v }) => {
         const ohlcvDtos: OhlcvDto[] = [];
         for (let i = 0; i < t.length; i++) {
@@ -443,11 +443,18 @@ async function getOhlcv(
   market: string,
   resolution: string,
   fromS: number,
-  toS: number
+  toS: number,
+  forceMinimumMinuteResolution: boolean = true
 ) {
+  // to leverage caching on backend,
+  // and not spam with requests having ms resolution,
+  // force minimum resolution to a minute
+  if (forceMinimumMinuteResolution) {
+    fromS = Math.floor(fromS / 60) * 60;
+    toS = Math.floor(toS / 60) * 60;
+  }
   const fromSFixed = fromS.toFixed();
   const toSFixed = toS.toFixed();
-
   const historyResponse = await fetch(
     `https://serum-history.herokuapp.com/tv/history` +
       `?symbol=${market}&resolution=${resolution}&from=${fromSFixed}&to=${toSFixed}`
