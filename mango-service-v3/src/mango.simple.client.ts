@@ -40,9 +40,9 @@ import { logger, zipDict } from "./utils";
 
 class MangoSimpleClient {
   constructor(
-    public mangoGroupConfig: GroupConfig,
     public connection: Connection,
     public client: MangoClient,
+    public mangoGroupConfig: GroupConfig,
     public mangoGroup: MangoGroup,
     public owner: Account,
     public mangoAccount: MangoAccount
@@ -50,7 +50,13 @@ class MangoSimpleClient {
     setInterval(this.roundRobinClusterUrl, 1_000);
 
     // refresh things which might get stale over time
-    setInterval(this.refresh, 3600_000);
+    setInterval(
+      this.refresh,
+      3600_000,
+      connection,
+      mangoGroupConfig,
+      mangoAccount
+    );
   }
 
   static async create() {
@@ -145,9 +151,9 @@ class MangoSimpleClient {
     );
 
     return new MangoSimpleClient(
-      mangoGroupConfig,
       connection,
       mangoClient,
+      mangoGroupConfig,
       mangoGroup,
       owner,
       chosenMangoAccount
@@ -815,11 +821,12 @@ class MangoSimpleClient {
     return transaction;
   }
 
-  private refresh() {
-    this.mangoAccount.loadOpenOrders(
-      this.connection,
-      this.mangoGroupConfig.serumProgramId
-    );
+  private refresh(
+    connection: Connection,
+    mangoGroupConfig: GroupConfig,
+    mangoAccount: MangoAccount
+  ) {
+    mangoAccount.loadOpenOrders(connection, mangoGroupConfig.serumProgramId);
   }
 
   private roundRobinClusterUrl() {
