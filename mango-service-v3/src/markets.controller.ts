@@ -143,17 +143,23 @@ class MarketsController implements Controller {
     const market = allMarkets[marketConfig.publicKey.toBase58()];
 
     const [
-      marketData, // contains volume, 1H, 24H, bod changes
+      volume,
+      change1h,
+      change24h,
+      changeBod,
       ordersInfo, // used for latest bid+ask
       tradesResponse, // used for latest trade+price
     ] = await Promise.all([
-      getMarketData(marketConfig),
+      getVolumeForMarket(marketConfig),
+      getChange1H(marketConfig),
+      getChange24H(marketConfig),
+      getChangeBod(marketConfig),
       (await this.mangoSimpleClient.fetchAllBidsAndAsks(
         false,
         marketConfig.name
       )) as OrderInfo[][],
       fetch(
-        `https://event-history-api-candles.herokuapp.com/trades/address/${marketConfig.publicKey.toBase58()}`
+        `https://serum-history.herokuapp.com/trades/address/${marketConfig.publicKey.toBase58()}`
       ),
     ]);
 
@@ -209,10 +215,10 @@ class MarketsController implements Controller {
       baseCurrency: marketConfig.baseSymbol,
       quoteCurrency: "USDC",
       // note: event-history-api doesn't index volume for spot
-      quoteVolume24h: marketData.quoteVolume24h !== 0 ? marketData.quoteVolume24h : undefined,
-      change1h: marketData.change1h,
-      change24h: marketData.change24h,
-      changeBod: marketData.changeBod,
+      quoteVolume24h: volume !== 0 ? volume : undefined,
+      change1h,
+      change24h,
+      changeBod,
       highLeverageFeeExempt: undefined,
       minProvideSize: undefined,
       type: marketConfig.name.includes("PERP") ? "futures" : "spot",
@@ -227,7 +233,7 @@ class MarketsController implements Controller {
       sizeIncrement: minOrderSize,
       restricted: undefined,
       // note: event-history-api doesn't index volume for spot
-      volumeUsd24h: marketData.volumeUsd24h !== 0 ? marketData.volumeUsd24h : undefined,
+      volumeUsd24h: volume !== 0 ? volume : undefined,
     } as MarketDto;
   }
 
@@ -325,7 +331,7 @@ class MarketsController implements Controller {
 
   private async getTradesInternal(marketPk: PublicKey) {
     const tradesResponse = await fetch(
-      `https://event-history-api-candles.herokuapp.com/trades/address/${marketPk.toBase58()}`
+      `https://serum-history.herokuapp.com/trades/address/${marketPk.toBase58()}`
     );
     const parsedTradesResponse = (await tradesResponse.json()) as any;
     if ("s" in parsedTradesResponse && parsedTradesResponse["s"] === "error") {
@@ -391,12 +397,46 @@ export default MarketsController;
 
 /// helper functions
 
-async function getMarketData(marketConfig: MarketConfig): Promise<Partial<MarketDto>> {
-  const marketDataResponse = await fetch(
-    `https://event-history-api-candles.herokuapp.com/markets/` + 
-    `${patchInternalMarketName(marketConfig.name)}`
+async function getChange24H(marketConfig: MarketConfig): Promise<number> {
+  const fromS =
+    new Date(new Date().getTime() - 24 * 60 * 60 * 1000).getTime() / 1000;
+  const toS = new Date(new Date().getTime()).getTime() / 1000;
+  const { t, o, h, l, c, v } = await getOhlcv(
+    marketConfig.name,
+    "1D",
+    fromS,
+    toS
   );
-  return marketDataResponse.json();
+  return c ? (c[0] - o[0]) / o[0] : undefined;
+}
+
+async function getChange1H(marketConfig: MarketConfig): Promise<number> {
+  const fromS =
+    new Date(new Date().getTime() - 60 * 60 * 1000).getTime() / 1000;
+  const toS = new Date(new Date().getTime()).getTime() / 1000;
+  const { t, o, h, l, c, v } = await getOhlcv(
+    marketConfig.name,
+    "60",
+    fromS,
+    toS
+  );
+  return c ? (c[0] - o[0]) / o[0] : undefined;
+}
+
+async function getChangeBod(marketConfig: MarketConfig): Promise<number> {
+  const from = new Date();
+  from.setUTCHours(0, 0, 0, 0);
+  const fromS = from.getTime() / 1000;
+  const to = new Date();
+  const toS = to.getTime() / 1000;
+  const { t, o, h, l, c, v } = await getOhlcv(
+    marketConfig.name,
+    "1",
+    fromS,
+    toS
+  );
+  // todo double check this
+  return c ? (c[0] - o[o.length - 1]) / o[o.length - 1] : undefined;
 }
 
 async function getOhlcv(
@@ -416,10 +456,20 @@ async function getOhlcv(
   const fromSFixed = fromS.toFixed();
   const toSFixed = toS.toFixed();
   const historyResponse = await fetch(
-    `https://event-history-api-candles.herokuapp.com/tv/history` +
+    `https://serum-history.herokuapp.com/tv/history` +
       `?symbol=${market}&resolution=${resolution}&from=${fromSFixed}&to=${toSFixed}`
   );
   return historyResponse.json();
+}
+
+export async function getVolumeForMarket(
+  marketConfig: MarketConfig
+): Promise<number> {
+  const perpVolume = await fetch(
+    `https://event-history-api.herokuapp.com/stats/perps/${marketConfig.publicKey.toBase58()}`
+  );
+  const parsedPerpVolume = await perpVolume.json();
+  return Number(parsedPerpVolume?.data?.volume);
 }
 
 /// Dtos
