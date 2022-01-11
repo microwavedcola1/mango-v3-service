@@ -1,0 +1,10 @@
+# Ignore test files
+py/test*
+py/example*
+mango-service-v3/test/
+
+# Ignore git items
+.gitignore
+.github/
+.gitmodules
+:include .gitignore
