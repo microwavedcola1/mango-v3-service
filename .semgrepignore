@@ -1,3 +1,3 @@
 # Ignore test and example files
-py/test*
-py/example*
+py/test*.py
+py/example*.py
