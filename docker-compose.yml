@@ -16,8 +16,8 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - MV_PORT=8000
-      - MV_ENDPOINT=${CLUSTER_URL} # configure custom RPC node
+      - MB_PORT=8000
+      - MB_ENDPOINT=${CLUSTER_URL} # configure custom RPC node
   reverse-proxy:
     build: .
     ports:
