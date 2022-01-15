@@ -37,6 +37,10 @@ const allMarketNames = mangoGroupConfig.spotMarkets
     )
   );
 
+const allPerpMarketNames = mangoGroupConfig.perpMarkets.map(
+  (perpMarketConfig) => perpMarketConfig.name
+);
+
 const allCoins = mangoGroupConfig.tokens.map(
   (tokenConfig) => tokenConfig.symbol
 );
@@ -77,6 +81,13 @@ export const logger = pino({
 export const isValidMarket: CustomValidator = (marketName) => {
   if (allMarketNames.indexOf(marketName) === -1) {
     return Promise.reject(`Market ${marketName} not supported!`);
+  }
+  return Promise.resolve();
+};
+
+export const isValidPerpMarket: CustomValidator = (marketName) => {
+  if (allPerpMarketNames.indexOf(marketName) === -1) {
+    return Promise.reject(`Perp Market ${marketName} not supported!`);
   }
   return Promise.resolve();
 };
