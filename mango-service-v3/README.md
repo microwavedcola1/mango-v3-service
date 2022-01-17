@@ -7,6 +7,7 @@ All environment variables are optional.
 * PORT - port on which expressjs webserver runs, default is 3000
 * CLUSTER_URL - RPC node url e.g., default is scheduled rotation between  https://api.mainnet-beta.solana.com, https://lokidfxnwlabdq.main.genesysgo.net:8899/,
       https://solana-api.projectserum.com/
+* MANGO_ACCOUNT - public key of mango account to explicitly choose, in case an owner has multiple mango accounts, or PRIVATE_KEY_PATH is a delegate  
 
 # How to run while developing
 * `yarn install`

@@ -93,57 +93,63 @@ class MangoSimpleClient {
       JSON.parse(fs.readFileSync(privateKeyPath, "utf-8"))
     );
 
-    logger.info(`- fetching mango accounts for ${owner.publicKey.toBase58()}`);
-    let mangoAccounts;
-    try {
-      mangoAccounts = await mangoClient.getMangoAccountsForOwner(
-        mangoGroup,
-        owner.publicKey
-      );
-    } catch (error) {
-      logger.error(
-        `- error retrieving mango accounts for ${owner.publicKey.toBase58()}`
-      );
-      process.exit(1);
-    }
+    let mangoAccount;
 
-    if (!mangoAccounts.length) {
-      logger.error(`- no mango account found ${owner.publicKey.toBase58()}`);
-      process.exit(1);
-    }
-
-    const sortedMangoAccounts = mangoAccounts
-      .slice()
-      .sort((a, b) =>
-        a.publicKey.toBase58() > b.publicKey.toBase58() ? 1 : -1
-      );
-
-    let chosenMangoAccount;
     if (process.env.MANGO_ACCOUNT) {
-      const filteredMangoAccounts = sortedMangoAccounts.filter(
-        (mangoAccount) =>
-          mangoAccount.publicKey.toBase58() === process.env.MANGO_ACCOUNT
+      logger.info(
+        `- MANGO_ACCOUNT explicitly specified, fetching mango account ${process.env.MANGO_ACCOUNT}`
       );
-      if (!filteredMangoAccounts.length) {
+      mangoAccount = await mangoClient.getMangoAccount(
+        new PublicKey(process.env.MANGO_ACCOUNT),
+        mangoGroupConfig.serumProgramId
+      );
+    } else {
+      logger.info(
+        `- fetching mango accounts for ${owner.publicKey.toBase58()}`
+      );
+      let mangoAccounts;
+      try {
+        mangoAccounts = await mangoClient.getMangoAccountsForOwner(
+          mangoGroup,
+          owner.publicKey
+        );
+      } catch (error) {
         logger.error(
-          `- no mango account found for key ${process.env.MANGO_ACCOUNT}`
+          `- error retrieving mango accounts for ${owner.publicKey.toBase58()}`
         );
         process.exit(1);
       }
-      chosenMangoAccount = filteredMangoAccounts[0];
-    } else {
-      chosenMangoAccount = sortedMangoAccounts[0];
+
+      if (!mangoAccounts.length) {
+        logger.error(`- no mango account found ${owner.publicKey.toBase58()}`);
+        process.exit(1);
+      }
+
+      const sortedMangoAccounts = mangoAccounts
+        .slice()
+        .sort((a, b) =>
+          a.publicKey.toBase58() > b.publicKey.toBase58() ? 1 : -1
+        );
+
+      // just select first arbitrarily
+      mangoAccount = sortedMangoAccounts[0];
+
+      const debugAccounts = sortedMangoAccounts
+        .map((mangoAccount) => mangoAccount.publicKey.toBase58())
+        .join(", ");
+      logger.info(
+        `- found mango accounts ${debugAccounts}, using ${mangoAccount.publicKey.toBase58()}`
+      );
     }
 
-    const debugAccounts = sortedMangoAccounts
-      .map((mangoAccount) => mangoAccount.publicKey.toBase58())
-      .join(", ");
-    logger.info(
-      `- found mango accounts ${debugAccounts}, using ${chosenMangoAccount.publicKey.toBase58()}`
-    );
+    if (mangoAccount.owner.toBase58() !== owner.publicKey.toBase58()) {
+      logger.info(
+        `- Note: ${owner.publicKey.toBase58()} is a delegate for ${mangoAccount.publicKey.toBase58()}`
+      );
+    }
 
     // load open orders accounts, used by e.g. getSpotOpenOrdersAccountForMarket
-    await chosenMangoAccount.loadOpenOrders(
+    await mangoAccount.loadOpenOrders(
       connection,
       new PublicKey(mangoGroupConfig.serumProgramId)
     );
@@ -154,7 +160,7 @@ class MangoSimpleClient {
       mangoGroupConfig,
       mangoGroup,
       owner,
-      chosenMangoAccount
+      mangoAccount
     );
   }
 
